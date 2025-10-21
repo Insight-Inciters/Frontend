@@ -153,10 +153,10 @@
   </div>
   <nav class="navlinks">
     <a href="index.html">Home</a>
-    <a href="reports.html">Reports</a>
+    <a href="dashboard.html">Dashboard</a>
     <a href="#">About Us</a>
     <a href="#">FAQ/Help</a>
-    <a class="nav-cta" href="Analysis.html" style="color:#005a63; font-weight:700; text-decoration:none;">START ANALYSIS</a>
+    <a class="nav-cta" href="upload.html" style="color:#005a63; font-weight:700; text-decoration:none;">START ANALYSIS</a>
   </nav>
 </header>
 <div class="top-divider"></div>
@@ -257,7 +257,7 @@
   const getResults = document.getElementById('getResults');
   const loading = document.getElementById('loading');
 
-  // Track current file meta so we can pass to reports
+  // Track current file meta so we can pass to dashboard
   const currentMeta = { fileName: '', wordCount: 0 };
 
   function setInfo(text, ok=true){
@@ -300,13 +300,13 @@
     reader.readAsText(file);
   }
 
-  // Save name + count, then navigate to reports.html after brief loading
+  // Save name + count, then navigate to dashboard.html after brief loading
   getResults.addEventListener('click', () => {
     if(dz.dataset.ok === '1'){
       try { localStorage.setItem('ink_report_meta', JSON.stringify(currentMeta)); } catch(e){}
       loading.classList.add('show');
       setTimeout(() => {
-        window.location.href = 'reports.html';
+        window.location.href = 'dashboard.html';
       }, 1200);
     } else {
       alert('Please load a .txt file within 3000 words first.');

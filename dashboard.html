@@ -5,317 +5,426 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ink Insights — Dashboard</title>
 
-<!-- Chart.js (for charts) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- Favicon -->
+<link rel="icon" href="ink-logo.png" type="image/png" />
 
 <style>
+  /* Optional local American Typewriter */
+  @font-face{font-family:'AmericanTypewriter';src:url('AmericanTypewriterStd-Light.ttf') format('truetype');font-weight:400;font-display:swap}
+  @font-face{font-family:'AmericanTypewriter';src:url('AmericanTypewriterStd-Bold.ttf')  format('truetype');font-weight:700;font-display:swap}
+
   :root{
-    --teal:#0b6b6f;
-    --teal-dark:#0a4c50;
-    --ink:#082c2f;
-    --lav:#b9a8ff;         /* subtle lilac edge (top/left) */
-    --edge:#173c43;        /* darker edge (bottom/right) */
-    --muted:#5b7073;
-    --card-bg:#ffffff;
-    --grid-gap:28px;
+    --dark-teal:#005A63; --teal:#257881;
+    --warm-green:#517A06; --warm-green-30:rgba(81,122,6,.30);
+    --pink:#FF2092; --pink-30:rgba(255,32,146,.30);
+    --blue:#00A6FF;  --blue-30:rgba(0,166,255,.30);
+    --light-grey:#DBDBDB; --dark-grey:#737373; --white:#FFFFFF;
+    --danger:#E03131; --danger-15:rgba(224,49,49,.15);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:var(--ink);line-height:1.6}
-  html{scroll-behavior:smooth}
 
-  /* Navbar */
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:"Droid Serif", Georgia, serif; color:#122022; background:#fff}
+  a{color:inherit;text-decoration:none}
+
+  /* ======================= HEADER ======================= */
   .navbar{
-    background:var(--teal);
+    background:var(--dark-teal);
     color:#fff;
-    padding:16px 5vw;
-    display:flex;align-items:center;justify-content:space-between;
+    position:sticky; top:0; z-index:40;
   }
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand-logo{width:44px;height:auto}
-  .brand-text{font-weight:700;font-size:1.4rem}
-  .navlinks{display:flex;align-items:center;gap:24px}
-  .navlinks a{color:#fff;text-decoration:none;font-weight:500}
-  .navlinks a:hover{opacity:.88}
-  .nav-cta{padding:10px 16px;border-radius:22px;background:#e6f1f2;color:var(--teal);font-weight:700}
-  .divider-thin{height:6px;background:#e9f7f7}
-
-  /* Page container */
-  .wrap{padding:28px 6vw 60px}
-
-  /* Header block */
-  .dash-title{font-size:2.4rem;font-weight:800;margin-bottom:8px}
-  .meta{color:#1c4ed8;font-weight:600;letter-spacing:.4px;margin-bottom:18px}
-  .meta span{display:inline-block; min-width:9.5ch}
-
-  /* Grid of cards */
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-    gap:var(--grid-gap);
-    align-items:stretch;
-  }
-  .card{
-    background:var(--card-bg);
-    border-top:3px solid var(--lav);
-    border-left:3px solid var(--lav);
-    border-right:6px solid var(--edge);
-    border-bottom:6px solid var(--edge);
-    border-radius:10px;
-    display:flex;flex-direction:column;
-    min-height:280px;
-  }
-  .card-header{
-    padding:12px 14px 6px;
-    text-align:center;
-    color:var(--teal);
-    font-weight:700;
-    font-size:1.1rem;
-  }
-  .card-body{
-    padding:8px 14px 16px;
-    flex:1;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .card-body canvas{width:100% !important; height:100% !important; max-height:360px}
-  .pillbox{
-    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-content:flex-start;
+  .nav-inner{
     width:100%;
+    padding:12px 24px 8px;
+    display:flex; align-items:center; gap:24px;
+    justify-content:space-between; /* brand far-left, actions far-right */
   }
-  .pill{
-    border:1.5px dashed var(--teal);
-    color:var(--teal-dark);
-    padding:6px 10px;border-radius:999px;
-    font-weight:600;background:#f7fbfb;
-  }
-  .empty{color:var(--muted);font-style:italic}
 
-  @media (max-width: 980px){
-    .grid{grid-template-columns:1fr}
+  /* Brand (left) with Ink / Insights stacked */
+  .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
+  .brand a:hover{transform:translateY(-1px) scale(1.02)}
+  .brand img{width:54px;height:auto}
+  .brand .txt{display:flex;flex-direction:column;line-height:1}
+  .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
+  .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif}
+
+  /* Centered menu (Rockwell, BOLD) */
+  .navlinks{
+    flex:1;
+    display:flex; justify-content:center; gap:34px;
   }
+  .navlinks a{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:700;   /* bold menu */
+    color:#fff;
+    position:relative; padding:6px 2px;
+    transition:color .2s ease, text-shadow .2s ease;
+  }
+  .navlinks a::after{
+    content:''; position:absolute; left:0; right:0; bottom:-6px; height:2px;
+    background:#fff; transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
+  }
+  .navlinks a:hover{ text-shadow:0 0 10px rgba(255,255,255,.35) }
+  .navlinks a:hover::after{ transform:scaleX(1) }
+
+  /* Actions (rightmost) */
+  .actions{margin-left:auto; display:flex; align-items:center; gap:12px}
+  .nav-cta{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400; /* not bold */
+    background:#fff; color:var(--dark-teal);
+    padding:10px 18px; border-radius:28px;
+    transition:.2s background,.2s color,.2s transform,.2s box-shadow;
+  }
+  .nav-cta:hover{
+    background:#000; color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 10px 18px rgba(0,0,0,.18);
+  }
+
+  /* Interactive hamburger (morphs to X when open) */
+  .hamb{
+    width:30px;height:22px;cursor:pointer;
+    display:flex;flex-direction:column;justify-content:space-between;
+    transition:transform .2s ease;
+  }
+  .hamb:hover{transform:scale(1.06)}
+  .hamb span{
+    height:3px;background:#fff;border-radius:2px;display:block;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .hamb.open span:nth-child(1){ transform:translateY(9px) rotate(45deg); }
+  .hamb.open span:nth-child(2){ opacity:0; }
+  .hamb.open span:nth-child(3){ transform:translateY(-9px) rotate(-45deg); }
+
+  @media(max-width:900px){ .navlinks{display:none} }
+
+  /* Drawer (white), left title 22px (not bold), Agency items */
+  .drawer{
+    position:fixed; top:0; right:-300px; width:280px; height:100dvh;
+    background:#fff; color:var(--dark-teal);
+    box-shadow:-10px 0 24px rgba(0,0,0,.28);
+    transition:right .25s ease; padding:18px; z-index:50;
+    border-left:4px solid rgba(0,0,0,.06);
+  }
+  .drawer.open{ right:0 }
+  .scrim{position:fixed; inset:0; background:rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:45}
+  .scrim.show{ opacity:1; pointer-events:auto }
+
+  .drawer .menu-title{
+    text-align:left;
+    font:400 22px/1.2 "Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    margin:6px 0 12px;
+  }
+  .drawer .menu{display:flex; flex-direction:column; gap:10px}
+  .drawer .menu a{
+    font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
+    display:flex; align-items:center; gap:10px; padding:12px; border-radius:12px;
+    border:2px dashed rgba(0,90,99,.25); background:rgba(0,90,99,.06); color:var(--dark-teal);
+    transition:.2s transform,.2s background;
+  }
+  .drawer .menu a::before{content:'✦'; opacity:.9}
+  .drawer .menu a:hover{ background:rgba(0,90,99,.10); transform:translateX(4px) }
+
+  /* Centered inverted CTA in drawer */
+  .drawer-cta-wrap{display:flex;justify-content:center;margin-top:12px}
+  .drawer-cta{
+    display:inline-block;text-align:center;
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400;padding:10px 18px;border-radius:24px;
+    background:var(--dark-teal);color:#fff;
+    transition:.2s background,.2s transform,.2s box-shadow;
+  }
+  .drawer-cta:hover{background:#000;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+
+  /* ======================= PAGE ======================= */
+  .wrap{max-width:1000px;margin:22px auto 64px;padding:0 18px}
+
+  /* Dashboard title — Rockwell, NOT bold */
+  .title{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400; font-size:64px; line-height:1; margin:14px 0 6px; color:#000;
+    text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)
+  }
+  .divider{height:0;border-top:4px dashed var(--warm-green);margin:10px 0 18px}
+  .tagline{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400; color:var(--dark-grey); font-style:italic; margin:0 0 8px
+  }
+
+  /* Badges — Rockwell (not bold), 30% bg, dashed border full color, white values */
+  .row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:10px 0 16px}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:28px;border:2px dashed;
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif; font-weight:400;
+    background:transparent;
+  }
+  .badge .label{opacity:.95}
+  .badge .value{color:#fff;font-weight:400}
+  .badge.file  { background:var(--warm-green-30); border-color:var(--warm-green); color:var(--warm-green) }
+  .badge.words { background:var(--pink-30);       border-color:var(--pink);       color:var(--pink) }
+  .badge.read  { background:var(--blue-30);       border-color:var(--blue);       color:var(--blue) }
+  .spacer{flex:1}
+
+  /* Buttons (not bold) */
+  .btn{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400; border-radius:26px; padding:10px 18px; cursor:pointer; border:2px solid transparent;
+    transition:.2s transform,.2s box-shadow,.2s background-color,.2s color
+  }
+  .btn.export{background:var(--dark-teal);color:#fff}
+  .btn.export:hover{background:#000;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.22)}
+  .btn.delete{background:var(--danger-15);color:var(--danger);border-color:var(--danger)}
+  .btn.delete:hover{background:var(--danger);color:#fff;transform:translateY(-2px);box-shadow:0 6px 14px rgba(224,49,49,.3)}
+
+  /* Panels & headings */
+  .panel{background:#fff;border-radius:14px;border:3px solid var(--dark-teal);border-top-color:var(--teal);border-left-color:var(--teal);padding:14px 14px 10px;margin:14px 0 20px;box-shadow:0 10px 24px rgba(0,0,0,.06)}
+  .panel.green{border-color:var(--warm-green)}
+  .panel.pink{border-color:var(--pink)}
+  .panel.teal{border-color:var(--blue)} /* Summary blue border */
+
+  /* Section headings — Agency + underline */
+  .panel h2{
+    font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
+    font-weight:700; text-align:center; color:var(--dark-teal); font-size:26px; margin:0 0 8px;
+    letter-spacing:.5px; text-decoration:underline; text-underline-offset:4px;
+  }
+
+  /* Inner chart boxes with diagonal pattern */
+  .chartbox{
+    --stripe: rgba(0,0,0,.06);
+    border-radius:18px; margin:10px 12px 6px; min-height:190px;
+    display:flex; align-items:center; justify-content:center; padding:14px; position:relative; overflow:hidden;
+    border:3px dashed var(--dark-teal);
+  }
+  .chartbox.pink{ background:rgba(255,32,146,.18); border-color:var(--pink);  --stripe: rgba(255,32,146,.10) }
+  .chartbox.sage{ background:rgba(81,122,6,.18);  border-color:var(--warm-green); --stripe: rgba(81,122,6,.10) }
+  .chartbox::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(45deg, var(--stripe) 0 12px, transparent 12px 24px);
+    pointer-events:none;
+  }
+
+  .empty-note{color:var(--dark-grey);font-style:italic;text-align:center;margin:6px 0 2px}
+
+  /* New hover style (no shine): gentle tilt + border glow) */
+  .feature{display:block;transition:transform .2s ease, box-shadow .2s ease}
+  .feature:hover{transform:translateY(-3px) rotate(-.4deg);box-shadow:0 18px 30px rgba(0,0,0,.12)}
+  .feature:hover .panel{box-shadow:0 0 0 3px rgba(0,166,255,.18), 0 18px 30px rgba(0,0,0,.12)}
+  .feature:focus-visible{outline:3px solid var(--blue);border-radius:16px}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<header class="navbar">
-  <div class="brand">
-    <img src="assests/Ink-logo.png" alt="Ink Insights logo" class="brand-logo" />
-    <span class="brand-text">Ink Insights</span>
-  </div>
-  <nav class="navlinks">
-    <a href="index.html#home">Home</a>
-    <a href="reports.html">Reports</a>
-    <a href="about.html">About Us</a>
-    <a href="faq.html">FAQ/Help</a>
-    <a class="nav-cta" href="Analysis.html" style="color:#005a63; font-weight:700; text-decoration:none;">START ANALYSIS</a>
-  </nav>
-</header>
-<div class="divider-thin"></div>
-
-<!-- DASHBOARD -->
-<main class="wrap">
-  <h1 class="dash-title">Dashboard</h1>
-  <div class="meta">
-    <div><span>File Name:</span> <span id="fileName">—</span></div>
-    <div><span>Word Count:</span> <span id="wordCount">—</span></div>
-  </div>
-
-  <section class="grid" aria-label="Report panels">
-    <!-- 1) Keyword & Frequencies -->
-    <article class="card">
-      <h2 class="card-header">Keyword &amp; Frequencies</h2>
-      <div class="card-body">
-        <canvas id="kwChart" aria-label="Keyword frequency chart"></canvas>
-        <div id="kwFallback" class="empty" hidden>No chart library. Top keywords will appear here.</div>
+  <!-- ======================= HEADER ======================= -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <!-- leftmost brand -->
+      <div class="brand">
+        <a href="index.html" aria-label="Go to Home">
+          <img src="ink-logo.png" alt="Ink Insights Logo" />
+          <span class="txt">
+            <span class="line1">Ink</span>
+            <span class="line2">Insights</span>
+          </span>
+        </a>
       </div>
-    </article>
 
-    <!-- 2) Themes & Clusters -->
-    <article class="card">
-      <h2 class="card-header">Themes &amp; Clusters</h2>
-      <div class="card-body">
-        <div id="clusterWrap" class="pillbox" aria-label="Theme clusters">
-          <span class="empty">Waiting for themes…</span>
+      <!-- centered menu -->
+      <nav class="navlinks" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="reports.html" aria-current="page">Dashboard</a>
+        <a href="about.html">About Us</a>
+        <a href="faq.html">FAQ/Help</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <!-- rightmost actions -->
+      <div class="actions">
+        <a id="navCta" class="nav-cta" href="upload.html">START ANALYSIS</a>
+        <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
+          <span></span><span></span><span></span>
         </div>
       </div>
-    </article>
+    </div>
+    <!-- removed the white line under the header -->
+  </header>
 
-    <!-- 3) Sentiment Overview -->
-    <article class="card">
-      <h2 class="card-header">Sentiment Overview</h2>
-      <div class="card-body">
-        <canvas id="sentChart" aria-label="Sentiment chart"></canvas>
-        <div id="sentFallback" class="empty" hidden>Positive / Neutral / Negative will show here.</div>
-      </div>
-    </article>
+  <!-- Drawer + scrim -->
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="menu-title">Menu</div>
+    <nav class="menu">
+      <a href="index.html">Home</a>
+      <a href="reports.html" aria-current="page">Dashboard</a>
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ/Help</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-    <!-- 4) Emotional Patterns -->
-    <article class="card">
-      <h2 class="card-header">Emotional Patterns</h2>
-      <div class="card-body">
-        <canvas id="emoChart" aria-label="Emotion radar chart"></canvas>
-        <div id="emoFallback" class="empty" hidden>Emotion scores will appear here.</div>
+    <!-- centered inverted CTA -->
+    <div class="drawer-cta-wrap">
+      <a class="drawer-cta" href="upload.html">START ANALYSIS</a>
+    </div>
+  </aside>
+  <div id="scrim" class="scrim" aria-hidden="true"></div>
+
+  <!-- ======================= MAIN ======================= -->
+  <main class="wrap">
+    <h1 class="title">Dashboard</h1>
+    <div class="divider"></div>
+
+    <p class="tagline">Choose a feature to see more information.</p>
+
+    <!-- Badges -->
+    <div class="row">
+      <span class="badge file"><span class="label">File Name:</span> <span class="value" id="fn">none</span></span>
+      <span class="badge words"><span class="label">Word Count:</span> <span class="value" id="wc">0000</span></span>
+      <span class="badge read"><span class="label">Read Time:</span> <span class="value" id="rt">00 min</span></span>
+      <span class="spacer"></span>
+      <button id="deleteBtn" class="btn delete" type="button">DELETE</button>
+      <button id="exportBtn" class="btn export" type="button">EXPORT</button>
+    </div>
+
+    <!-- Summary (no inner box; blue border on panel) -->
+    <section class="panel teal">
+      <h2>Summary</h2>
+      <div id="summaryBox">
+        <div id="summaryText" style="max-width:92%"></div>
       </div>
-    </article>
-  </section>
-</main>
+      <p id="summaryEmpty" class="empty-note">No summary available. Select data to get report.</p>
+    </section>
+
+    <!-- Feature grid (now routes to a single features.html with section IDs) -->
+    <section class="grid">
+      <a class="feature" href="features.html#keywords" data-section="keywords" aria-label="Open Keywords & Frequencies">
+        <div class="panel green">
+          <h2>Keywords &amp; Frequencies</h2>
+          <div class="chartbox pink"></div>
+          <p class="empty-note">No chart available. Select data to get report</p>
+        </div>
+      </a>
+
+      <a class="feature" href="features.html#themes" data-section="themes" aria-label="Open Themes & Clusters">
+        <div class="panel pink">
+          <h2>Themes &amp; Clusters</h2>
+          <div class="chartbox sage"></div>
+          <p class="empty-note">No chart available. Select data to get report</p>
+        </div>
+      </a>
+
+      <a class="feature" href="features.html#sentiment" data-section="sentiment" aria-label="Open Sentiment Overview">
+        <div class="panel pink">
+          <h2>Sentiment Overview</h2>
+          <div class="chartbox sage"></div>
+          <p class="empty-note">No chart available. Select data to get report</p>
+        </div>
+      </a>
+
+      <a class="feature" href="features.html#emotions" data-section="emotions" aria-label="Open Emotional Patterns">
+        <div class="panel green">
+          <h2>Emotional Patterns</h2>
+          <div class="chartbox pink"></div>
+          <p class="empty-note">No chart available. Select data to get report</p>
+        </div>
+      </a>
+    </section>
+
+    <p class="empty-note" style="text-align:center;margin-top:18px">
+      We automatically remove your report after you export or delete it. Keeping things private and tidy.
+    </p>
+  </main>
 
 <script>
 (function(){
-  const hasChartJS = !!window.Chart;
-
-  const els = {
-    fileName: document.getElementById('fileName'),
-    wordCount: document.getElementById('wordCount'),
-    kwCanvas: document.getElementById('kwChart'),
-    kwFallback: document.getElementById('kwFallback'),
-    sentCanvas: document.getElementById('sentChart'),
-    sentFallback: document.getElementById('sentFallback'),
-    emoCanvas: document.getElementById('emoChart'),
-    emoFallback: document.getElementById('emoFallback'),
-    clusterWrap: document.getElementById('clusterWrap')
+  const els={
+    fn:document.getElementById('fn'),
+    wc:document.getElementById('wc'),
+    rt:document.getElementById('rt'),
+    deleteBtn:document.getElementById('deleteBtn'),
+    exportBtn:document.getElementById('exportBtn'),
+    summaryText:document.getElementById('summaryText'),
+    summaryEmpty:document.getElementById('summaryEmpty'),
+    drawer:document.getElementById('drawer'),
+    hamb:document.getElementById('hamb'),
+    scrim:document.getElementById('scrim'),
+    navCta:document.getElementById('navCta')
   };
 
-  let charts = {kw:null, sent:null, emo:null};
+  /* Drawer controls (with hamburger morph and aria) */
+  function openDrawer(){
+    els.drawer.classList.add('open');
+    els.drawer.setAttribute('aria-hidden','false');
+    els.scrim.classList.add('show');
+    els.scrim.setAttribute('aria-hidden','false');
+    els.hamb.classList.add('open');
+    els.hamb.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    els.drawer.classList.remove('open');
+    els.drawer.setAttribute('aria-hidden','true');
+    els.scrim.classList.remove('show');
+    els.scrim.setAttribute('aria-hidden','true');
+    els.hamb.classList.remove('open');
+    els.hamb.setAttribute('aria-expanded','false');
+  }
+  function toggleDrawer(){ (els.drawer.classList.contains('open') ? closeDrawer : openDrawer)(); }
+  els.hamb.addEventListener('click', toggleDrawer);
+  els.hamb.addEventListener('keypress', e=>{ if(e.key==='Enter'||e.key===' ') toggleDrawer(); });
+  els.scrim.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+  document.querySelectorAll('#drawer a').forEach(a=>a.addEventListener('click', closeDrawer));
 
-  function renderKeywords(list){
-    if(!list || !list.length){ showText(els.kwFallback, "No keywords found."); return; }
-    const labels = list.map(d => d.term);
-    const data = list.map(d => d.count);
-    if(hasChartJS){
-      charts.kw && charts.kw.destroy();
-      charts.kw = new Chart(els.kwCanvas, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{label:"Frequency", data, borderWidth:1}]
-        },
-        options: {
-          responsive:true,
-          plugins:{legend:{display:false}},
-          scales:{y:{beginAtZero:true}}
-        }
-      });
-      els.kwFallback.hidden = true;
-    } else {
-      showText(els.kwFallback, labels.map((t,i)=>`${i+1}. ${t} — ${data[i]}`).join("   "));
+  /* Local data helpers */
+  function getMeta(){ try{ return JSON.parse(localStorage.getItem('ink_report_meta')||'null'); }catch{return null;} }
+  function getText(){ try{ return localStorage.getItem('ink_text') || ''; }catch{return ''; } }
+  function countWords(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).length; }
+  function readTimeMin(w){ return Math.max(1, Math.ceil(w/200)); }
+
+  function setBadges(meta,text){
+    const words = meta?.words ?? countWords(text);
+    els.fn.textContent = meta?.name || 'none';
+    els.wc.textContent = words ? words.toLocaleString() : '0000';
+    els.rt.textContent = words ? `${readTimeMin(words)} min` : '00 min';
+  }
+
+  // Quick summary
+  const STOP=new Set(['the','a','an','and','or','but','if','then','else','for','to','of','in','on','at','by','is','are','was','were','be','been','being','am','i','you','he','she','it','we','they','me','him','her','us','them','my','your','his','her','its','our','their','this','that','these','those','as','with','from','about','into','over','after','before','so','than','too','very','not','no','yes','do','does','did','doing','done','there','here','out','up','down','off','again','once','just','only','also','can','could','should','would','will','shall','may','might','must']);
+  function tokens(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).map(w=>w.toLowerCase()).map(x=>x.replace(/^[’'-]+|[’'-]+$/g,'')).filter(x=>x&&!STOP.has(x)); }
+  function topKeywords(text,n=5){ const c=new Map(); for(const t of tokens(text)) c.set(t,(c.get(t)||0)+1); return [...c].sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k); }
+  function sentiment(text){ const toks=tokens(text); const POS=new Set(['good','great','love','loved','loving','happy','joy','wonderful','excellent','amazing','positive','bright','success','strong','beautiful','calm','peace','hope','brave','kind','smile','grace','gift','win','wins','winning']); const NEG=new Set(['bad','worse','worst','hate','hated','angry','anger','sad','awful','terrible','poor','negative','dark','failure','weak','ugly','fear','pain','worry','loss','lose','losing','cry','cried','tired','broken']); let pos=0,neg=0; for(const t of toks){ if(POS.has(t)) pos++; else if(NEG.has(t)) neg++; } const total=Math.max(1,pos+neg+Math.round(toks.length/60)); return {pos:Math.round((pos/total)*100),neg:Math.round((neg/total)*100)}; }
+  function quickSummary(text){ if(!text||!text.trim()) return ''; const kws=topKeywords(text,5); const s=sentiment(text); let out=''; if(kws.length) out+=`Top themes: ${kws.join(', ')}. `; out+=`Sentiment ~ ${s.pos}% positive / ${s.neg}% negative.`; return out; }
+
+  function init(){
+    const meta=getMeta(), text=getText();
+    setBadges(meta,text);
+    const qs=quickSummary(text);
+    if(qs){ els.summaryText.textContent=qs; els.summaryEmpty.hidden=true; }
+  }
+
+  // Demo actions
+  els.deleteBtn.addEventListener('click', ()=>{
+    if(confirm('Delete this report?')){
+      try{ localStorage.removeItem('ink_text'); localStorage.removeItem('ink_report_meta'); }catch{}
+      els.fn.textContent='none'; els.wc.textContent='0000'; els.rt.textContent='00 min';
+      els.summaryText.textContent=''; els.summaryEmpty.hidden=false;
     }
-  }
-
-  function renderClusters(clusters){
-    const wrap = els.clusterWrap;
-    wrap.innerHTML = '';
-    if(!clusters || !clusters.length){
-      wrap.innerHTML = '<span class="empty">No clusters.</span>';
-      return;
-    }
-    clusters.forEach(group=>{
-      const span = document.createElement('span');
-      span.className = 'pill';
-      span.textContent = group.join(' • ');
-      wrap.appendChild(span);
-    });
-  }
-
-  function renderSentiment(obj){
-    if(!obj){ showText(els.sentFallback,"No sentiment data."); return; }
-    const labels = ['Positive','Neutral','Negative'];
-    const data = [obj.positive||0, obj.neutral||0, obj.negative||0];
-    if(hasChartJS){
-      charts.sent && charts.sent.destroy();
-      charts.sent = new Chart(els.sentCanvas, {
-        type:'doughnut',
-        data:{labels, datasets:[{data}]},
-        options:{
-          responsive:true,
-          plugins:{legend:{position:'bottom'}}
-        }
-      });
-      els.sentFallback.hidden = true;
-    } else {
-      showText(els.sentFallback, `${labels[0]}: ${pct(data[0])}   ${labels[1]}: ${pct(data[1])}   ${labels[2]}: ${pct(data[2])}`);
-    }
-  }
-
-  function renderEmotions(obj){
-    if(!obj){ showText(els.emoFallback,"No emotion data."); return; }
-    const labels = Object.keys(obj);
-    const data = labels.map(k => obj[k]||0);
-    if(hasChartJS){
-      charts.emo && charts.emo.destroy();
-      charts.emo = new Chart(els.emoCanvas, {
-        type:'radar',
-        data:{labels, datasets:[{label:'Intensity', data, fill:true}]},
-        options:{
-          responsive:true,
-          plugins:{legend:{display:false}},
-          scales:{r:{beginAtZero:true, max:1}}
-        }
-      });
-      els.emoFallback.hidden = true;
-    } else {
-      showText(els.emoFallback, labels.map((k,i)=>`${k}: ${pct(data[i])}`).join('   '));
-    }
-  }
-
-  function showText(el, text){
-    el.hidden = false;
-    el.textContent = text;
-  }
-  function pct(v){ return Math.round((v||0)*100) + '%'; }
-
-  // Expose to global so your backend can call it later
-  window.loadReport = function(data){
-    try{
-      els.fileName.textContent = data.fileName || '—';
-      els.wordCount.textContent = formatInt(data.wordCount);
-      renderKeywords((data.keywords || []).slice(0, 12));
-      renderClusters(data.clusters || []);
-      renderSentiment(data.sentiment || null);
-      renderEmotions(data.emotions || null);
-    }catch(e){
-      console.error('loadReport error:', e);
-    }
-  };
-
-  function formatInt(v){
-    return (typeof v === 'number' && Number.isFinite(v)) ? v.toLocaleString() : '—';
-  }
-
-  // Use saved meta (from Analysis) for file name/word count; keep demo for charts until backend is wired
-  function getSavedMeta(){
-    try { return JSON.parse(localStorage.getItem('ink_report_meta') || 'null'); }
-    catch { return null; }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const demo = {
-      fileName: "sample.txt",
-      wordCount: 1520,
-      keywords: [
-        {term:"river",count:22},{term:"night",count:18},{term:"home",count:15},
-        {term:"north",count:12},{term:"wind",count:11},{term:"road",count:9},
-        {term:"family",count:8},{term:"water",count:8},{term:"time",count:7}
-      ],
-      clusters: [
-        ["family","home","belonging"],
-        ["journey","river","north"],
-        ["memory","time","change"]
-      ],
-      sentiment: {positive:0.48, neutral:0.37, negative:0.15},
-      emotions: {joy:0.62, sadness:0.22, anger:0.06, fear:0.11, surprise:0.18, disgust:0.03}
-    };
-
-    const meta = getSavedMeta();
-    if(meta){
-      if (meta.fileName) demo.fileName = meta.fileName;
-      if (typeof meta.wordCount === 'number') demo.wordCount = meta.wordCount;
-      // optional: clear after use
-      // localStorage.removeItem('ink_report_meta');
-    }
-
-    loadReport(demo);
   });
+  els.exportBtn.addEventListener('click', ()=>{ alert('Export is disabled in demo mode. Connect jsPDF or your backend to enable.'); });
+  els.navCta.addEventListener('click', (e)=>{ e.preventDefault(); alert('Start Analysis opens the upload/analysis screen in the full app. (Demo popup)'); });
+
+  // Persist selected feature so features.html can auto-open the right section
+  document.querySelectorAll('.feature').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      const section = link.getAttribute('data-section');
+      try{ localStorage.setItem('ink_target_section', section); }catch{}
+    });
+  });
+
+  init();
 })();
 </script>
 </body>

@@ -1,31 +1,56 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ink Insights</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Ink Insights — Home</title>
+  <link rel="icon" href="assests/Ink-logo.png" type="image/png" />
+  <link rel="stylesheet" href="style-home.css" />
 </head>
 <body>
 
-  <!-- ================== NAVBAR ================== -->
+  <!-- ======================= HEADER (site-wide) ======================= -->
   <header class="navbar">
-    <div class="brand">
-      <!-- update with your local logo file -->
-      <img src="assests/Ink-logo.png" alt="Ink Insights logo" class="brand-logo" />
-      <span class="brand-text">Ink Insights</span>
+    <div class="nav-inner">
+      <div class="brand">
+        <a href="index.html" aria-label="Go to Home">
+          <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
+          <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
+        </a>
+      </div>
+
+      <nav class="navlinks" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="about.html">About Us</a>
+        <a href="faq.html">FAQ/Help</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <a class="nav-cta" href="upload.html">START ANALYSIS</a>
+        <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
     </div>
-    <nav class="navlinks">
-      <a href="#home">Home</a>
+  </header>
+
+  <!-- Drawer + scrim -->
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="menu-title">Menu</div>
+    <nav class="menu">
+      <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
       <a href="about.html">About Us</a>
       <a href="faq.html">FAQ/Help</a>
-      <a class="nav-cta" href="upload.html" style="color:#005a63; font-weight:700; text-decoration:none;">START ANALYSIS</a>
+      <a href="contact.html">Contact</a>
     </nav>
-  </header>
+    <div class="drawer-cta-wrap"><a class="drawer-cta" href="upload.html">START ANALYSIS</a></div>
+  </aside>
+  <div id="scrim" class="scrim" aria-hidden="true"></div>
 
-  <div class="top-divider"></div>
-
-  <!-- ================== HERO ================== -->
+  <!-- ======================= HERO (unchanged) ======================= -->
   <section id="home" class="hero">
     <div class="hero-inner">
       <div class="hero-copy">
@@ -37,55 +62,42 @@
           Generating self-insights for creative writers, students, and anyone who loves writing.
         </p>
         <div class="hero-actions">
-          <a class="btn primary" href="Upload.html">START ANALYSIS</a>
-          <!-- Learn More now scrolls to About/Ink Insights -->
+          <a class="btn primary" href="upload.html">START ANALYSIS</a>
           <a class="btn ghost" href="#about-insights">LEARN MORE</a>
         </div>
       </div>
-
       <div class="hero-art">
-        <!-- update with your local feather & ink image -->
         <img src="assests/FeatherInk.png" alt="Feather and ink bottle" />
       </div>
     </div>
 
-    <!-- stacked waves -->
-    <div class="wave-stack">
-      <svg class="wave w1" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,96L1440,48L1440,120L0,120Z"></path>
-      </svg>
-      <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,96L1440,80L1440,120L0,120Z"></path>
-      </svg>
-      <svg class="wave w3" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,96L1440,112L1440,120L0,120Z"></path>
-      </svg>
+    <!-- Stacked waves -->
+    <div class="wave-stack" aria-hidden="true">
+      <svg class="wave w1" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,96L1440,48L1440,120L0,120Z"></path></svg>
+      <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,96L1440,80L1440,120L0,120Z"></path></svg>
+      <svg class="wave w3" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,96L1440,112L1440,120L0,120Z"></path></svg>
     </div>
   </section>
 
-  <!-- ================== WRITER STRUGGLES ================== -->
+  <!-- ======================= WRITER STRUGGLES ======================= -->
   <section class="writer-struggles">
     <h2>Writer Struggles</h2>
     <div class="ws-grid">
-      <!-- update with your local image -->
       <img src="assests/PaperCrushed.jpg" alt="Crumpled paper on notebook" />
       <p>
-        Every writer faces challenges from overusing certain words without noticing, to struggling with tone, or
-        missing the hidden themes in their work. Often, the emotions you want to convey don’t quite come through on
-        the page. These struggles are part of the creative process, but they can also hold back your writing’s impact.
+        Every writer faces challenges—from overusing certain words without noticing, to struggling with tone, or
+        missing the hidden themes in their work. These struggles are part of the creative process, but they can also
+        hold back your writing’s impact.
       </p>
     </div>
   </section>
 
-
-  <!-- ================== INSIGHTS LEAD (NEW) ================== -->
+  <!-- ======================= INSIGHTS LEAD ======================= -->
   <section class="insights-lead">
-    <p>
-      That’s where insights step in, helping you analyze your text to uncover hidden messages and patterns.
-    </p>
+    <p>That’s where insights step in, helping you analyze your text to uncover hidden messages and patterns.</p>
   </section>
 
-  <!-- ================== INK INSIGHTS (ABOUT) ================== -->
+  <!-- ======================= INK INSIGHTS (ABOUT) ======================= -->
   <section id="about-insights" class="ink-insights">
     <h2 class="section-title">Ink Insights</h2>
     <div class="ii-grid">
@@ -98,49 +110,68 @@
           understand the stories you’re telling.
         </p>
       </div>
-      <!-- update with your local image -->
       <img src="assests/TruthTypewriter.jpg" alt="Typewriter printing TRUTH" />
     </div>
-    <!-- teal band echo like the screenshot -->
-    <div class="band band-bottom"></div>
+    <div class="band band-bottom" aria-hidden="true"></div>
   </section>
 
-  <!-- ================== WHAT CAN YOUR WRITING REVEAL ================== -->
+  <!-- ======================= WHAT CAN YOUR WRITING REVEAL ======================= -->
   <section id="reveal" class="reveal reveal--v2">
     <div class="reveal-wrap">
       <h2>What can your writing reveal?</h2>
 
-      <p class="reveal-line">
-        Uncover the most repeated words in your text.<br>
-        Spot overused terms and discover the vocabulary that shapes your writing.
-      </p>
+      <p class="reveal-line">Uncover the most repeated words in your text.<br>Spot overused terms and discover the vocabulary that shapes your writing.</p>
+      <p class="reveal-line">See whether your tone leans positive, negative, or neutral.<br>A quick glance at the emotional direction of your work.</p>
+      <p class="reveal-line">Identify recurring ideas and group them into themes.<br>Visualize how your words connect to form larger story patterns.</p>
+      <p class="reveal-line">Explore emotional tones and sensory cues.<br>Understand the feelings your writing evokes through data-driven insights.</p>
 
-      <p class="reveal-line">
-        See whether your tone leans positive, negative, or neutral.<br>
-        A quick glance at the emotional direction of your work.
-      </p>
-
-      <p class="reveal-line">
-        Identify recurring ideas and group them into themes.<br>
-        Visualize how your words connect to form larger story patterns.
-      </p>
-
-      <p class="reveal-line">
-        Explore emotional tones and sensory cues.<br>
-        Understand the feelings your writing evokes through data-driven insights.
-      </p>
-
-      <!-- decorative images (update paths to your local files) -->
-      <img class="deco icon-loupe"  src="assests/KeywordIcon.png"      alt="" />
-      <img class="deco icon-masks"  src="assests/SentimentIcon.png"        alt="" />
-      <img class="deco icon-stars"  src="assests/ClusterIcon.png"        alt="" />
-      <img class="deco icon-hearts" src="assests/EmotionalIcon.png"    alt="" />
-
+      <img class="assests/deco icon-loupe"  src="KeywordIcon.png"   alt="" />
+      <img class="assests/deco icon-masks"  src="SentimentIcon.png" alt="" />
+      <img class="assests/deco icon-stars"  src="ClusterIcon.png"   alt="" />
+      <img class="assests/deco icon-hearts" src="EmotionalIcon.png" alt="" />
       <div class="reveal-divider" aria-hidden="true"></div>
     </div>
   </section>
 
-  <!-- ================== QUOTE ================== -->
+  <!-- ======================= HOW IT WORKS (vertical steps + animation) ======================= -->
+  <section class="how-vertical">
+    <div class="how-wrap">
+      <!-- Left: vertical steps -->
+      <ol class="v-steps">
+        <li class="v-step">
+          <div class="bubble">1</div>
+          <div class="copy">
+            <h3>Upload</h3>
+            <p>Upload your file — we accept <strong>.txt</strong> format.</p>
+          </div>
+        </li>
+        <li class="v-step">
+          <div class="bubble">2</div>
+          <div class="copy">
+            <h3>Analysis</h3>
+            <p>Our engine scans your writing to uncover keywords, themes, sentiments, and emotional tones.</p>
+          </div>
+        </li>
+        <li class="v-step">
+          <div class="bubble">3</div>
+          <div class="copy">
+            <h3>Dashboard</h3>
+            <p>View interactive charts and clear insights in an easy dashboard.</p>
+          </div>
+        </li>
+      </ol>
+
+      <!-- Right: animated process -->
+      <div class="process-card">
+        <div class="process-frame">
+          <img src="assests/WebAppProcess.gif" alt="Ink Insights process animation" />
+        </div>
+        <div class="process-shadow" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= QUOTE ======================= -->
   <section class="quote">
     <blockquote>
       “Your writing voice is the deepest expression of who you are.”
@@ -148,48 +179,53 @@
     </blockquote>
   </section>
 
-  <!-- ================== HOW IT WORKS ================== -->
-  <section class="how">
-    <h2>How it works?</h2>
-    <div class="steps">
-      <div class="step">
-        <img src="assests/UploadIcon.png" alt="Upload window" />
-        <h3>1. Upload</h3>
-        <p>Upload your file, we accept .txt format.</p>
-      </div>
-      <div class="step">
-        <img src="assests/LoadingIcon.png" alt="Analyzing window" />
-        <h3>2. Analysis</h3>
-        <p>Our NLP engine scans your writing to uncover keywords, themes, sentiments, and emotional tones.</p>
-      </div>
-      <div class="step">
-        <img src="assests/DashboardIcon.png" alt="Dashboard window" />
-        <h3>3. Dashboard</h3>
-        <p>View interactive charts and clear insights. Explore your writing’s hidden layers in a friendly dashboard.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================== PRIVACY ================== -->
+  <!-- ======================= PRIVACY ======================= -->
   <section class="privacy">
-    <h2>Privacy Guranteed</h2>
+    <h2>Privacy Guaranteed</h2>
     <p>
-      Your words are yours alone. We process your text securely on our local server, and once your analysis is complete,
-      the data is deleted automatically. Nothing is stored, nothing is shared, your privacy is always protected.
+      Your words are yours alone. We process your text securely, and once your analysis is complete,
+      the data is deleted automatically. Nothing is stored and nothing is shared.
     </p>
   </section>
 
-  <!-- ================== START YOUR ANALYSIS TODAY ================== -->
+  <!-- ======================= START CTA ======================= -->
   <section class="start-cta">
     <h2>Start your analysis today!</h2>
-    <a href="Analysis.html" class="btn primary big">START ANALYSIS</a>
+    <a href="upload.html" class="btn primary big">START ANALYSIS</a>
   </section>
 
-  <!-- ================== FOOTER ================== -->
+  <!-- ======================= FOOTER ======================= -->
   <footer class="footer">
     <h3>Enjoy Writing</h3>
-    <p>© 2025 by Insight Inciters.</p>
+    <p>© 2025 Ink Insights — Privacy-first, data deleted after analysis.</p>
   </footer>
 
+  <!-- ======================= INTERACTIONS ======================= -->
+  <script>
+  (function(){
+    const els={
+      drawer:document.getElementById('drawer'),
+      scrim:document.getElementById('scrim'),
+      hamb:document.getElementById('hamb')
+    };
+
+    function openDrawer(){ els.drawer.classList.add('open'); els.drawer.setAttribute('aria-hidden','false'); els.scrim.classList.add('show'); els.scrim.setAttribute('aria-hidden','false'); els.hamb.classList.add('open'); els.hamb.setAttribute('aria-expanded','true'); }
+    function closeDrawer(){ els.drawer.classList.remove('open'); els.drawer.setAttribute('aria-hidden','true'); els.scrim.classList.remove('show'); els.scrim.setAttribute('aria-hidden','true'); els.hamb.classList.remove('open'); els.hamb.setAttribute('aria-expanded','false'); }
+    function toggleDrawer(){ (els.drawer.classList.contains('open')?closeDrawer:openDrawer)(); }
+    els.hamb.addEventListener('click', toggleDrawer);
+    els.hamb.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleDrawer(); } });
+    els.scrim.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+    // Subtle reveal on scroll for “How it works”
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(el=>{
+        if(el.isIntersecting){ el.target.classList.add('in'); observer.unobserve(el.target); }
+      });
+    }, { threshold:.15 });
+
+    document.querySelectorAll('.v-step, .process-card').forEach(n=>observer.observe(n));
+  })();
+  </script>
 </body>
 </html>

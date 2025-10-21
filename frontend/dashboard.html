@@ -237,7 +237,7 @@
       <!-- centered menu -->
       <nav class="navlinks" aria-label="Main">
         <a href="index.html">Home</a>
-        <a href="reports.html" aria-current="page">Dashboard</a>
+        <a href="dashboard.html" aria-current="page">Dashboard</a>
         <a href="about.html">About Us</a>
         <a href="faq.html">FAQ/Help</a>
         <a href="contact.html">Contact</a>
@@ -259,7 +259,7 @@
     <div class="menu-title">Menu</div>
     <nav class="menu">
       <a href="index.html">Home</a>
-      <a href="reports.html" aria-current="page">Dashboard</a>
+      <a href="dashboard.html" aria-current="page">Dashboard</a>
       <a href="about.html">About Us</a>
       <a href="faq.html">FAQ/Help</a>
       <a href="contact.html">Contact</a>
@@ -405,7 +405,7 @@
     if(qs){ els.summaryText.textContent=qs; els.summaryEmpty.hidden=true; }
   }
 
-  // Demo actions
+  // Actions
   els.deleteBtn.addEventListener('click', ()=>{
     if(confirm('Delete this report?')){
       try{ localStorage.removeItem('ink_text'); localStorage.removeItem('ink_report_meta'); }catch{}
@@ -414,7 +414,6 @@
     }
   });
   els.exportBtn.addEventListener('click', ()=>{ alert('Export is disabled in demo mode. Connect jsPDF or your backend to enable.'); });
-  els.navCta.addEventListener('click', (e)=>{ e.preventDefault(); alert('Start Analysis opens the upload/analysis screen in the full app. (Demo popup)'); });
 
   // Persist selected feature so features.html can auto-open the right section
   document.querySelectorAll('.feature').forEach(link=>{

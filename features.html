@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ink Insights — Features</title>
+<link rel="icon" href="Ink-logo.png" type="image/png" />
+
+<style>
+  /* ====== Fonts & Theme (same as dashboard) ====== */
+  @font-face{font-family:'AmericanTypewriter';src:url('AmericanTypewriterStd-Light.ttf') format('truetype');font-weight:400;font-display:swap}
+  @font-face{font-family:'AmericanTypewriter';src:url('AmericanTypewriterStd-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+  :root{
+    --dark-teal:#005A63; --teal:#257881;
+    --warm-green:#517A06; --warm-green-10:rgba(81,122,6,.10); --warm-green-30:rgba(81,122,6,.30);
+    --pink:#FF2092; --pink-10:rgba(255,32,146,.10); --pink-30:rgba(255,32,146,.30);
+    --blue:#00A6FF; --blue-10:rgba(0,166,255,.10); --blue-30:rgba(0,166,255,.30);
+    --light-grey:#DBDBDB; --dark-grey:#737373; --white:#FFFFFF;
+    --danger:#E03131; --danger-15:rgba(224,49,49,.15);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:"Droid Serif", Georgia, serif; color:#122022; background:#fff}
+  a{color:inherit;text-decoration:none}
+
+  /* ====== Header (copied from dashboard) ====== */
+  .navbar{background:var(--dark-teal);color:#fff;position:sticky;top:0;z-index:40}
+  .nav-inner{width:100%;padding:12px 24px 8px;display:flex;align-items:center;gap:24px;justify-content:space-between}
+  .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
+  .brand a:hover{transform:translateY(-1px) scale(1.02)}
+  .brand img{width:54px;height:auto}
+  .brand .txt{display:flex;flex-direction:column;line-height:1}
+  .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
+  .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif}
+  .navlinks{flex:1;display:flex;justify-content:center;gap:34px}
+  .navlinks a{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;
+    transition:color .2s ease, text-shadow .2s ease;
+  }
+  .navlinks a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+  .navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
+  .navlinks a:hover::after{transform:scaleX(1)}
+  .actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .nav-cta{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;font-weight:400;background:#fff;color:var(--dark-teal);
+    padding:10px 18px;border-radius:28px;transition:.2s background,.2s color,.2s transform,.2s box-shadow;
+  }
+  .nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+  .hamb{width:30px;height:22px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s ease}
+  .hamb:hover{transform:scale(1.06)}
+  .hamb span{height:3px;background:#fff;border-radius:2px;display:block;transition:transform .25s ease, opacity .25s ease}
+  .hamb.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+  .hamb.open span:nth-child(2){opacity:0}
+  .hamb.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+  @media(max-width:900px){.navlinks{display:none}}
+  .drawer{position:fixed;top:0;right:-300px;width:280px;height:100dvh;background:#fff;color:var(--dark-teal);
+    box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .25s ease;padding:18px;z-index:50;border-left:4px solid rgba(0,0,0,.06)}
+  .drawer.open{right:0}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:45}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .drawer .menu-title{ text-align:left;font:400 22px/1.2 "Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;margin:6px 0 12px}
+  .drawer .menu{display:flex;flex-direction:column;gap:10px}
+  .drawer .menu a{
+    font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;
+    border:2px dashed rgba(0,90,99,.25);background:rgba(0,90,99,.06);color:var(--dark-teal);transition:.2s transform,.2s background;
+  }
+  .drawer .menu a::before{content:'✦';opacity:.9}
+  .drawer .menu a:hover{background:rgba(0,90,99,.10);transform:translateX(4px)}
+  .drawer-cta-wrap{display:flex;justify-content:center;margin-top:12px}
+  .drawer-cta{display:inline-block;text-align:center;font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400;padding:10px 18px;border-radius:24px;background:var(--dark-teal);color:#fff;transition:.2s background,.2s transform,.2s box-shadow}
+  .drawer-cta:hover{background:#000;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+
+  /* ====== Page shell ====== */
+  .wrap{max-width:1000px;margin:22px auto 80px;padding:0 18px}
+  .title{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;font-weight:400;font-size:48px;line-height:1;margin:18px 0 6px;color:#000;
+    text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)
+  }
+  .subtitle{color:var(--dark-grey);font-style:italic;margin:0 0 12px}
+  .divider{height:0;border-top:4px dashed var(--warm-green);margin:10px 0 18px}
+  .row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:10px 0 12px}
+  .spacer{flex:1}
+  .btn{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;font-weight:400;border-radius:26px;padding:10px 18px;cursor:pointer;border:2px solid transparent;
+    transition:.2s transform,.2s box-shadow,.2s background-color,.2s color
+  }
+  .btn.export{background:var(--dark-teal);color:#fff}
+  .btn.export:hover{background:#000;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.22)}
+  .btn.back{background:#fff;color:var(--dark-teal);border-color:var(--dark-teal)}
+  .btn.back:hover{background:var(--dark-teal);color:#fff;transform:translateY(-2px)}
+
+  /* ====== Feature pills — CENTERED ====== */
+  .feature-tabs{
+    display:flex;gap:16px;flex-wrap:wrap;margin:12px auto 18px;
+    justify-content:center;          /* <— centered */
+    align-items:center;
+    max-width:800px;
+  }
+  .feature-tab{
+    display:inline-block;padding:10px 18px;border-radius:999px;border:3px dashed var(--warm-green);
+    background:var(--warm-green-10);font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;font-weight:700;letter-spacing:.5px;
+    transition:.2s transform,.2s box-shadow,.2s background,.2s color,.2s border-color; outline:0;
+  }
+  .feature-tab:hover{transform:translateY(-2px)}
+  .feature-tab.active{background:var(--warm-green);color:#fff}
+  /* ARIA states */
+  .feature-tab[aria-selected="true"]{background:var(--warm-green);color:#fff}
+
+  /* ====== Panels ====== */
+  .panel{background:#fff;border-radius:14px;border:3px solid var(--dark-teal);border-top-color:var(--teal);border-left-color:var(--teal);
+    padding:16px 14px 14px;margin:14px 0 24px;box-shadow:0 10px 24px rgba(0,0,0,.06)}
+  .panel.green{border-color:var(--warm-green)}
+  .panel.pink{border-color:var(--pink)}
+  .panel.blue{border-color:var(--blue)}
+  .panel h2{
+    font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;font-weight:700;text-align:center;color:var(--dark-teal);
+    font-size:28px;margin:0 0 10px;letter-spacing:.5px;text-decoration:underline;text-underline-offset:4px;
+  }
+
+  /* Chart placeholders */
+  .chartbox{
+    --stripe: rgba(0,0,0,.06);
+    border-radius:18px;margin:10px 12px 10px;min-height:220px;display:flex;align-items:center;justify-content:center;padding:14px;position:relative;overflow:hidden;border:3px dashed var(--dark-teal);
+    background:repeating-linear-gradient(45deg, var(--stripe) 0 12px, transparent 12px 24px);
+  }
+  .chartbox.pink{ border-color:var(--pink); background:repeating-linear-gradient(45deg, var(--pink-10) 0 12px, transparent 12px 24px)}
+  .chartbox.sage{ border-color:var(--warm-green); background:repeating-linear-gradient(45deg, var(--warm-green-10) 0 12px, transparent 12px 24px)}
+  .chartbox.blue{ border-color:var(--blue); background:repeating-linear-gradient(45deg, var(--blue-10) 0 12px, transparent 12px 24px)}
+
+  /* Two-column grid for graphs */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  /* Keywords preview layout */
+  .kw-highlight{display:grid;grid-template-columns:280px 1fr;gap:18px;margin-top:12px}
+  @media(max-width:860px){.kw-highlight{grid-template-columns:1fr}}
+  .kw-list,.kw-doc{border-radius:18px;border:3px dashed;min-height:260px;padding:12px 14px;background:#fff}
+  .kw-list{border-color:var(--blue)}
+  .kw-doc{border-color:var(--pink)}
+  .kw-list h3,.kw-doc h3{margin:0 0 8px;font-weight:700;font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;color:#122022}
+  .kw-scroll{max-height:220px; overflow:auto; padding-right:8px}
+  .kw-scroll::-webkit-scrollbar{width:10px}
+  .kw-scroll::-webkit-scrollbar-thumb{background:var(--light-grey);border-radius:10px}
+  .kw-scroll::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:10px}
+  mark{background:#F7FBA1;padding:0 .2em;border-radius:3px}
+
+  /* Mini badges */
+  .m-badges{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 4px}
+  .m-badge{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:28px;border:2px dashed var(--warm-green);background:var(--warm-green-30);
+    color:var(--warm-green);font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;font-weight:400
+  }
+  .m-badge .value{color:#fff}
+
+  /* ====== Single-page switching ====== */
+  .feature-section{display:none}          /* hidden by default */
+  .feature-section.active{display:block}  /* only active section shows */
+</style>
+</head>
+<body>
+  <!-- ====== HEADER ====== -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <a href="index.html" aria-label="Go to Home">
+          <img src="Ink-logo.png" alt="Ink Insights Logo" />
+          <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
+        </a>
+      </div>
+      <nav class="navlinks" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="about.html">About Us</a>
+        <a href="faq.html">FAQ/Help</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="actions">
+        <a class="nav-cta" href="upload.html">START ANALYSIS</a>
+        <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="menu-title">Menu</div>
+    <nav class="menu">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ/Help</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="drawer-cta-wrap"><a class="drawer-cta" href="upload.html">START ANALYSIS</a></div>
+  </aside>
+  <div id="scrim" class="scrim" aria-hidden="true"></div>
+
+  <!-- ====== CONTENT ====== -->
+  <main class="wrap">
+
+    <!-- CENTERED feature options (tabs) -->
+    <div class="feature-tabs" role="tablist" aria-label="Features">
+      <button class="feature-tab" role="tab" data-target="keywords" aria-controls="keywords" aria-selected="false" tabindex="-1">KEYWORDS</button>
+      <button class="feature-tab" role="tab" data-target="themes" aria-controls="themes" aria-selected="false" tabindex="-1">THEMES</button>
+      <button class="feature-tab" role="tab" data-target="sentiment" aria-controls="sentiment" aria-selected="false" tabindex="-1">SENTIMENTS</button>
+      <button class="feature-tab" role="tab" data-target="emotions" aria-controls="emotions" aria-selected="false" tabindex="-1">EMOTIONAL</button>
+    </div>
+
+    <!-- ====== KEYWORDS ====== -->
+    <section id="keywords" class="feature-section" aria-labelledby="kw-title" role="tabpanel" tabindex="0">
+      <div class="row">
+        <button class="btn back" id="backKw" type="button">GO BACK</button>
+        <span class="spacer"></span>
+        <button class="btn export" id="exportKw" type="button">EXPORT</button>
+      </div>
+
+      <h1 class="title" id="kw-title">Keyword &amp; Frequencies</h1>
+      <div class="divider"></div>
+      <p class="subtitle">See the words that define your writing. Get a quick overview of the most used or distinctive words, recurring patterns, or overused terms.</p>
+
+      <div class="panel green">
+        <h2>Overview</h2>
+        <div class="m-badges">
+          <span class="m-badge">Unique Words: <span class="value" id="kw-unique">00</span></span>
+          <span class="m-badge">Top Keyword: <span class="value" id="kw-top">—</span></span>
+        </div>
+        <div class="grid">
+          <div class="chartbox pink" id="kw-frequency">Keyword Frequency Graph</div>
+          <div class="chartbox blue" id="kw-ngram">N-gram Graph</div>
+        </div>
+      </div>
+
+      <div class="panel green">
+        <h2>Highlighted Word</h2>
+        <div class="kw-highlight">
+          <div class="kw-list">
+            <h3>Keywords</h3>
+            <div class="kw-scroll" id="kw-list"></div>
+          </div>
+          <div class="kw-doc">
+            <h3>Your Document</h3>
+            <div class="kw-scroll" id="kw-doc">Select a keyword to preview text with <mark>highlights</mark>. This area scrolls; content does not expand the box.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel green">
+        <h2>Suggestions</h2>
+        <div class="chartbox sage" id="kw-suggestions">Suggestions here.</div>
+      </div>
+    </section>
+
+    <!-- ====== THEMES ====== -->
+    <section id="themes" class="feature-section" aria-labelledby="th-title" role="tabpanel" tabindex="0">
+      <div class="row">
+        <button class="btn back" id="backTh" type="button">GO BACK</button>
+        <span class="spacer"></span>
+        <button class="btn export" id="exportTh" type="button">EXPORT</button>
+      </div>
+
+      <h1 class="title" id="th-title">Themes &amp; Clusters</h1>
+      <div class="divider"></div>
+      <p class="subtitle">Uncover deeper themes within your text. Visualize how ideas group and connect.</p>
+
+      <div class="panel pink">
+        <h2>Overview</h2>
+        <div class="m-badges">
+          <span class="m-badge">Clusters: <span class="value" id="th-count">00</span></span>
+          <span class="m-badge">Top Theme: <span class="value" id="th-top">—</span></span>
+        </div>
+        <div class="chartbox pink" id="th-graph">Graph</div>
+        <div class="chartbox blue" id="th-desc">Graph</div>
+      </div>
+
+      <div class="panel pink">
+        <h2>Suggestions</h2>
+        <div class="chartbox sage" id="th-suggestions">Suggestions here.</div>
+      </div>
+    </section>
+
+    <!-- ====== SENTIMENT ====== -->
+    <section id="sentiment" class="feature-section" aria-labelledby="se-title" role="tabpanel" tabindex="0">
+      <div class="row">
+        <button class="btn back" id="backSe" type="button">GO BACK</button>
+        <span class="spacer"></span>
+        <button class="btn export" id="exportSe" type="button">EXPORT</button>
+      </div>
+
+      <h1 class="title" id="se-title">Sentiments</h1>
+      <div class="divider"></div>
+      <p class="subtitle">Understand the emotional balance of your writing across positive, neutral, and negative tones.</p>
+
+      <div class="panel blue">
+        <h2>Overview</h2>
+        <div class="m-badges">
+          <span class="m-badge">Positive: <span class="value" id="se-pos">00%</span></span>
+          <span class="m-badge">Neutral: <span class="value" id="se-neu">00%</span></span>
+          <span class="m-badge">Negative: <span class="value" id="se-neg">00%</span></span>
+        </div>
+        <div class="grid">
+          <div class="chartbox pink" id="se-donut">Donut Graph</div>
+          <div class="chartbox blue" id="se-timeline">Timeline Graph</div>
+        </div>
+      </div>
+
+      <div class="panel blue">
+        <h2>Suggestions</h2>
+        <div class="chartbox sage" id="se-suggestions">Suggestions here.</div>
+      </div>
+    </section>
+
+    <!-- ====== EMOTIONS ====== -->
+    <section id="emotions" class="feature-section" aria-labelledby="em-title" role="tabpanel" tabindex="0">
+      <div class="row">
+        <button class="btn back" id="backEm" type="button">GO BACK</button>
+        <span class="spacer"></span>
+        <button class="btn export" id="exportEm" type="button">EXPORT</button>
+      </div>
+
+      <h1 class="title" id="em-title">Emotional Patterns</h1>
+      <div class="divider"></div>
+      <p class="subtitle">Explore the emotional and sensory landscape of your story.</p>
+
+      <div class="panel green">
+        <h2>Overview</h2>
+        <div class="m-badges">
+          <span class="m-badge">Dominant Emotion: <span class="value" id="em-dominant">—</span></span>
+        </div>
+        <div class="grid">
+          <div class="chartbox pink" id="em-graph-1">Graph</div>
+          <div class="chartbox blue" id="em-graph-2">Graph</div>
+        </div>
+        <div class="chartbox sage" id="em-arc">Emotional Arc Graph</div>
+      </div>
+
+      <div class="panel green">
+        <h2>Suggestions</h2>
+        <div class="chartbox sage" id="em-suggestions">Suggestions here.</div>
+      </div>
+    </section>
+  </main>
+
+<script>
+(function(){
+  /* ===== Drawer & header behavior ===== */
+  const els = {
+    drawer:document.getElementById('drawer'),
+    hamb:document.getElementById('hamb'),
+    scrim:document.getElementById('scrim'),
+  };
+  function openDrawer(){els.drawer.classList.add('open');els.drawer.setAttribute('aria-hidden','false');els.scrim.classList.add('show');els.scrim.setAttribute('aria-hidden','false');els.hamb.classList.add('open');els.hamb.setAttribute('aria-expanded','true')}
+  function closeDrawer(){els.drawer.classList.remove('open');els.drawer.setAttribute('aria-hidden','true');els.scrim.classList.remove('show');els.scrim.setAttribute('aria-hidden','true');els.hamb.classList.remove('open');els.hamb.setAttribute('aria-expanded','false')}
+  function toggleDrawer(){(els.drawer.classList.contains('open')?closeDrawer:openDrawer)()}
+  els.hamb.addEventListener('click',toggleDrawer);
+  els.hamb.addEventListener('keypress',e=>{if(e.key==='Enter'||e.key===' ') toggleDrawer();});
+  els.scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeDrawer();});
+
+  /* ===== Tab system: single-page switcher (centered options) ===== */
+  const tabs = Array.from(document.querySelectorAll('.feature-tab'));
+  const sections = Array.from(document.querySelectorAll('.feature-section'));
+  const idToTab = Object.fromEntries(tabs.map(t=>[t.dataset.target, t]));
+
+  function activate(targetId, {focusPanel=false} = {}){
+    // toggle tab active styles + ARIA
+    tabs.forEach(t=>{
+      const on = (t.dataset.target === targetId);
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    // show only one section
+    sections.forEach(s=>{
+      s.classList.toggle('active', s.id === targetId);
+      s.hidden = (s.id !== targetId);
+    });
+    // persist selection for roundtrips
+    try{ localStorage.setItem('ink_target_section', targetId); }catch{}
+    // update URL hash without jump
+    history.replaceState(null,'',`#${targetId}`);
+    // optional focus for accessibility
+    if(focusPanel){ document.getElementById(targetId).focus({preventScroll:true}); }
+  }
+
+  // click/keyboard handlers
+  tabs.forEach((tab, idx)=>{
+    tab.addEventListener('click', ()=> activate(tab.dataset.target, {focusPanel:true}));
+    tab.addEventListener('keydown', e=>{
+      const k=e.key;
+      let nextIdx = idx;
+      if(k==='ArrowRight') nextIdx = (idx+1)%tabs.length;
+      else if(k==='ArrowLeft') nextIdx = (idx-1+tabs.length)%tabs.length;
+      else if(k==='Home') nextIdx = 0;
+      else if(k==='End') nextIdx = tabs.length-1;
+      else if(k==='Enter' || k===' ') { activate(tab.dataset.target, {focusPanel:true}); return; }
+      else return;
+      e.preventDefault();
+      tabs[nextIdx].focus();
+      activate(tabs[nextIdx].dataset.target);
+    });
+  });
+
+  // init: prefer hash, then localStorage, else keywords
+  const initial = (location.hash||'').replace('#','') || (localStorage.getItem('ink_target_section')||'keywords');
+  // make sure only one visible at start
+  sections.forEach(s=>{ s.hidden = true; s.classList.remove('active'); });
+  activate(initial);
+
+  // Back buttons
+  document.querySelectorAll('.btn.back').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if (history.length > 1) history.back(); else window.location.href='dashboard.html';
+    });
+  });
+
+  // ===== API render stubs (same as before) =====
+  window.renderKeywords = function(data){
+    document.getElementById('kw-unique').textContent = (data.unique ?? 0).toLocaleString();
+    document.getElementById('kw-top').textContent = data.top ?? '—';
+    const list = document.getElementById('kw-list');
+    list.innerHTML = '';
+    (data.list||[]).forEach(item=>{
+      const a = document.createElement('a');
+      a.href="#";
+      a.textContent = `${item.token} — ${item.count}`;
+      a.style.display='block'; a.style.padding='6px 2px';
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const doc = data.previewHtml?.[item.token] || (data.previewText || '').replace(new RegExp(`\\b(${item.token})\\b`,'gi'),'<mark>$1</mark>');
+        document.getElementById('kw-doc').innerHTML = doc || '<em>No preview available.</em>';
+      });
+      list.appendChild(a);
+    });
+  };
+
+  window.renderThemes = function(data){
+    document.getElementById('th-count').textContent = data.clusters ?? 0;
+    document.getElementById('th-top').textContent = Array.isArray(data.top_theme)? data.top_theme.join('/') : (data.top_theme||'—');
+  };
+
+  window.renderSentiment = function(data){
+    document.getElementById('se-pos').textContent = (data.pos??0) + '%';
+    document.getElementById('se-neu').textContent = (data.neu??0) + '%';
+    document.getElementById('se-neg').textContent = (data.neg??0) + '%';
+  };
+
+  window.renderEmotions = function(data){
+    document.getElementById('em-dominant').textContent = data.dominant || '—';
+  };
+
+  // Demo exports (disable in prod)
+  document.querySelectorAll('.btn.export').forEach(b=>b.addEventListener('click',()=>alert('Export is disabled in demo mode. Connect jsPDF or your backend to enable.')));
+})();
+</script>
+</body>
+</html>

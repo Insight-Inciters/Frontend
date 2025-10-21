@@ -3,3 +3,8 @@ uvicorn[standard]
 scikit-learn
 textblob
 numpy
+python-multipart
+pydantic
+spacy
+nltk
+textblob

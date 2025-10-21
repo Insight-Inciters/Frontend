@@ -336,133 +336,151 @@
   </main>
 
 <script>
+<script>
 (function(){
-  const els={
-    fn:document.getElementById('fn'),
-    wc:document.getElementById('wc'),
-    rt:document.getElementById('rt'),
-    deleteBtn:document.getElementById('deleteBtn'),
-    exportBtn:document.getElementById('exportBtn'),
-    summaryText:document.getElementById('summaryText'),
-    summaryEmpty:document.getElementById('summaryEmpty'),
-    drawer:document.getElementById('drawer'),
-    hamb:document.getElementById('hamb'),
-    scrim:document.getElementById('scrim'),
-    navCta:document.getElementById('navCta')
+  const hasChartJS = !!window.Chart;
+
+  const els = {
+    fileName: document.getElementById('fileName'),
+    wordCount: document.getElementById('wordCount'),
+    kwCanvas: document.getElementById('kwChart'),
+    kwFallback: document.getElementById('kwFallback'),
+    sentCanvas: document.getElementById('sentChart'),
+    sentFallback: document.getElementById('sentFallback'),
+    emoCanvas: document.getElementById('emoChart'),
+    emoFallback: document.getElementById('emoFallback'),
+    clusterWrap: document.getElementById('clusterWrap')
   };
 
-  /* Drawer controls (with hamburger morph and aria) */
-  function openDrawer(){
-    els.drawer.classList.add('open');
-    els.drawer.setAttribute('aria-hidden','false');
-    els.scrim.classList.add('show');
-    els.scrim.setAttribute('aria-hidden','false');
-    els.hamb.classList.add('open');
-    els.hamb.setAttribute('aria-expanded','true');
-  }
-  function closeDrawer(){
-    els.drawer.classList.remove('open');
-    els.drawer.setAttribute('aria-hidden','true');
-    els.scrim.classList.remove('show');
-    els.scrim.setAttribute('aria-hidden','true');
-    els.hamb.classList.remove('open');
-    els.hamb.setAttribute('aria-expanded','false');
-  }
-  function toggleDrawer(){ (els.drawer.classList.contains('open') ? closeDrawer : openDrawer)(); }
-  els.hamb.addEventListener('click', toggleDrawer);
-  els.hamb.addEventListener('keypress', e=>{ if(e.key==='Enter'||e.key===' ') toggleDrawer(); });
-  els.scrim.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
-  document.querySelectorAll('#drawer a').forEach(a=>a.addEventListener('click', closeDrawer));
+  let charts = {kw:null, sent:null, emo:null};
 
-  /* Local data helpers */
-  function getMeta(){ try{ return JSON.parse(localStorage.getItem('ink_report_meta')||'null'); }catch{return null;} }
-  function getText(){ try{ return localStorage.getItem('ink_text') || ''; }catch{return ''; } }
-  function countWords(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).length; }
-  function readTimeMin(w){ return Math.max(1, Math.ceil(w/200)); }
-
-  function setBadges(meta,text){
-    const words = meta?.words ?? countWords(text);
-    els.fn.textContent = meta?.name || 'none';
-    els.wc.textContent = words ? words.toLocaleString() : '0000';
-    els.rt.textContent = words ? `${readTimeMin(words)} min` : '00 min';
-  }
-
-  // Quick summary
-  const STOP=new Set(['the','a','an','and','or','but','if','then','else','for','to','of','in','on','at','by','is','are','was','were','be','been','being','am','i','you','he','she','it','we','they','me','him','her','us','them','my','your','his','her','its','our','their','this','that','these','those','as','with','from','about','into','over','after','before','so','than','too','very','not','no','yes','do','does','did','doing','done','there','here','out','up','down','off','again','once','just','only','also','can','could','should','would','will','shall','may','might','must']);
-  function tokens(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).map(w=>w.toLowerCase()).map(x=>x.replace(/^[’'-]+|[’'-]+$/g,'')).filter(x=>x&&!STOP.has(x)); }
-  function topKeywords(text,n=5){ const c=new Map(); for(const t of tokens(text)) c.set(t,(c.get(t)||0)+1); return [...c].sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k); }
-  function sentiment(text){ const toks=tokens(text); const POS=new Set(['good','great','love','loved','loving','happy','joy','wonderful','excellent','amazing','positive','bright','success','strong','beautiful','calm','peace','hope','brave','kind','smile','grace','gift','win','wins','winning']); const NEG=new Set(['bad','worse','worst','hate','hated','angry','anger','sad','awful','terrible','poor','negative','dark','failure','weak','ugly','fear','pain','worry','loss','lose','losing','cry','cried','tired','broken']); let pos=0,neg=0; for(const t of toks){ if(POS.has(t)) pos++; else if(NEG.has(t)) neg++; } const total=Math.max(1,pos+neg+Math.round(toks.length/60)); return {pos:Math.round((pos/total)*100),neg:Math.round((neg/total)*100)}; }
-  function loadBackendResults() {
-  try {
-    const results = JSON.parse(localStorage.getItem('ink_results') || '{}');
-    if (!results || Object.keys(results).length === 0) return null;
-
-    // Show summary text
-    const summaryText =
-      results.summary ||
-      results.analysis ||
-      results.overview ||
-      `Sentiment: ${results.sentiment || '—'}.`;
-
-    els.summaryText.textContent = summaryText;
-    els.summaryEmpty.hidden = true;
-
-    // If you want to show sentiment as badges:
-    if (results.sentiment) {
-      const s = results.sentiment.toString();
-      els.summaryText.textContent += ` Sentiment: ${s}`;
+  function renderKeywords(list){
+    if(!list || !list.length){ showText(els.kwFallback, "No keywords found."); return; }
+    const labels = list.map(d => d.term);
+    const data = list.map(d => d.count);
+    if(hasChartJS){
+      charts.kw && charts.kw.destroy();
+      charts.kw = new Chart(els.kwCanvas, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{label:"Frequency", data, borderWidth:1}]
+        },
+        options: {
+          responsive:true,
+          plugins:{legend:{display:false}},
+          scales:{y:{beginAtZero:true}}
+        }
+      });
+      els.kwFallback.hidden = true;
+    } else {
+      showText(els.kwFallback, labels.map((t,i)=>`${i+1}. ${t} — ${data[i]}`).join("   "));
     }
-
-    // If backend includes themes/keywords, store them for features.html
-    localStorage.setItem('ink_features', JSON.stringify({
-      themes: results.themes || results.clusters || [],
-      emotions: results.emotional_patterns || results.emotions || [],
-      keywords: results.keywords || results.top_keywords || [],
-      sentiment: results.sentiment || ''
-    }));
-  } catch (err) {
-    console.warn('No backend results found:', err);
-  }
-}
-  function init(){
-    const meta=getMeta(), text=getText();
-setBadges(meta,text);
-
-// Try backend results first
-const backend = loadBackendResults();
-if (!backend) {
-  const qs = quickSummary(text);
-  if (qs) {
-    els.summaryText.textContent = qs;
-    els.summaryEmpty.hidden = true;
-  }
-}
-
   }
 
-  // Actions
-  els.deleteBtn.addEventListener('click', ()=>{
-    if(confirm('Delete this report?')){
-      try{ localStorage.removeItem('ink_text'); localStorage.removeItem('ink_report_meta'); }catch{}
-      els.fn.textContent='none'; els.wc.textContent='0000'; els.rt.textContent='00 min';
-      els.summaryText.textContent=''; els.summaryEmpty.hidden=false;
+  function renderClusters(clusters){
+    const wrap = els.clusterWrap;
+    wrap.innerHTML = '';
+    if(!clusters || !clusters.length){
+      wrap.innerHTML = '<span class="empty">No clusters.</span>';
+      return;
     }
-  });
-  els.exportBtn.addEventListener('click', ()=>{ alert('Export is disabled in demo mode. Connect jsPDF or your backend to enable.'); });
-
-  // NOTE: Removed the demo popup for Start Analysis; the anchor now navigates via href to upload.html
-
-  // Persist selected feature so features.html can auto-open the right section
-  document.querySelectorAll('.feature').forEach(link=>{
-    link.addEventListener('click', ()=>{
-      const section = link.getAttribute('data-section');
-      try{ localStorage.setItem('ink_target_section', section); }catch{}
+    clusters.forEach(group=>{
+      const span = document.createElement('span');
+      span.className = 'pill';
+      span.textContent = group.join(' • ');
+      wrap.appendChild(span);
     });
-  });
+  }
 
-  init();
+  function renderSentiment(obj){
+    if(!obj){ showText(els.sentFallback,"No sentiment data."); return; }
+    const labels = ['Positive','Neutral','Negative'];
+    const data = [obj.positive||0, obj.neutral||0, obj.negative||0];
+    if(hasChartJS){
+      charts.sent && charts.sent.destroy();
+      charts.sent = new Chart(els.sentCanvas, {
+        type:'doughnut',
+        data:{labels, datasets:[{data}]},
+        options:{
+          responsive:true,
+          plugins:{legend:{position:'bottom'}}
+        }
+      });
+      els.sentFallback.hidden = true;
+    } else {
+      showText(els.sentFallback, `${labels[0]}: ${pct(data[0])}   ${labels[1]}: ${pct(data[1])}   ${labels[2]}: ${pct(data[2])}`);
+    }
+  }
+
+  function renderEmotions(obj){
+    if(!obj){ showText(els.emoFallback,"No emotion data."); return; }
+    const labels = Object.keys(obj);
+    const data = labels.map(k => obj[k]||0);
+    if(hasChartJS){
+      charts.emo && charts.emo.destroy();
+      charts.emo = new Chart(els.emoCanvas, {
+        type:'radar',
+        data:{labels, datasets:[{label:'Intensity', data, fill:true}]},
+        options:{
+          responsive:true,
+          plugins:{legend:{display:false}},
+          scales:{r:{beginAtZero:true, max:1}}
+        }
+      });
+      els.emoFallback.hidden = true;
+    } else {
+      showText(els.emoFallback, labels.map((k,i)=>`${k}: ${pct(data[i])}`).join('   '));
+    }
+  }
+
+  function showText(el, text){
+    el.hidden = false;
+    el.textContent = text;
+  }
+  function pct(v){ return Math.round((v||0)*100) + '%'; }
+
+  // -------------- TEMP DEMO DATA --------------
+  window.addEventListener('DOMContentLoaded', () => {
+    const demo = {
+      fileName: "Demo Story.txt",
+      wordCount: 1360,
+      keywords: [
+        {term:"journey",count:19},
+        {term:"forest",count:15},
+        {term:"light",count:13},
+        {term:"voice",count:11},
+        {term:"time",count:9},
+        {term:"memory",count:7}
+      ],
+      clusters: [
+        ["journey","path","return"],
+        ["forest","trees","light"],
+        ["voice","time","memory"]
+      ],
+      sentiment: {positive:0.55, neutral:0.33, negative:0.12},
+      emotions: {joy:0.66, sadness:0.18, anger:0.05, fear:0.07, surprise:0.15}
+    };
+
+    // Load from localStorage if backend result exists
+    try {
+      const stored = JSON.parse(localStorage.getItem('ink_results') || 'null');
+      if (stored) Object.assign(demo, stored);
+    } catch(e){ console.warn('No stored results:', e); }
+
+    renderKeywords(demo.keywords);
+    renderClusters(demo.clusters);
+    renderSentiment(demo.sentiment);
+    renderEmotions(demo.emotions);
+
+    // Meta display
+    const meta = JSON.parse(localStorage.getItem('ink_report_meta') || 'null');
+    els.fileName.textContent = meta?.name || demo.fileName;
+    els.wordCount.textContent = (meta?.words || demo.wordCount).toLocaleString();
+  });
 })();
+</script>
+
 </script>
 </body>
 </html>

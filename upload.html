@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ink Insights — Analysis</title>
+
+<style>
+  /* ================= TOKENS / BASE ================= */
+  :root{
+    --teal:#0b6b6f;            /* brand navbar teal */
+    --ink:#0b2f33;
+    --paper:#ffffff;
+    --muted:#5a6d6f;
+    --lav:#9c84ff;             /* light purple edge */
+    --edge:#1f3f46;            /* dark edge for card */
+    --btn-green:#4b6f1f;
+    --btn-green-d:#3f5d19;
+    --blue-btn:#3d8bdd;
+    --feature-green:#0b5b39;   /* slide bg 1 */
+    --feature-brown:#8c3f2d;   /* slide bg 2 */
+    --feature-navy:#0e3159;    /* slide bg 3 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6}
+  html{scroll-behavior:smooth}
+
+  /* ================= NAVBAR ================= */
+  .navbar{
+    background:var(--teal);
+    color:#fff;
+    padding:16px 5vw;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand-logo{width:44px;height:auto}
+  .brand-text{font-weight:700;font-size:1.4rem;letter-spacing:.3px}
+  .navlinks{display:flex;align-items:center;gap:24px}
+  .navlinks a{color:#fff;text-decoration:none;font-weight:500}
+  .navlinks a:hover{opacity:.88}
+  .nav-cta{padding:10px 16px;border-radius:22px;background:#e6f1f2;color:var(--teal);font-weight:700}
+  .top-divider{height:6px;background:#eaf8f8}
+
+  /* ================= BUTTONS ================= */
+  .btn{display:inline-block;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:26px;transition:filter .15s ease,transform .05s ease}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--btn-green);color:#fff}
+  .btn.primary:hover{filter:brightness(.95);background:var(--btn-green-d)}
+  .file-btn{background:var(--blue-btn);color:#fff;border:none;border-radius:22px;padding:10px 18px;cursor:pointer;font-weight:700;letter-spacing:.3px}
+  .file-btn span{font-weight:900;margin-left:6px}
+
+  /* ================= ANALYSIS TOP ================= */
+  main.analysis{padding:36px 6vw 40px}
+  .analysis-title{font-style:italic;color:#2a6b6f;font-weight:600;font-size:1.9rem;margin:8px 0 18px}
+  .analysis-grid{display:grid;grid-template-columns:minmax(280px,1.2fr) minmax(260px,.9fr);gap:36px;align-items:start}
+
+  .dropzone{
+    background:#fbfbff;
+    border-top:3px solid var(--lav);
+    border-left:3px solid var(--lav);
+    border-right:6px solid var(--edge);
+    border-bottom:6px solid var(--edge);
+    border-radius:10px;
+    min-height:380px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 0 rgba(0,0,0,.03);
+    transition:box-shadow .15s ease;
+  }
+  .dropzone.dragging{box-shadow:0 0 0 4px rgba(124,76,255,.2) inset}
+  .dz-inner{text-align:center;padding:24px}
+  .dz-title{font-size:1.7rem;font-weight:800;color:#8b8f92}
+  .dz-or{color:#8b8f92;margin:8px 0}
+  .dz-info{margin-top:12px;font-size:.98rem}
+
+  .steps-panel h2{font-size:1.7rem;text-decoration:underline;text-underline-offset:6px;margin-bottom:10px}
+  .steps-list{padding-left:1.15rem}
+  .steps-list li{margin:8px 0 14px}
+  .steps-list small{color:#475c5f}
+  .results-btn{margin:12px 0 18px;border:none;cursor:pointer;letter-spacing:.6px}
+  .assured h3{font-size:1.45rem;margin:8px 0}
+  .assured p{font-size:1rem}
+
+  /* ================= FEATURE SLIDER ================= */
+  .features{padding:28px 0 0}
+  .slider{position:relative; overflow:hidden}
+  .slides{display:flex; transition:transform .6s ease}
+  .slide{
+    position:relative;
+    min-width:100%;
+    min-height:80vh;
+    padding:6vh 5vw 10vh;
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .slide h3, .slide .kicker, .slide .hint, .slide .tiny{color:#fff}
+
+  .slide--green{background:var(--feature-green)}
+  .slide--brown{background:var(--feature-brown)}
+  .slide--navy{background:var(--feature-navy)}
+
+  .slide-grid{
+    width:min(1200px,100%);
+    display:grid; grid-template-columns:1.2fr 1fr;
+    gap:32px; align-items:center; position:relative;
+  }
+  .slide-grid.alt{grid-template-columns:1fr 1fr 1fr}
+  .slide-copy{position:relative; z-index:2}
+  .slide-copy.right{text-align:right}
+  .slide-grid img{position:relative; z-index:1; display:block; width:100%; height:auto; border-radius:8px}
+  .kicker{letter-spacing:.3em;margin-bottom:20px;border-bottom:2px solid rgba(255,255,255,.7);display:inline-block;padding-bottom:6px;font-size:.9rem}
+  .slide h3{font-family:Georgia,"Times New Roman",serif;font-weight:800;line-height:1.05;font-size:clamp(2rem,4.6vw,4.2rem)}
+  .hint{font-family:Georgia,"Times New Roman",serif;font-style:italic;margin-top:26px}
+  .arrow{display:inline-block;margin-left:8px}
+  .img-top,.img-bottom,.img-left,.img-right{width:100%;height:auto;border-radius:8px}
+  .img-bottom{margin-top:22px}
+  .slide-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:44px; height:44px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.7); color:#fff; background:transparent;
+    font-size:28px; line-height:38px; text-align:center; cursor:pointer; z-index:5;
+  }
+  .slide-nav:hover{background:rgba(255,255,255,.15)}
+  .slide-nav.prev{left:18px}
+  .slide-nav.next{right:18px}
+  .dots{display:flex; gap:8px; justify-content:center; margin:14px 0 0}
+  .dot{width:8px; height:8px; border-radius:50%; background:#c7d6d6; opacity:.6; border:none}
+  .dot.active{opacity:1; background:#fff}
+
+  /* ================= LOADING OVERLAY ================= */
+  .loading{
+    position:fixed; inset:0; background:rgba(255,255,255,.98);
+    display:none; align-items:center; justify-content:center;
+    z-index:9999; text-align:center;
+  }
+  .loading.show{display:flex}
+  .loading h1{font-size:clamp(2.2rem,7vw,5rem); font-weight:800; color:#000}
+  .loading p{margin-top:28px; font-family:Georgia,"Times New Roman",serif; font-style:italic;
+             color:#0b6b6f; font-size:clamp(1rem,2.2vw,1.6rem); letter-spacing:.5px}
+
+  @media (max-width: 980px){
+    .analysis-grid{grid-template-columns:1fr}
+    .slide-grid{grid-template-columns:1fr}
+    .slide-copy.right{text-align:left}
+  }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="brand">
+    <img src="Ink Logo.png" alt="Ink Insights logo" class="brand-logo" />
+    <span class="brand-text">Ink Insights</span>
+  </div>
+  <nav class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="reports.html">Reports</a>
+    <a href="#">About Us</a>
+    <a href="#">FAQ/Help</a>
+    <a class="nav-cta" href="Analysis.html" style="color:#005a63; font-weight:700; text-decoration:none;">START ANALYSIS</a>
+  </nav>
+</header>
+<div class="top-divider"></div>
+
+<main id="analysis" class="analysis">
+  <h1 class="analysis-title">Tell me something I don’t know...</h1>
+
+  <div class="analysis-grid">
+    <section class="dropzone" id="dropzone" aria-label="Upload text file">
+      <div class="dz-inner">
+        <p class="dz-title">Drag &amp; Drop Your File</p>
+        <p class="dz-or">or</p>
+        <button class="file-btn" id="selectBtn">SELECT FILE <span>+</span></button>
+        <input type="file" id="fileInput" accept=".txt" hidden />
+        <p class="dz-info" id="fileInfo"></p>
+      </div>
+    </section>
+
+    <aside class="steps-panel">
+      <h2>Steps</h2>
+      <ol class="steps-list">
+        <li>Drag &amp; Drop or select the text file you want to be analyzed.<br>
+          <small>(Note: <strong>3000</strong> is the word limit. For novels we recommend one chapter.)</small>
+        </li>
+        <li>Click on the <em>Get Results</em>.</li>
+        <p>That's it, in 2 steps you'll see your insights.</p>
+      </ol>
+      <button class="btn primary results-btn" id="getResults">GET RESULTS</button>
+
+      <div class="assured">
+        <h3>Rest Assured!</h3>
+        <p>✅ Text deleted after analysis.<br>✅ Privacy</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<section id="features" class="features" aria-label="Features carousel">
+  <div class="slider" aria-roledescription="carousel">
+    <button class="slide-nav prev" aria-label="Previous slide">‹</button>
+
+    <div class="slides" role="group">
+      <article class="slide slide--green">
+        <div class="slide-grid">
+          <div class="slide-copy">
+            <div class="kicker">FEATURES</div>
+            <h3>More About Insights,<br>Examples &amp;<br>Product Demonstration</h3>
+            <p class="hint">Click arrows for Next Slide <span class="arrow">▸</span></p>
+          </div>
+          <div class="imgs">
+            <img class="img-top" src="images/feat1-top.jpg" alt="" />
+            <img class="img-bottom" src="images/feat1-bottom.jpg" alt="" />
+          </div>
+        </div>
+      </article>
+
+      <article class="slide slide--brown">
+        <div class="slide-grid alt">
+          <img class="img-left"  src="images/feat2-left.jpg"  alt="" />
+          <div class="slide-copy right">
+            <div class="tiny"># 1</div>
+            <h3>KEYWORD<br>&amp;<br>Frequency</h3>
+          </div>
+          <img class="img-right" src="images/feat2-right.jpg" alt="" />
+        </div>
+      </article>
+
+      <article class="slide slide--navy">
+        <div class="slide-grid alt">
+          <div class="slide-copy">
+            <div class="tiny"># 2</div>
+            <h3>THEMES &amp;<br>Clusters</h3>
+          </div>
+          <img class="img-left"  src="images/feat3-left.jpg"  alt="" />
+          <img class="img-right" src="images/feat3-right.jpg" alt="" />
+        </div>
+      </article>
+    </div>
+
+    <button class="slide-nav next" aria-label="Next slide">›</button>
+  </div>
+  <div class="dots" aria-label="Slide dots"></div>
+</section>
+
+<div id="loading" class="loading" aria-hidden="true">
+  <div>
+    <h1>Loading...</h1>
+    <p>Brew some tea while we unravel your story…</p>
+  </div>
+</div>
+
+<script>
+  /* ========= Drag & Drop + word-limit validation ========= */
+  const dz = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const selectBtn = document.getElementById('selectBtn');
+  const info = document.getElementById('fileInfo');
+  const getResults = document.getElementById('getResults');
+  const loading = document.getElementById('loading');
+
+  // Track current file meta so we can pass to reports
+  const currentMeta = { fileName: '', wordCount: 0 };
+
+  function setInfo(text, ok=true){
+    info.textContent = text;
+    info.style.color = ok ? '#2e6f3e' : '#b02a37';
+  }
+  selectBtn.onclick = () => fileInput.click();
+
+  ['dragenter','dragover'].forEach(evt =>
+    dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('dragging'); })
+  );
+  ['dragleave','drop'].forEach(evt =>
+    dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('dragging'); })
+  );
+  dz.addEventListener('drop', e => {
+    const f = e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+  fileInput.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (f) handleFile(f);
+  });
+
+  function handleFile(file){
+    if(!/\.txt$/i.test(file.name)){ setInfo('Please upload a .txt file.', false); dz.dataset.ok=''; return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = reader.result || '';
+      const words = (text.trim().match(/\b[\w’'-]+\b/g) || []).length;
+      if(words > 3000){
+        setInfo(`File loaded: ${file.name} — ${words} words (exceeds 3000-word limit).`, false);
+        dz.dataset.ok = '';
+      } else {
+        setInfo(`File loaded: ${file.name} — ${words} words. Looks good!`);
+        dz.dataset.ok = '1';
+        currentMeta.fileName = file.name;
+        currentMeta.wordCount = words;
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // Save name + count, then navigate to reports.html after brief loading
+  getResults.addEventListener('click', () => {
+    if(dz.dataset.ok === '1'){
+      try { localStorage.setItem('ink_report_meta', JSON.stringify(currentMeta)); } catch(e){}
+      loading.classList.add('show');
+      setTimeout(() => {
+        window.location.href = 'reports.html';
+      }, 1200);
+    } else {
+      alert('Please load a .txt file within 3000 words first.');
+    }
+  });
+
+  /* ================= Carousel (auto + arrows + swipe) ================= */
+  (function(){
+    const track = document.querySelector('.slides');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prev = document.querySelector('.slide-nav.prev');
+    const next = document.querySelector('.slide-nav.next');
+    const dotsWrap = document.querySelector('.dots');
+    let i = 0, timer;
+
+    slides.forEach((_, idx) => {
+      const d = document.createElement('button');
+      d.className = 'dot' + (idx===0 ? ' active' : '');
+      d.setAttribute('aria-label','Go to slide ' + (idx+1));
+      d.addEventListener('click', () => go(idx, true));
+      dotsWrap.appendChild(d);
+    });
+    const dots = Array.from(document.querySelectorAll('.dot'));
+
+    function go(n, user=false){
+      i = (n + slides.length) % slides.length;
+      track.style.transform = `translateX(-${i*100}%)`;
+      dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+      if(user) restart();
+    }
+    function nextSlide(){ go(i+1); }
+    function prevSlide(){ go(i-1); }
+
+    function start(){ timer = setInterval(nextSlide, 5000); }
+    function stop(){ clearInterval(timer); }
+    function restart(){ stop(); start(); }
+
+    next.addEventListener('click', nextSlide);
+    prev.addEventListener('click', prevSlide);
+
+    const slider = document.querySelector('.slider');
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+
+    let sx = 0;
+    track.addEventListener('touchstart', e => sx = e.touches[0].clientX);
+    track.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if(Math.abs(dx) > 40) (dx < 0 ? nextSlide() : prevSlide());
+      restart();
+    });
+
+    start();
+  })();
+</script>
+</body>
+</html>

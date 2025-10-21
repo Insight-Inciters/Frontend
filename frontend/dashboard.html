@@ -393,13 +393,52 @@
   function tokens(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).map(w=>w.toLowerCase()).map(x=>x.replace(/^[’'-]+|[’'-]+$/g,'')).filter(x=>x&&!STOP.has(x)); }
   function topKeywords(text,n=5){ const c=new Map(); for(const t of tokens(text)) c.set(t,(c.get(t)||0)+1); return [...c].sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k); }
   function sentiment(text){ const toks=tokens(text); const POS=new Set(['good','great','love','loved','loving','happy','joy','wonderful','excellent','amazing','positive','bright','success','strong','beautiful','calm','peace','hope','brave','kind','smile','grace','gift','win','wins','winning']); const NEG=new Set(['bad','worse','worst','hate','hated','angry','anger','sad','awful','terrible','poor','negative','dark','failure','weak','ugly','fear','pain','worry','loss','lose','losing','cry','cried','tired','broken']); let pos=0,neg=0; for(const t of toks){ if(POS.has(t)) pos++; else if(NEG.has(t)) neg++; } const total=Math.max(1,pos+neg+Math.round(toks.length/60)); return {pos:Math.round((pos/total)*100),neg:Math.round((neg/total)*100)}; }
-  function quickSummary(text){ if(!text||!text.trim()) return ''; const kws=topKeywords(text,5); const s=sentiment(text); let out=''; if(kws.length) out+=`Top themes: ${kws.join(', ')}. `; out+=`Sentiment ~ ${s.pos}% positive / ${s.neg}% negative.`; return out; }
+  function loadBackendResults() {
+  try {
+    const results = JSON.parse(localStorage.getItem('ink_results') || '{}');
+    if (!results || Object.keys(results).length === 0) return null;
 
+    // Show summary text
+    const summaryText =
+      results.summary ||
+      results.analysis ||
+      results.overview ||
+      `Sentiment: ${results.sentiment || '—'}.`;
+
+    els.summaryText.textContent = summaryText;
+    els.summaryEmpty.hidden = true;
+
+    // If you want to show sentiment as badges:
+    if (results.sentiment) {
+      const s = results.sentiment.toString();
+      els.summaryText.textContent += ` Sentiment: ${s}`;
+    }
+
+    // If backend includes themes/keywords, store them for features.html
+    localStorage.setItem('ink_features', JSON.stringify({
+      themes: results.themes || results.clusters || [],
+      emotions: results.emotional_patterns || results.emotions || [],
+      keywords: results.keywords || results.top_keywords || [],
+      sentiment: results.sentiment || ''
+    }));
+  } catch (err) {
+    console.warn('No backend results found:', err);
+  }
+}
   function init(){
     const meta=getMeta(), text=getText();
-    setBadges(meta,text);
-    const qs=quickSummary(text);
-    if(qs){ els.summaryText.textContent=qs; els.summaryEmpty.hidden=true; }
+setBadges(meta,text);
+
+// Try backend results first
+const backend = loadBackendResults();
+if (!backend) {
+  const qs = quickSummary(text);
+  if (qs) {
+    els.summaryText.textContent = qs;
+    els.summaryEmpty.hidden = true;
+  }
+}
+
   }
 
   // Actions

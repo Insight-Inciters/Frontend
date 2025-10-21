@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ — Incite Insighters</title>
+  <meta name="description" content="Answers about storage, accuracy, exports, offline mode, accessibility, pricing, and responsible use." />
+  <link rel="stylesheet" href="style.css"><script defer src="script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="navbar" aria-label="Primary">
+    <div class="container inner">
+      <div class="brand"><span class="logo"></span><span>Incite&nbsp;Insighters</span></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a><a href="about.html">About</a><a class="current" href="faq.html">FAQ</a><a href="export.html">Export</a><a href="contact.html">Contact</a>
+      </div>
+      <button class="mobile-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a><a href="about.html">About</a><a class="current" href="faq.html">FAQ</a><a href="export.html">Export</a><a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <main id="main" class="section">
+    <div class="container">
+      <h1>Frequently Asked Questions</h1>
+
+      <div class="faq-item"><h3>Do you store my writing?</h3><p>No. Input is processed locally for the session and then deleted. You can trigger <em>Delete Now</em> any time.</p></div>
+      <div class="faq-item"><h3>Do you train on my content?</h3><p>Never. We do not use user content to train models.</p></div>
+      <div class="faq-item"><h3>Do I need an account?</h3><p>No. v1 does not require login.</p></div>
+      <div class="faq-item"><h3>Can I run this offline?</h3><p>Yes, when the backend is hosted locally.</p></div>
+      <div class="faq-item"><h3>Do you track users?</h3><p>No tracking pixels. Minimal, anonymous operational logs only when required; opt-out available.</p></div>
+
+      <h2>Using the Product</h2>
+      <div class="faq-item"><h3>What file types can I upload?</h3><p>TXT, MD, DOCX, and text-based PDFs. You can also paste text directly.</p></div>
+      <div class="faq-item"><h3>How long does analysis take?</h3><p>Usually seconds for texts under ~5,000 words on typical hardware.</p></div>
+      <div class="faq-item"><h3>What insights do I get in v1?</h3><p>Keywords & themes, a sentiment overview with a short explanation, word count, and a preview snippet.</p></div>
+      <div class="faq-item"><h3>Is there a comparison view?</h3><p>Yes. Compare two texts side-by-side and see a combined chart.</p></div>
+      <div class="faq-item"><h3>How accurate are the insights?</h3><p>They are guides, not verdicts—use them to prompt reflection.</p></div>
+      <div class="faq-item"><h3>Any size limits?</h3><p>Very large files may be truncated or rejected for stability.</p></div>
+
+      <h2>Export & Deletion</h2>
+      <div class="faq-item"><h3>What can I export?</h3><p>PDF (one-page summary) or JSON (structured data).</p></div>
+      <div class="faq-item"><h3>Can I control deletion?</h3><p>Yes—choose <em>Delete Now</em> or let auto-delete run after analysis/export.</p></div>
+      <div class="faq-item"><h3>What does the JSON include?</h3><p>File name, word count, preview HTML, keywords, sentiment, optional emotions, and a deletion timestamp.</p></div>
+
+      <h2>Accessibility & Support</h2>
+      <div class="faq-item"><h3>Is the interface accessible?</h3><p>Keyboard navigation, alt text for charts, and a high-contrast option are included.</p></div>
+      <div class="faq-item"><h3>How do I report a bug or request a feature?</h3><p>Email support with steps to reproduce and a small non-sensitive sample.</p></div>
+
+      <h2>Technical & Reliability</h2>
+      <div class="faq-item"><h3>What if I close the tab?</h3><p>A backend cleanup task purges temporary data shortly after interruption.</p></div>
+      <div class="faq-item"><h3>Cloud storage?</h3><p>Not in v1. Download exports locally.</p></div>
+      <div class="faq-item"><h3>Which models do you use?</h3><p>A controlled NLP pipeline focused on speed and privacy.</p></div>
+
+      <h2>Pricing & Terms</h2>
+      <div class="faq-item"><h3>Is it free?</h3><p>Pricing will be announced with the public release. Pilot access may be free for testers.</p></div>
+      <div class="faq-item"><h3>Terms of use?</h3><p>Use responsibly. Do not upload unlawful content or sensitive personal data.</p></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+      <div>© 2025 Incite Insighters</div>
+      <div class="right">Privacy-first: data is processed locally & deleted after analysis.</div>
+    </div>
+
+
+    
+  </footer>
+</body>
+</html>
+
+
+/* ===== Incite Insighters • Global Styles ===== */
+:root{
+  --primary:#84EBE7;       /* main brand */
+  --teal-900:#005A63;
+  --teal-700:#257881;
+  --teal-500:#48A0A9;
+  --mint:#C3FFFD;
+  --grey-500:#9DAAAA;
+  --grey-400:#BECBCB;
+  --offwhite:#F4F4F4;
+  --text:#102224;
+  --radius:16px;
+  --shadow:0 10px 24px rgba(0,0,0,.08);
+}
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--text);
+  background:#fff;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* Links */
+a{color:inherit;text-decoration:none}
+a:visited{color:inherit}
+
+/* Skip link for a11y */
+.skip-link{
+  position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;
+}
+.skip-link:focus{
+  position:static;width:auto;height:auto;padding:8px 12px;background:var(--primary);color:#003;display:inline-block;border-radius:8px;margin:8px;
+}
+
+/* ===== Navbar ===== */
+.navbar{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(90deg,var(--teal-900),var(--teal-700));
+  color:#fff;box-shadow:var(--shadow)
+}
+.navbar .inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{display:flex;gap:10px;align-items:center;font-weight:700;letter-spacing:.2px}
+.brand .logo{
+  width:28px;height:28px;border-radius:8px;background:var(--primary);
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)
+}
+.nav-links{display:flex;gap:16px;align-items:center}
+.nav-links a{color:#fff;padding:8px 12px;border-radius:10px}
+.nav-links a.current,.nav-links a:hover{background:rgba(255,255,255,.14)}
+.mobile-toggle{display:none;background:transparent;border:none;color:#fff;font-size:1.6rem}
+@media (max-width:820px){
+  .nav-links{display:none}
+  .mobile-toggle{display:block}
+  .mobile-menu{display:none;background:var(--teal-700)}
+  .mobile-menu a{display:block;padding:14px 20px;color:#fff;border-top:1px solid rgba(255,255,255,.15)}
+}
+
+/* ===== Hero / Sections ===== */
+.hero{
+  background:
+    radial-gradient(1200px 500px at 10% -10%, var(--primary) 0%, transparent 60%),
+    radial-gradient(900px 420px at 110% 0%, var(--mint) 10%, transparent 70%),
+    linear-gradient(180deg,var(--offwhite),#fff);
+  padding:90px 0 60px;border-bottom:1px solid var(--grey-400)
+}
+.hero h1{margin:0 0 10px;font-size:clamp(2rem,3vw + 1rem,3rem)}
+.hero .lead{max-width:800px}
+
+.section{padding:54px 0}
+.section.alt{
+  background:linear-gradient(180deg,#fff,var(--offwhite));
+  border-top:1px solid var(--grey-400);border-bottom:1px solid var(--grey-400)
+}
+
+/* Gradient text helper for the brand word */
+.highlight{
+  background:linear-gradient(90deg,var(--teal-900),var(--teal-500));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  display:inline;
+}
+
+/* ===== Cards / Grid ===== */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+@media (max-width:960px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--grey-400);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card h3{margin:.25rem 0 .5rem}
+
+/* Buttons */
+.btn{display:inline-block;padding:12px 18px;border-radius:12px;font-weight:600;border:2px solid transparent;cursor:pointer}
+.btn-primary{background:var(--teal-900);color:#fff}
+.btn-primary:hover{filter:brightness(1.05)}
+.btn-ghost{background:#fff;color:var(--teal-900);border-color:var(--teal-500)}
+.btn-ghost:hover{filter:brightness(1.03)}
+
+/* Forms */
+form{display:grid;gap:12px;max-width:640px}
+input,textarea{padding:12px 14px;border-radius:12px;border:1px solid var(--grey-400)}
+input:focus,textarea:focus{outline:none;border-color:var(--teal-500);box-shadow:0 0 0 3px rgba(132,235,231,.35)}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--grey-400);padding:16px 0}
+.faq-item h3{margin:0}
+
+/* Footer */
+footer{background:var(--offwhite);border-top:1px solid var(--grey-400);padding:26px 0;color:#334}
+footer .right{opacity:.85;font-size:.95rem}
+
+

@@ -4,193 +4,567 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ink Insights — Upload</title>
+
+<!-- Favicon -->
 <link rel="icon" href="assests/Ink-logo.png" type="image/png" />
 
-<!-- === STYLES === -->
 <style>
-  :root {
+  :root{
     --dark-teal:#005A63; --teal:#257881;
-    --warm-green:#517A06; --warm-green-20:rgba(81,122,6,.20);
-    --pink:#FF2092; --pink-20:rgba(255,32,146,.20);
-    --blue:#00A6FF; --blue-30:rgba(0,166,255,.30);
+    --warm-green:#517A06; --warm-green-20:rgba(81,122,6,.20); --warm-green-30:rgba(81,122,6,.30);
+    --pink:#FF2092; --pink-20:rgba(255,32,146,.20); --pink-30:rgba(255,32,146,.30);
+    --blue:#00A6FF;  --blue-20:rgba(0,166,255,.20); --blue-30:rgba(0,166,255,.30);
     --light-grey:#DBDBDB; --dark-grey:#737373; --white:#FFFFFF;
+    --ink:#000; --bg:#fff;
   }
+
   *{box-sizing:border-box}
-  body{margin:0;font-family:"Droid Serif", Georgia, serif;color:#122022;background:#fff;line-height:1.55}
-  a{text-decoration:none;color:inherit}
-  /* header */
-  .navbar{background:var(--dark-teal);color:#fff;position:sticky;top:0;z-index:40;}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 24px}
-  .brand a{display:flex;align-items:center;gap:10px}
+  html,body{margin:0;padding:0}
+  body{font-family:"Droid Serif", Georgia, serif; color:#122022; background:var(--bg); line-height:1.55}
+  a{color:inherit;text-decoration:none}
+
+  /* ======================= HEADER ======================= */
+  .navbar{background:var(--dark-teal);color:#fff;position:sticky; top:0; z-index:40;border:0; box-shadow:none}
+  .nav-inner{width:100%;padding:12px 24px 8px;display:flex; align-items:center; gap:24px;justify-content:space-between;border:0; box-shadow:none}
+  .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
+  .brand a:hover{transform:translateY(-1px) scale(1.02)}
   .brand img{width:54px;height:auto}
-  .navlinks{display:flex;gap:28px;justify-content:center;flex:1}
-  .navlinks a{color:#fff;font-family:"Rockwell","Courier New";font-weight:700;position:relative;}
-  .nav-cta{background:#fff;color:var(--dark-teal);padding:10px 18px;border-radius:28px;font-weight:500}
-  .nav-cta:hover{background:#000;color:#fff}
-  .wrap{max-width:1000px;margin:24px auto;padding:0 18px}
-  .title{font-family:"Rockwell";font-size:64px;margin:14px 0;color:#000;text-shadow:0 2px 0 #ccc}
-  .divider{border-top:4px dashed var(--warm-green);margin:10px 0 18px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .brand .txt{display:flex;flex-direction:column;line-height:1}
+  .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
+  .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif}
+  .navlinks{flex:1;display:flex;justify-content:center;gap:34px}
+  .navlinks a{font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;transition:color .2s ease, text-shadow .2s ease}
+  .navlinks a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+  .navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
+  .navlinks a:hover::after{transform:scaleX(1)}
+  .actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .nav-cta{font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:400;background:#fff;color:var(--dark-teal);padding:10px 18px;border-radius:28px;transition:.2s background,.2s color,.2s transform,.2s box-shadow}
+  .nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+  .hamb{width:30px;height:22px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s ease}
+  .hamb:hover{transform:scale(1.06)}
+  .hamb span{height:3px;background:#fff;border-radius:2px;display:block;transition:transform .25s ease, opacity .25s ease}
+  .hamb.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+  .hamb.open span:nth-child(2){opacity:0}
+  .hamb.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+  @media(max-width:900px){.navlinks{display:none}}
+
+  .drawer{position:fixed; top:0; right:-300px; width:280px; height:100dvh;background:#fff; color:var(--dark-teal);box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .25s ease; padding:18px; z-index:50;border-left:4px solid rgba(0,0,0,.06)}
+  .drawer.open{ right:0 }
+  .scrim{position:fixed; inset:0; background:rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:45}
+  .scrim.show{ opacity:1; pointer-events:auto }
+  .drawer .menu-title{text-align:left;font:400 22px/1.2 "Rockwell","Courier New",Courier,Georgia,serif;margin:6px 0 12px}
+  .drawer .menu{display:flex; flex-direction:column; gap:10px}
+  .drawer .menu a{font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;display:flex; align-items:center; gap:10px; padding:12px; border-radius:12px;border:2px dashed rgba(0,90,99,.25); background:rgba(0,90,99,.06); color:var(--dark-teal);transition:.2s transform,.2s background}
+  .drawer .menu a::before{content:'✦'; opacity:.9}
+  .drawer .menu a:hover{ background:rgba(0,90,99,.10); transform:translateX(4px) }
+  .drawer-cta-wrap{display:flex;justify-content:center;margin-top:12px}
+  .drawer-cta{display:inline-block;text-align:center;font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:400;padding:10px 18px;border-radius:24px;background:var(--dark-teal);color:#fff;transition:.2s background,.2s transform,.2s box-shadow}
+  .drawer-cta:hover{background:#000;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+
+  /* ================== PAGE ================== */
+  .wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
+
+  .title{
+  font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+  font-weight:400;
+  font-size:64px;
+  line-height:1;
+  margin:14px 0 6px;
+  color:#000;
+  text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12);}
+
+
+
+
+  .divider{
+  height:0;
+  border-top:4px dashed var(--warm-green);
+  margin:10px 0 18px;}
+
+
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;grid-auto-rows:auto}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
 
-  /* Cards */
-  .card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.06)}
-  .card.blue{border:3px dashed var(--blue)}
+  .card{background:#fff;border-radius:18px;padding:18px 18px 14px;box-shadow:0 10px 24px rgba(0,0,0,.06)}
+  .card.blue{border:3px dashed var(--blue); min-height:300px}
   .card.pink{border:3px dashed var(--pink)}
+  .card h2{font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;font-weight:700;text-align:center;font-size:28px;margin:0 0 10px;text-decoration:underline;text-underline-offset:6px}
+  .card p, .card ol, .card li{font-family:"Rockwell","Courier New",Courier,Georgia,serif}
+  .card ol{margin:0 0 12px 0; padding-left:0; list-style-position:inside}
+  .card li{margin:6px 0}
+  .muted{color:var(--dark-grey);font-style:italic}
 
-  /* Dropzone */
-  .dropzone{border:3px solid var(--warm-green);border-radius:14px;min-height:300px;display:flex;align-items:center;justify-content:center;text-align:center;transition:.2s;background:#fff}
-  .dz-stack{display:flex;flex-direction:column;align-items:center;gap:18px}
-  .dz-text{color:#d9d9d9;font-size:44px;font-family:Georgia,serif}
-  .dropzone.drag{background:var(--warm-green-20)}
-  .select-btn{background:#7aa053;color:#fff;border:2px solid #5e7f3e;border-radius:26px;padding:10px 18px;font-weight:700;cursor:pointer}
-  .select-btn:hover{background:#6a8f49}
-  input[type=file]{display:none}
+  .right{display:grid;grid-template-rows:auto auto auto;gap:18px}
 
-  .meta-list{margin-top:16px;display:flex;flex-direction:column;gap:10px}
-  .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:18px;border:2px dashed;font-family:"Rockwell"}
-  .badge.file{border-color:#517A06;color:#517A06}
-  .badge.words{border-color:#FF2092;color:#FF2092}
+  .dropzone{border:3px solid var(--warm-green);border-radius:14px;min-height:300px;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;background:#fff;transition:background .2s ease, box-shadow .2s ease}
+  .dz-stack{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+  .dz-text{color:#d9d9d9;font-size:44px;line-height:1.1;font-family:Georgia, "Droid Serif", serif}
+  .dropzone.drag{background:var(--warm-green-20);box-shadow:0 0 0 4px rgba(81,122,6,.15) inset}
 
-  .cta-row{text-align:center;margin-top:16px}
-  .get-btn{background:var(--blue-30);color:var(--blue);border:2px dashed var(--blue);padding:14px 30px;border-radius:26px;cursor:pointer;font-family:"Rockwell"}
-  .get-btn:hover{background:var(--blue);color:#fff;transform:translateY(-1px)}
-  .get-btn[disabled]{background:#ddd;color:#888;border-color:#ccc;cursor:not-allowed}
+  /* Select file button — interactive */
+  .select-wrap{display:none}
+  .select-btn{
+    background:#7aa053;color:#fff;border:2px solid #5e7f3e;border-radius:26px;
+    padding:10px 18px;
+    font-family:"Rockwell","Courier New";
+    font-weight:700;letter-spacing:.5px;cursor:pointer;box-shadow:0 3px 0 #4f6d33;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden;
+    font-size:.95rem; user-select:none;
+    transition:.18s transform ease,.18s box-shadow ease,.18s background-color ease,.18s filter ease;
+  }
+  .select-btn:hover{transform:translateY(-1px) scale(1.02);box-shadow:0 6px 14px rgba(79,109,51,.35);background:#739a4f;filter:saturate(110%)}
+  .select-btn:active{transform:translateY(1px) scale(.99);box-shadow:0 2px 0 #4f6d33 inset;background:#6a8f49}
+  .select-btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+  .shimmer::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 0%,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%,transparent 100%);transform:translateX(-100%);animation:shimmer 1.6s ease-in-out infinite}
+  .select-btn:hover.shimmer::before{animation-duration:1.1s}
+  @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .pulse::after{content:"";position:absolute;inset:-6px;border-radius:40px;border:2px solid rgba(122,160,83,.6);animation:pulse 1.6s ease-out infinite}
+  @keyframes pulse{0%{opacity:1;transform:scale(.96)}100%{opacity:0;transform:scale(1.15)}}
+
+  .meta{min-height:120px;border-radius:14px;padding:8px 6px}
+  .meta-list{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:18px;border:2px dashed;font-family:"Rockwell","Courier New";font-weight:400}
+  .badge.file{background:rgba(81,122,6,.10);border-color:#517A06;color:#517A06}
+  .badge.words{background:rgba(255,32,146,.12);border-color:#FF2092;color:#FF2092}
+  .badge .value{color:#000}
+
+  /* Get Results — NEW ripple + glow, hover = blue bg & white text */
+  .cta-row{display:flex;justify-content:center}
+  .get-btn{
+    --x:50%; --y:50%;
+    position:relative; overflow:hidden;
+    background:var(--blue-30); color:var(--blue);
+    border:2px dashed var(--blue);
+    padding:14px 30px; border-radius:26px;
+    font-family:"Rockwell"; font-weight:400; font-size:1.05rem; letter-spacing:.5px;
+    cursor:pointer; display:inline-flex; align-items:center; gap:10px;
+    filter:saturate(105%);
+    transition:
+      transform .18s ease,
+      box-shadow .22s ease,
+      background-color .22s ease,
+      color .22s ease,
+      border-color .22s ease;
+    user-select:none;
+  }
+  /* Ripple circle */
+  .get-btn::after{
+    content:"";
+    position:absolute; left:var(--x); top:var(--y);
+    width:0; height:0; transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,.25) 35%, rgba(255,255,255,0) 70%);
+    border-radius:50%;
+    pointer-events:none; opacity:0;
+  }
+  .get-btn.rippling::after{
+    animation:ripple .6s ease-out forwards;
+  }
+  @keyframes ripple{
+    0%{width:0;height:0;opacity:.55}
+    70%{width:420px;height:420px;opacity:.25}
+    100%{width:560px;height:560px;opacity:0}
+  }
+  /* Hover: blue bg, white text, subtle glow pulse */
+  .get-btn:hover{
+    background:var(--blue);
+    color:#fff;
+    border-color:var(--blue);
+    transform:translateY(-1px) scale(1.02);
+    box-shadow:0 8px 18px rgba(0,166,255,.25), 0 0 0 0 rgba(0,166,255,.35);
+    animation:glow 1.8s ease-in-out infinite;
+  }
+  @keyframes glow{
+    0%,100%{box-shadow:0 8px 18px rgba(0,166,255,.25), 0 0 0 0 rgba(0,166,255,.35)}
+    50%{box-shadow:0 10px 22px rgba(0,166,255,.35), 0 0 0 8px rgba(0,166,255,.08)}
+  }
+  .get-btn:active{transform:translateY(1px) scale(.99)}
+  .get-btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:28px}
+
+  /* Disabled state */
+  .get-btn[aria-disabled="true"],
+  .get-btn[disabled]{
+    background:rgba(0,0,0,.06);
+    color:#9aa6ad;
+    border-color:#cfd7dc;
+    cursor:not-allowed;
+    box-shadow:none;
+    animation:none;
+    filter:grayscale(30%);
+  }
+  .get-btn[aria-disabled="true"] .arrow{animation:none;opacity:.4}
+
+  /* Tiny shake when clicked while disabled */
+  .get-btn.shake{animation:shake .28s ease}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-4px)}
+    50%{transform:translateX(4px)}
+    75%{transform:translateX(-2px)}
+  }
+
+  .get-btn .arrow{display:inline-block}
+  @keyframes slide {0%{transform:translateX(0)}50%{transform:translateX(6px)}100%{transform:translateX(0)}}
+  .animate-arrow .arrow{animation:slide 1.2s ease-in-out infinite}
+
+  :focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:8px}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+    .get-btn{animation:none}
+    .get-btn::after{display:none}
+    .select-btn.shimmer::before{display:none}
+    .pulse::after{display:none}
+    .animate-arrow .arrow{animation:none}
+  }
+
+  /* ======================= MOBILE OPTIMIZATION ======================= */
+@media (max-width: 900px) {
+  .nav-inner {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 16px;
+  }
+
+  .brand img {
+    width: 44px;
+  }
+
+  .nav-cta {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .dz-text {
+    font-size: 32px;
+  }
+
+  .dropzone {
+    min-height: 200px;
+    padding: 20px;
+  }
+
+  .get-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 14px 0;
+  }
+
+  .meta-list {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 52px;
+    text-align: left;
+  }
+
+  .top-dash {
+    margin: 12px auto 20px;
+    width: 80%;
+  }
+}
+
+/* ======================= MOBILE BODY LAYOUT STACK ======================= */
+@media (max-width: 900px) {
+  /* Reorder and center everything vertically */
+  .grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Stack elements in specified order */
+  #dropzone {
+    order: 1;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .meta {
+    order: 2;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .cta-row {
+    order: 3;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #inst {
+    order: 5;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  #rest {
+    order: 6;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  /* Small space before Instructions */
+  #inst {
+    margin-top: 24px;
+  }
+
+  /* Center content alignment */
+  .meta-list,
+  .dz-stack,
+  .card.blue,
+  .card.pink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Adjust button */
+  .get-btn {
+    width: 100%;
+  }
+}
+
+
 </style>
 </head>
-
 <body>
-<header class="navbar">
-  <div class="nav-inner">
-    <div class="brand">
-      <a href="index.html"><img src="assests/Ink-logo.png" alt="Ink Insights Logo" /><span>Ink Insights</span></a>
+
+  <!-- ======================= HEADER ======================= -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <a href="index.html" aria-label="Go to Home">
+          <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
+          <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
+        </a>
+      </div>
+      <nav class="navlinks" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="about.html">About Us</a>
+        <a href="faq.html">FAQ/Help</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="actions">
+        <a class="nav-cta" href="upload.html">START ANALYSIS</a>
+        <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0"><span></span><span></span><span></span></div>
+      </div>
     </div>
-    <nav class="navlinks">
+  </header>
+
+  <!-- Drawer + scrim -->
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="menu-title">Menu</div>
+    <nav class="menu">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
-      <a href="about.html">About</a>
-      <a href="faq.html">FAQ</a>
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ/Help</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="nav-cta" href="upload.html">START ANALYSIS</a>
-  </div>
-</header>
+    <div class="drawer-cta-wrap"><a class="drawer-cta" href="upload.html">START ANALYSIS</a></div>
+  </aside>
+  <div id="scrim" class="scrim" aria-hidden="true"></div>
 
-<main class="wrap">
-  <h1 class="title">Upload</h1>
-  <div class="divider"></div>
+  <!-- ================== MAIN ================== -->
+  <main class="wrap">
+    <h1 class="title">Upload</h1>
+    <div class="divider"></div>
 
-  <section class="grid">
-    <!-- Instructions -->
-    <article class="card blue">
-      <h2>Instructions</h2>
-      <ol>
-        <li>Drag &amp; drop or select the text file you want to analyze.</li>
-        <li>Click “Get Results.”</li>
-      </ol>
-      <p>The word limit is <strong>5,000</strong> words per upload.</p>
-    </article>
+    <section class="grid">
+      <article id="inst" class="card blue" aria-labelledby="inst-title" style="grid-column:1;grid-row:1">
+        <h2 id="inst-title">Instructions</h2>
+        <ol>
+          <li>Drag &amp; drop or select the text file you want to analyze.</li>
+          <li>Click "Get Results."</li>
+        </ol>
+        <p>That’s it! In just two steps, you’ll get your insights.</p>
+        <p class="muted">The word limit is <strong>5,000</strong>. For novels, we recommend analyzing one chapter at a time.</p>
+      </article>
 
-    <!-- Upload box -->
-    <div>
-      <div id="dropzone" class="dropzone">
-        <div class="dz-stack">
-          <div class="dz-text">Drag &amp; drop your<br>file here</div>
-          <label class="select-btn" for="fileInput">SELECT FILE ＋</label>
-          <input id="fileInput" type="file" accept=".txt">
+      <div class="right" style="grid-column:2;grid-row:1 / span 3">
+        <!-- Dropzone -->
+        <div id="dropzone" class="dropzone" role="region" aria-label="Drag and drop area">
+          <div class="dz-stack">
+            <div class="dz-text">Drag &amp; drop your<br/>file here</div>
+
+            <!-- SELECT FILE button -->
+            <label class="select-btn shimmer" for="fileInput" role="button" aria-controls="fileInput">
+              SELECT FILE <span aria-hidden="true">+</span>
+            </label>
+            <input id="fileInput" type="file" accept=".txt" hidden>
+          </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="meta" aria-live="polite">
+          <div class="meta-list">
+            <span class="badge file"><span>File Name:</span> <span class="value" id="fileName">—</span></span>
+            <span class="badge words"><span>Word Count:</span> <span class="value" id="wordCount">0000</span></span>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <button id="resultsBtn" class="get-btn animate-arrow shimmer" type="button" aria-disabled="true" title="Upload a .txt file to enable">
+            GET RESULTS <span class="arrow">›</span>
+          </button>
         </div>
       </div>
 
-      <div class="meta-list">
-        <span class="badge file">File Name: <span id="fileName">—</span></span>
-        <span class="badge words">Word Count: <span id="wordCount">0</span></span>
-      </div>
+      <article id="rest" class="card pink" aria-labelledby="trust-title" style="grid-column:1;grid-row:2">
+        <h2 id="trust-title">Rest Assured!</h2>
+        <p>✅ Your text is automatically deleted after analysis.<br>✅ We never store or share your content.<br>✅ Your data stays 100% private and secure.</p>
+      </article>
+    </section>
+  </main>
 
-      <div class="cta-row">
-        <button id="resultsBtn" class="get-btn" disabled>GET RESULTS ▸</button>
-      </div>
-    </div>
+  <script>
+  (function(){
+    const els={
+      drawer:document.getElementById('drawer'),
+      scrim:document.getElementById('scrim'),
+      hamb:document.getElementById('hamb'),
+      dropzone:document.getElementById('dropzone'),
+      fileInput:document.getElementById('fileInput'),
+      fileName:document.getElementById('fileName'),
+      wordCount:document.getElementById('wordCount'),
+      resultsBtn:document.getElementById('resultsBtn')
+    };
 
-    <!-- Security note -->
-    <article class="card pink">
-      <h2>Rest Assured!</h2>
-      <p>✅ Your text is automatically deleted after analysis.<br>
-      ✅ We never store or share your content.<br>
-      ✅ Your data stays private and secure.</p>
-    </article>
-  </section>
-</main>
+    /* Drawer controls */
+    function openDrawer(){ els.drawer.classList.add('open'); els.drawer.setAttribute('aria-hidden','false'); els.scrim.classList.add('show'); els.scrim.setAttribute('aria-hidden','false'); els.hamb.classList.add('open'); els.hamb.setAttribute('aria-expanded','true'); }
+    function closeDrawer(){ els.drawer.classList.remove('open'); els.drawer.setAttribute('aria-hidden','true'); els.scrim.classList.remove('show'); els.scrim.setAttribute('aria-hidden','true'); els.hamb.classList.remove('open'); els.hamb.setAttribute('aria-expanded','false'); }
+    function toggleDrawer(){ (els.drawer.classList.contains('open')?closeDrawer:openDrawer)(); }
+    els.hamb.addEventListener('click', toggleDrawer);
+    els.hamb.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleDrawer(); } });
+    els.scrim.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+    document.querySelectorAll('#drawer a').forEach(a=>a.addEventListener('click', closeDrawer));
 
-<!-- === SCRIPT === -->
-<script>
-(function(){
-  const els = {
-    drop: document.getElementById('dropzone'),
-    fileInput: document.getElementById('fileInput'),
-    fileName: document.getElementById('fileName'),
-    wordCount: document.getElementById('wordCount'),
-    resultsBtn: document.getElementById('resultsBtn')
-  };
+    /* Helpers */
+    function countWords(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).length; }
 
-  function countWords(t){ return (t.match(/\b[\p{L}\p{N}’'-]+\b/gu)||[]).length; }
+    function setBtnEnabled(enabled){
+      if(enabled){
+        els.resultsBtn.removeAttribute('aria-disabled');
+        els.resultsBtn.removeAttribute('title');
+      }else{
+        els.resultsBtn.setAttribute('aria-disabled','true');
+        els.resultsBtn.setAttribute('title','Upload a .txt file to enable');
+      }
+    }
 
-  function handleFile(file){
-    if(!/\.txt$/i.test(file.name)){ alert('Please upload only .txt files.'); return; }
-    const reader = new FileReader();
-    reader.onload = e=>{
-      const text = e.target.result || '';
+    function store(text, name){
       const words = countWords(text);
-      els.fileName.textContent = file.name;
+      try{
+        localStorage.setItem('ink_text', text);
+        localStorage.setItem('ink_report_meta', JSON.stringify({ name, words, ts: Date.now() }));
+      }catch{}
+      els.fileName.textContent = name || '—';
       els.wordCount.textContent = words.toLocaleString();
       const ok = (words && words<=5000);
-      els.resultsBtn.disabled = !ok;
-      localStorage.setItem('ink_text', text);
-      localStorage.setItem('ink_report_meta', JSON.stringify({name:file.name, words}));
-    };
-    reader.readAsText(file);
-  }
-
-  // Drag/drop
-  ['dragenter','dragover'].forEach(evt=>{
-    els.drop.addEventListener(evt, e=>{ e.preventDefault(); els.drop.classList.add('drag'); });
-  });
-  ['dragleave','drop'].forEach(evt=>{
-    els.drop.addEventListener(evt, e=>{ e.preventDefault(); els.drop.classList.remove('drag'); });
-  });
-  els.drop.addEventListener('drop', e=>{
-    const f = e.dataTransfer.files?.[0];
-    if(f) handleFile(f);
-  });
-  els.fileInput.addEventListener('change', ()=>{
-    const f = els.fileInput.files?.[0];
-    if(f) handleFile(f);
-  });
-
-  // Submit to backend
-  els.resultsBtn.addEventListener('click', async ()=>{
-    if(els.resultsBtn.disabled) return;
-    els.resultsBtn.textContent = "Analyzing...";
-    els.resultsBtn.disabled = true;
-
-    const text = localStorage.getItem('ink_text') || '';
-    try {
-      const response = await fetch('https://ink-insights-api.onrender.com/analyze', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ text })
-      });
-      if (!response.ok) throw new Error('Server error');
-      const data = await response.json();
-      localStorage.setItem('ink_results', JSON.stringify(data));
-      window.location.href = 'dashboard.html';
-    } catch (err) {
-      alert('Something went wrong while analyzing your text.');
-      console.error(err);
-      els.resultsBtn.textContent = "GET RESULTS ▸";
-      els.resultsBtn.disabled = false;
+      setBtnEnabled(ok);
     }
-  });
-})();
-</script>
+
+    /* Dropzone interactions */
+    ['dragenter','dragover'].forEach(evt=>{
+      els.dropzone.addEventListener(evt, e=>{ e.preventDefault(); e.dataTransfer.dropEffect='copy'; els.dropzone.classList.add('drag'); });
+    });
+    ['dragleave','drop'].forEach(evt=>{
+      els.dropzone.addEventListener(evt, e=>{ e.preventDefault(); els.dropzone.classList.remove('drag'); });
+    });
+    els.dropzone.addEventListener('drop', e=>{ const f=e.dataTransfer.files?.[0]; if(f) handleFile(f); });
+
+    /* File input change */
+    els.fileInput.addEventListener('change', ()=>{
+      const f=els.fileInput.files?.[0];
+      if(f) handleFile(f);
+    });
+
+    function handleFile(file){
+      if(!/\.txt$/i.test(file.name)){ alert('Please upload only .txt files.'); return; }
+      const reader=new FileReader();
+      reader.onload= e=>{
+        const text = e.target.result || '';
+        const words = countWords(text);
+        if(words>5000){ alert('The word limit is 5,000. Please upload a shorter file.'); }
+        store(text, file.name);
+      };
+      reader.readAsText(file);
+      // allow selecting the same file again
+      els.fileInput.value='';
+    }
+
+    /* GET RESULTS interactions: ripple + behavior */
+    function setRipplePosition(e){
+      const rect = els.resultsBtn.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      els.resultsBtn.style.setProperty('--x', x + 'px');
+      els.resultsBtn.style.setProperty('--y', y + 'px');
+    }
+
+    els.resultsBtn.addEventListener('mousemove', (e)=>{
+      if(els.resultsBtn.getAttribute('aria-disabled') === 'true') return;
+      setRipplePosition(e);
+    });
+
+    els.resultsBtn.addEventListener('click', (e)=>{
+      if(els.resultsBtn.getAttribute('aria-disabled') === 'true'){
+        // little shake feedback if disabled
+        els.resultsBtn.classList.remove('shake');
+        void els.resultsBtn.offsetWidth;
+        els.resultsBtn.classList.add('shake');
+        return;
+      }
+      setRipplePosition(e);
+      // trigger ripple
+      els.resultsBtn.classList.remove('rippling');
+      void els.resultsBtn.offsetWidth; // restart animation
+      els.resultsBtn.classList.add('rippling');
+
+      // validation (extra safety)
+      const meta = JSON.parse(localStorage.getItem('ink_report_meta')||'{}');
+      if(!meta.words || meta.words>5000){
+        alert('Please keep files within 5,000 words.');
+        return;
+      }
+      // small delay so ripple is visible, then go to loading
+      setTimeout(()=>{ window.location.href='loading.html'; }, 220);
+    });
+
+    /* Init from storage if returning */
+    (function init(){
+      try{
+        const meta = JSON.parse(localStorage.getItem('ink_report_meta')||'null');
+        const text = localStorage.getItem('ink_text')||'';
+        if(meta||text){
+          const words = meta?.words ?? countWords(text);
+          els.fileName.textContent = meta?.name || '—';
+          els.wordCount.textContent = (words||0).toLocaleString();
+          setBtnEnabled(!!words && words<=5000);
+        }else{
+          setBtnEnabled(false);
+        }
+      }catch{
+        setBtnEnabled(false);
+      }
+    })();
+  })();
+  </script>
 </body>
 </html>

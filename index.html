@@ -1,0 +1,423 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ink Insights</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ================== NAVBAR ================== -->
+  <header class="navbar">
+    <div class="brand">
+      <!-- update with your local logo file -->
+      <img src="Ink Logo.png" alt="Ink Insights logo" class="brand-logo" />
+      <span class="brand-text">Ink Insights</span>
+    </div>
+    <nav class="navlinks">
+      <a href="#home">Home</a>
+      <a href="reports.html">Reports</a>
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ/Help</a>
+      <a class="nav-cta" href="Analysis.html" style="color:#005a63; font-weight:700; text-decoration:none;">START ANALYSIS</a>
+    </nav>
+  </header>
+
+  <div class="top-divider"></div>
+
+  <!-- ================== HERO ================== -->
+  <section id="home" class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>
+          <span class="sublead">Tell me something...</span><br />
+          <span class="lead-strong">I don't Know.</span>
+        </h1>
+        <p class="tagline">
+          Generating self-insights for creative writers, students, and anyone who loves writing.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="Analysis.html">START ANALYSIS</a>
+          <!-- Learn More now scrolls to About/Ink Insights -->
+          <a class="btn ghost" href="#about-insights">LEARN MORE</a>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <!-- update with your local feather & ink image -->
+        <img src="FeatherInk.png" alt="Feather and ink bottle" />
+      </div>
+    </div>
+
+    <!-- stacked waves -->
+    <div class="wave-stack">
+      <svg class="wave w1" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,96L1440,48L1440,120L0,120Z"></path>
+      </svg>
+      <svg class="wave w2" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,96L1440,80L1440,120L0,120Z"></path>
+      </svg>
+      <svg class="wave w3" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,96L1440,112L1440,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================== WRITER STRUGGLES ================== -->
+  <section class="writer-struggles">
+    <h2>Writer Struggles</h2>
+    <div class="ws-grid">
+      <!-- update with your local image -->
+      <img src="PaperCrushed.jpg" alt="Crumpled paper on notebook" />
+      <p>
+        Every writer faces challenges from overusing certain words without noticing, to struggling with tone, or
+        missing the hidden themes in their work. Often, the emotions you want to convey don’t quite come through on
+        the page. These struggles are part of the creative process, but they can also hold back your writing’s impact.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================== INSIGHTS LEAD (NEW) ================== -->
+  <section class="insights-lead">
+    <p>
+      That’s where insights step in, helping you analyze your text to uncover hidden messages and patterns.
+    </p>
+  </section>
+
+  <!-- ================== INK INSIGHTS (ABOUT) ================== -->
+  <section id="about-insights" class="ink-insights">
+    <h2 class="section-title">Ink Insights</h2>
+    <div class="ii-grid">
+      <div class="ii-copy">
+        <h3>How are we helping them?</h3>
+        <p>
+          We built this tool to make the invisible visible. By analyzing your text, we highlight the words you repeat,
+          reveal the themes you return to, and map out the emotions flowing through your writing. Our dashboard turns
+          your work into simple charts and insights, helping you refine your style, balance your tone, and better
+          understand the stories you’re telling.
+        </p>
+      </div>
+      <!-- update with your local image -->
+      <img src="TruthTypewriter.jpg" alt="Typewriter printing TRUTH" />
+    </div>
+    <!-- teal band echo like the screenshot -->
+    <div class="band band-bottom"></div>
+  </section>
+
+  <!-- ================== WHAT CAN YOUR WRITING REVEAL ================== -->
+  <section id="reveal" class="reveal reveal--v2">
+    <div class="reveal-wrap">
+      <h2>What can your writing reveal?</h2>
+
+      <p class="reveal-line">
+        Uncover the most repeated words in your text.<br>
+        Spot overused terms and discover the vocabulary that shapes your writing.
+      </p>
+
+      <p class="reveal-line">
+        See whether your tone leans positive, negative, or neutral.<br>
+        A quick glance at the emotional direction of your work.
+      </p>
+
+      <p class="reveal-line">
+        Identify recurring ideas and group them into themes.<br>
+        Visualize how your words connect to form larger story patterns.
+      </p>
+
+      <p class="reveal-line">
+        Explore emotional tones and sensory cues.<br>
+        Understand the feelings your writing evokes through data-driven insights.
+      </p>
+
+      <!-- decorative images (update paths to your local files) -->
+      <img class="deco icon-loupe"  src="KeywordIcon.png"      alt="" />
+      <img class="deco icon-masks"  src="SentimentIcon.png"        alt="" />
+      <img class="deco icon-stars"  src="ClusterIcon.png"        alt="" />
+      <img class="deco icon-hearts" src="EmotionalIcon.png"    alt="" />
+
+      <div class="reveal-divider" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ================== QUOTE ================== -->
+  <section class="quote">
+    <blockquote>
+      “Your writing voice is the deepest expression of who you are.”
+      <cite>— Cheryl Strayed</cite>
+    </blockquote>
+  </section>
+
+  <!-- ================== HOW IT WORKS ================== -->
+  <section class="how">
+    <h2>How it works?</h2>
+    <div class="steps">
+      <div class="step">
+        <img src="UploadIcon.png" alt="Upload window" />
+        <h3>1. Upload</h3>
+        <p>Upload your file, we accept .txt format.</p>
+      </div>
+      <div class="step">
+        <img src="LoadingIcon.png" alt="Analyzing window" />
+        <h3>2. Analysis</h3>
+        <p>Our NLP engine scans your writing to uncover keywords, themes, sentiments, and emotional tones.</p>
+      </div>
+      <div class="step">
+        <img src="DashboardIcon.png" alt="Dashboard window" />
+        <h3>3. Dashboard</h3>
+        <p>View interactive charts and clear insights. Explore your writing’s hidden layers in a friendly dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PRIVACY ================== -->
+  <section class="privacy">
+    <h2>Privacy Guranteed</h2>
+    <p>
+      Your words are yours alone. We process your text securely on our local server, and once your analysis is complete,
+      the data is deleted automatically. Nothing is stored, nothing is shared, your privacy is always protected.
+    </p>
+  </section>
+
+  <!-- ================== START YOUR ANALYSIS TODAY ================== -->
+  <section class="start-cta">
+    <h2>Start your analysis today!</h2>
+    <a href="Analysis.html" class="btn primary big">START ANALYSIS</a>
+  </section>
+
+  <!-- ================== FOOTER ================== -->
+  <footer class="footer">
+    <h3>Enjoy Writing</h3>
+    <p>© 2025 by Insight Inciters.</p>
+  </footer>
+
+</body>
+</html>
+
+/* ========== Base / Tokens ========== */
+:root{
+  --teal:#0b6b6f;        /* main navbar / section teal */
+  --teal-dark:#084e52;
+  --teal-soft:#e6f1f2;   /* pale teal backgrounds */
+  --ink:#012b2f;
+  --off:#ffffff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink); background:#fff; line-height:1.6;
+}
+
+/* smooth anchor scrolling */
+html{scroll-behavior:smooth;}
+/* offset so headings aren't covered by nav (if you make nav sticky later) */
+section{scroll-margin-top:92px}
+
+/* ========== Navbar ========== */
+.navbar{
+  background:var(--teal);
+  color:#fff;
+  padding:16px 5vw;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{display:flex; align-items:center; gap:10px}
+.brand-logo{width:44px;height:auto}
+.brand-text{font-weight:700;font-size:1.4rem;letter-spacing:.3px}
+.navlinks{display:flex; align-items:center; gap:24px}
+.navlinks a{color:#fff; text-decoration:none; font-weight:500}
+.navlinks a:hover{opacity:.85}
+.nav-cta{
+  padding:10px 16px;
+  border-radius:22px;
+  background:#fff; color:var(--teal);
+  font-weight:700;
+}
+
+/* thin white divider like the screenshot */
+.top-divider{height:4px;background:#eaf6f6}
+
+/* ========== Buttons ========== */
+.btn{
+  display:inline-block; text-decoration:none; font-weight:700;
+  padding:12px 22px; border-radius:26px; transition:filter .2s ease;
+}
+.btn:hover{filter:brightness(.95)}
+.btn.primary{background:var(--teal); color:#fff}
+.btn.ghost{border:2px solid var(--teal); color:var(--teal); background:transparent}
+.btn.big{padding:14px 26px; font-size:1.05rem}
+
+/* ========== Hero ========== */
+.hero{position:relative; background:#fff; overflow:hidden}
+.hero-inner{
+  padding:96px 8vw 72px; /* more breathing room */
+  display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center
+}
+.sublead{font-style:italic; font-weight:500; color:#204f52; font-size:1.9rem}
+.lead-strong{font-size:3.2rem; font-weight:800; color:#0c2f33}
+.tagline{margin-top:14px; font-size:1.1rem; color:#285a5d; max-width:48ch}
+.hero-actions{margin-top:22px; display:flex; gap:14px}
+.hero-art img{width:min(440px, 90%); display:block; margin-inline:auto}
+
+/* stacked waves at bottom of hero */
+.wave-stack{position:relative; margin-top:36px; height:120px}
+.wave{position:absolute; left:0; right:0; bottom:0; width:100%; height:120px}
+.wave path{fill:#2d858a; opacity:.85}
+.w2 path{fill:#5aa6ab; opacity:.8}
+.w3 path{fill:#7ec1c6; opacity:.8}
+
+/* ========== Writer Struggles ========== */
+.writer-struggles{
+  background:var(--teal);
+  color:#fff; text-align:center;
+  padding:80px 8vw 56px;   /* roomy */
+}
+.writer-struggles h2{font-size:3rem; font-weight:800; margin-bottom:24px}
+.ws-grid{
+  display:grid; grid-template-columns: 420px 1fr; gap:28px; align-items:center;
+  justify-content:center; max-width:1050px; margin:0 auto
+}
+.writer-struggles img{width:100%; border-radius:8px}
+.writer-struggles p{font-size:1.05rem; line-height:1.75}
+.ws-sub{
+  font-family: "Courier New", ui-monospace, monospace;
+  margin-top:36px; color:#fff; font-size:1.2rem;
+}
+
+
+/* New standalone line under Writer Struggles */
+.insights-lead{
+  background:#ffffff;          /* keeps it distinct from the teal block */
+  text-align:center;
+  padding:36px 8vw 48px;       /* breathing space */
+}
+.insights-lead p{
+  font-family: "American Typewriter", "AmericanTypewriter", "Courier New", ui-monospace, monospace;
+  font-size:1.3rem;
+  line-height:1.8;
+  color:#0b6b6f;               /* theme teal */
+  max-width:900px;
+  margin:0 auto;
+}
+
+
+/* ========== Ink Insights (About) ========== */
+.ink-insights{
+  background:#fff;
+  margin-top:48px;           /* visible white gap above (between sections) */
+  padding:90px 8vw 0;        /* airy top padding */
+}
+.section-title{
+  text-align:center; font-size:3.2rem; color:var(--teal);
+  margin-bottom:40px; font-weight:800
+}
+.ii-grid{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:44px; align-items:center;
+  max-width:1100px; margin:0 auto
+}
+.ii-grid img{width:100%; border-radius:8px}
+.ii-copy h3{font-size:1.6rem; margin-bottom:12px}
+.ii-copy p{color:#3b5e60}
+
+/* teal band under this section */
+.band.band-bottom{
+  height:90px; margin-top:28px;
+  background:linear-gradient(180deg, transparent 0 35%, #0b6b6f 35% 100%)
+}
+
+/* ========== What can your writing reveal (v2) ========== */
+.reveal.reveal--v2{
+  background:var(--teal);
+  color:#fff; position:relative;
+  padding:70px 6vw 56px;
+}
+.reveal--v2 .reveal-wrap{
+  position:relative; max-width:1050px; margin:0 auto; text-align:center;
+}
+.reveal--v2 h2{
+  font-family: Georgia, "Times New Roman", serif;
+  font-size:3rem; font-weight:800; letter-spacing:.5px;
+  margin-bottom:26px; color:#ffffff;
+}
+.reveal--v2 .reveal-line{
+  font-family: Georgia, "Times New Roman", serif;
+  font-size:1.2rem; line-height:2.0; /* more open */
+  margin:30px auto; max-width:820px; color:#f7fbfb;
+}
+/* dotted divider */
+.reveal--v2 .reveal-divider{
+  width:480px; max-width:70%;
+  height:0; border-top:6px dotted #fff;
+  margin:34px auto 0;
+}
+/* decorative icons */
+.reveal--v2 .deco{position:absolute; user-select:none; pointer-events:none}
+.reveal--v2 .icon-loupe{ width:150px; left:-20px; top:80px }
+.reveal--v2 .icon-masks{ width:190px; right:-10px; top:200px }
+.reveal--v2 .icon-stars{ width:130px; left:6%; top:330px }
+.reveal--v2 .icon-hearts{ width:170px; right:6%; top:430px }
+
+/* ========== Quote ========== */
+.quote{padding:60px 8vw 40px; background:#fff; text-align:center}
+.quote blockquote{font-family:"Dancing Script", "Courier New", cursive; font-size:1.9rem; color:#0b2f33}
+.quote cite{display:block; margin-top:8px; font-style:italic; color:#2f6164}
+
+/* ========== How it works ========== */
+.how{background:#f4fbfb; padding:80px 8vw} /* roomy */
+.how h2{text-align:center; font-size:3rem; color:#175a5e}
+.steps{
+  margin-top:26px; display:grid; grid-template-columns:repeat(3, 1fr);
+  gap:26px; max-width:1100px; margin-inline:auto
+}
+.step{text-align:center; background:#fff; padding:22px; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.step img{width:180px; height:auto; margin-bottom:10px}
+.step h3{margin-bottom:6px}
+
+/* ========== Privacy ========== */
+.privacy{
+  background:var(--teal);
+  color:#fff; text-align:center; padding:80px 8vw; /* airy */
+}
+.privacy h2{font-size:3rem; margin-bottom:14px}
+.privacy p{max-width:900px; margin:0 auto; line-height:1.75}
+
+/* ========== Start your analysis today ========== */
+.start-cta{
+  background:#ffffff;
+  text-align:center;
+  padding:70px 8vw 80px;
+}
+.start-cta h2{
+  font-size:2.2rem;
+  margin-bottom:14px;
+  color:#175a5e;
+}
+
+/* ========== Footer ========== */
+.footer{background:#0a5559; color:#fff; text-align:left; padding:40px 5vw}
+.footer h3{font-size:3rem; margin-bottom:8px}
+.footer p{opacity:.95}
+.footer a{color:#fff; text-decoration:underline}
+
+/* ========== Responsive ========== */
+@media (max-width: 980px){
+  .hero-inner{grid-template-columns:1fr; text-align:center}
+  .hero-copy .tagline{margin-inline:auto}
+  .ws-grid{grid-template-columns:1fr}
+  .ii-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr; gap:18px}
+  .navlinks{gap:16px; flex-wrap:wrap; justify-content:flex-end}
+
+  .reveal--v2 h2{font-size:2.4rem}
+  .reveal--v2 .reveal-line{font-size:1.08rem; margin:20px auto}
+  .reveal--v2 .icon-loupe{width:120px; left:-10px; top:70px}
+  .reveal--v2 .icon-masks{width:150px; right:-8px; top:200px}
+  .reveal--v2 .icon-stars{width:100px; left:4%; top:315px}
+  .reveal--v2 .icon-hearts{width:140px; right:4%; top:420px}
+}
+@media (max-width: 720px){
+  /* center/shrink icons so layout never breaks on small screens */
+  .reveal--v2 .deco{position:static; display:inline-block; width:88px; margin:10px 8px}
+  .reveal--v2 .reveal-wrap{padding-top:4px}
+  .reveal--v2 .reveal-divider{width:220px}
+}

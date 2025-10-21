@@ -63,8 +63,26 @@
 
   /* ================== PAGE ================== */
   .wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
-  .title{font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:400;font-size:64px;line-height:1;color:#000;margin:6px 0 0;text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)}
-  .top-dash{border-top:6px dashed var(--warm-green);margin:10px 0 20px}
+
+  .title{
+  font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+  font-weight:400;
+  font-size:64px;
+  line-height:1;
+  margin:14px 0 6px;
+  color:#000;
+  text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12);}
+
+
+
+
+  .divider{
+  height:0;
+  border-top:4px dashed var(--warm-green);
+  margin:10px 0 18px;}
+
+
+
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;grid-auto-rows:auto}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
 
@@ -198,6 +216,129 @@
     .pulse::after{display:none}
     .animate-arrow .arrow{animation:none}
   }
+
+  /* ======================= MOBILE OPTIMIZATION ======================= */
+@media (max-width: 900px) {
+  .nav-inner {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 16px;
+  }
+
+  .brand img {
+    width: 44px;
+  }
+
+  .nav-cta {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .dz-text {
+    font-size: 32px;
+  }
+
+  .dropzone {
+    min-height: 200px;
+    padding: 20px;
+  }
+
+  .get-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 14px 0;
+  }
+
+  .meta-list {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 42px;
+    text-align: center;
+  }
+
+  .top-dash {
+    margin: 12px auto 20px;
+    width: 80%;
+  }
+}
+
+/* ======================= MOBILE BODY LAYOUT STACK ======================= */
+@media (max-width: 900px) {
+  /* Reorder and center everything vertically */
+  .grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Stack elements in specified order */
+  #dropzone {
+    order: 1;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .meta {
+    order: 2;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .cta-row {
+    order: 3;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #inst {
+    order: 5;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  #rest {
+    order: 6;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  /* Small space before Instructions */
+  #inst {
+    margin-top: 24px;
+  }
+
+  /* Center content alignment */
+  .meta-list,
+  .dz-stack,
+  .card.blue,
+  .card.pink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Adjust button */
+  .get-btn {
+    width: 100%;
+  }
+}
+
+
 </style>
 </head>
 <body>
@@ -242,7 +383,7 @@
   <!-- ================== MAIN ================== -->
   <main class="wrap">
     <h1 class="title">Upload</h1>
-    <div class="top-dash"></div>
+    <div class="divider"></div>
 
     <section class="grid">
       <article id="inst" class="card blue" aria-labelledby="inst-title" style="grid-column:1;grid-row:1">

@@ -544,7 +544,31 @@
         return;
       }
       // small delay so ripple is visible, then go to loading
-      setTimeout(()=>{ window.location.href='loading.html'; }, 220);
+// small delay so ripple is visible, then send text to backend
+setTimeout(async ()=>{
+  const text = localStorage.getItem('ink_text') || '';
+  const meta = JSON.parse(localStorage.getItem('ink_report_meta')||'{}');
+
+  try {
+    const response = await fetch('https://ink-insights-api.onrender.com/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) throw new Error('Server error');
+
+    const data = await response.json();
+    localStorage.setItem('ink_results', JSON.stringify(data));
+
+    // Redirect to dashboard or results page
+    window.location.href = 'dashboard.html';
+  } catch (err) {
+    alert('Something went wrong while analyzing your text.');
+    console.error(err);
+  }
+}, 220);
+
     });
 
     /* Init from storage if returning */

@@ -169,38 +169,13 @@
   resize();makeStars();requestAnimationFrame(draw);
 })();
 
-/* ========= PROGRESS (8s) + ROTATING MESSAGES ========= */
+/* ========= PROGRESS (≈12 s) & REDIRECT ========= */
 (function(){
   const fill=document.getElementById('fill');
   const pct=document.getElementById('pct');
   const bar=document.querySelector('.bar');
-  const meta=document.querySelector('.meta');
-
-  // remove the "Preparing your dashboard..." text
-  meta.innerHTML = `<div class="pct" id="pct">0%</div>`;
-
-  // Add message element under progress section
-  const msg=document.createElement('div');
-  msg.className='load-msg';
-  meta.after(msg);
-
-  const messages=[
-    "Analyzing your words…",
-    "Extracting tone and rhythm…",
-    "Detecting emotions…",
-    "Summarizing key insights…",
-    "Almost done weaving your dashboard…"
-  ];
-  let idx=0;
-  msg.textContent=messages[0];
-  const duration=8000; // 8 seconds total load time
+  const duration=8000; // total time (ms) → adjust between 10000–15000 for 10–15s
   const start=performance.now();
-
-  const msgTimer=setInterval(()=>{
-    idx++;
-    if(idx<messages.length) msg.textContent=messages[idx];
-  }, duration/messages.length);
-
   function easeInOutCubic(x){return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}
   function step(ts){
     const progress=Math.min((ts-start)/duration,1);
@@ -209,17 +184,11 @@
     fill.style.width=value+"%";
     pct.textContent=value+"%";
     bar.setAttribute("aria-valuenow",value);
-    if(progress<1){
-      requestAnimationFrame(step);
-    } else {
-      clearInterval(msgTimer);
-      msg.textContent="Ready!";
-      setTimeout(()=>location.href="dashboard.html",800);
-    }
+    if(progress<1){requestAnimationFrame(step);}
+    else{setTimeout(()=>location.href="dashboard.html",600);}
   }
   requestAnimationFrame(step);
 })();
-
 </script>
 </body>
 </html>

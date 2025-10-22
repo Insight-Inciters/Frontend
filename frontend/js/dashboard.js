@@ -57,14 +57,78 @@ window.addEventListener('DOMContentLoaded', () => {
     // tear down charts and show "No chart available" notes
     Charts.clearCharts();
   };
-
   if (els.deleteBtn) els.deleteBtn.addEventListener('click', handleDelete);
 
-  // ====== EXPORT (optional; if you added earlier) ======
-  if (els.exportBtn) {
-    els.exportBtn.addEventListener('click', () => {
-      alert('Connect jsPDF/html2canvas export logic here or keep the previous exportPDF() implementation.');
+  // ====== EXPORT PDF ======
+  async function exportPDF() {
+    // Ensure charts are painted
+    await new Promise(requestAnimationFrame);
+
+    const { jsPDF } = window.jspdf || {};
+    if (!window.html2canvas || !jsPDF) {
+      alert('PDF libraries not found. Make sure html2canvas and jsPDF are included before this script.');
+      return;
+    }
+
+    // Target: export the main dashboard area
+    const target = document.querySelector('main.wrap') || document.body;
+
+    // Optional: temporarily hide the “No chart available” helper lines during export
+    const notes = Array.from(target.querySelectorAll('.panel .empty-note'));
+    const prevHidden = notes.map(n => n.hidden);
+    notes.forEach(n => (n.hidden = true));
+
+    // High-res rasterization of the area
+    const canvas = await window.html2canvas(target, {
+      scale: Math.min(2, window.devicePixelRatio || 2),
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false,
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: document.documentElement.scrollHeight
     });
+
+    // Restore note visibility
+    notes.forEach((n, i) => (n.hidden = prevHidden[i]));
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+    // Page setup (A4 portrait)
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+
+    const margin = 10; // mm
+    const usableW = pageW - margin * 2;
+    const imgW = usableW;
+    const imgH = (canvas.height * imgW) / canvas.width;
+
+    // Add first page
+    let position = margin;
+    pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+
+    // Paginate if content is taller than a single page
+    let heightLeft = imgH - (pageH - margin * 2);
+    while (heightLeft > 0) {
+      pdf.addPage();
+      position = margin - (imgH - heightLeft);
+      pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+      heightLeft -= (pageH - margin * 2);
+    }
+
+    const baseName = (meta?.name ? meta.name : 'Ink-Insights-Report')
+      .toString()
+      .trim()
+      .replace(/[^\w\-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '') || 'Ink-Insights-Report';
+
+    const stamp = new Date().toISOString().slice(0,10);
+    pdf.save(`${baseName}-${stamp}.pdf`);
+  }
+
+  if (els.exportBtn) {
+    els.exportBtn.addEventListener('click', exportPDF);
   }
 
   // Persist selected feature so features.html can auto-open the right section

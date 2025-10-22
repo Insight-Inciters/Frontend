@@ -1,98 +1,58 @@
 // js/charts.js
 export const Charts = (() => {
-  // ---------- internals ----------
-  const registry = new Map(); // id -> Chart instance
+  // Keep refs to created charts so we can destroy them later
+  const _instances = {};
 
-  const ID_TO_SECTION = {
-    keywordsChart: 'keywords',
-    themesChart: 'themes',
-    sentimentChart: 'sentiment',
-    emotionsChart: 'emotions'
+  const _byId = (id) => document.getElementById(id);
+
+  const _getNoteForCanvas = (canvasEl) => {
+    if (!canvasEl) return null;
+    const panel = canvasEl.closest('.panel');
+    return panel ? panel.querySelector('.empty-note') : null;
   };
 
-  const ensureCanvas = (id) => {
-    // Try direct lookup first
-    let el = document.getElementById(id);
-    if (el) return el;
-
-    // Fallback: mount a canvas inside the correct .chartbox via data-section
-    const section = ID_TO_SECTION[id];
-    if (section) {
-      const host = document.querySelector(`[data-section="${section}"] .chartbox`);
-      if (host) {
-        el = document.createElement('canvas');
-        el.id = id;
-        // Make the host a clean, white container (no decorative bg/pattern)
-        host.style.background = '#fff';
-        host.style.borderStyle = 'solid';
-        host.style.borderColor = 'var(--dark-teal)';
-        host.style.minHeight = '280px';
-        // Hide the empty-note in this panel if present
-        const note = host.parentElement?.querySelector('.empty-note');
-        if (note) note.style.display = 'none';
-        host.appendChild(el);
-        return el;
-      }
-    }
-    return null;
+  const _hideNoteFor = (canvasEl) => {
+    const note = _getNoteForCanvas(canvasEl);
+    if (note) note.hidden = true;
   };
 
-  const prepHost = (canvas, height = 300) => {
-    const box = canvas?.parentElement;
-    if (!box) return;
-    // Ensure the chart can grow
-    if (!box.style.height) box.style.height = `${height}px`;
-    // White background for "has data" state
-    box.style.background = '#fff';
-    box.style.borderStyle = 'solid';
-    box.style.borderColor = 'var(--dark-teal)';
+  const _showNoteFor = (canvasEl) => {
+    const note = _getNoteForCanvas(canvasEl);
+    if (note) note.hidden = false;
   };
 
-  const baseOpts = {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { duration: 350 },
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: true }
-    },
-    layout: { padding: 8 }
-  };
-
-  const makeChart = (id, cfg, preferredHeight = 300) => {
-    const canvas = ensureCanvas(id);
+  const makeChart = (id, cfg) => {
+    const canvas = _byId(id);
     if (!canvas) return;
-
-    // Clean re-render
-    if (registry.has(id)) {
-      try { registry.get(id).destroy(); } catch {}
-      registry.delete(id);
+    // destroy if already exists
+    if (_instances[id]) {
+      try { _instances[id].destroy(); } catch {}
+      delete _instances[id];
     }
-
-    prepHost(canvas, preferredHeight);
     const chart = new Chart(canvas, cfg);
-    registry.set(id, chart);
+    _instances[id] = chart;
+    _hideNoteFor(canvas);
     return chart;
   };
 
-  // ---------- configs ----------
+  // ---------- Chart Config Helpers ----------
   const barCfg = (labels, values) => ({
     type: 'bar',
     data: {
       labels,
       datasets: [{
-        label: 'Frequency',
         data: values,
         backgroundColor: '#257881',
-        borderRadius: 6,
-        barThickness: 'flex'
+        borderRadius: 6
       }]
     },
     options: {
-      ...baseOpts,
+      responsive: true,
+      maintainAspectRatio: false,
       indexAxis: 'y',
+      plugins: { legend: { display: false }, tooltip: { intersect: false } },
       scales: {
-        x: { beginAtZero: true, grid: { display: false }, ticks: { precision: 0 } },
+        x: { grid: { display: false }, ticks: { precision: 0 } },
         y: { grid: { display: false } }
       }
     }
@@ -102,17 +62,19 @@ export const Charts = (() => {
     type: 'scatter',
     data: {
       datasets: [{
-        label: 'Theme clusters',
-        data: points,             // [{x, y}]
+        label: 'Clusters',
+        data: points,
         backgroundColor: '#00A6FF',
         pointRadius: 4
       }]
     },
     options: {
-      ...baseOpts,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
       scales: {
-        x: { beginAtZero: true, grid: { color: '#eee' } },
-        y: { beginAtZero: true, grid: { color: '#eee' } }
+        x: { beginAtZero: true, grid: { display: false } },
+        y: { beginAtZero: true, grid: { display: false } }
       }
     }
   });
@@ -123,16 +85,17 @@ export const Charts = (() => {
       labels,
       datasets: [{
         data: values,
-        backgroundColor: ['#517A06','#DBDBDB','#E03131']
+        backgroundColor: ['#517A06','#DBDBDB','#E03131'],
+        borderWidth: 0
       }]
     },
     options: {
-      ...baseOpts,
-      plugins: { 
-        ...baseOpts.plugins,
-        legend: { display: true, position: 'bottom' }
-      },
-      cutout: '58%'
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12 } }
+      }
     }
   });
 
@@ -141,7 +104,6 @@ export const Charts = (() => {
     data: {
       labels,
       datasets: [{
-        label: 'Emotion intensity',
         data: values,
         fill: true,
         backgroundColor: 'rgba(0,90,99,0.25)',
@@ -150,40 +112,38 @@ export const Charts = (() => {
       }]
     },
     options: {
-      ...baseOpts,
-      scales: {
-        r: {
-          beginAtZero: true,
-          suggestedMax: 1,
-          angleLines: { color: '#DBDBDB' },
-          grid: { color: '#DBDBDB' },
-          ticks: { showLabelBackdrop: false }
-        }
-      }
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { r: { beginAtZero: true, min: 0, max: 1, ticks: { display: false }, grid: { color: '#DBDBDB' } } }
     }
   });
 
-  // ---------- dashboard preset (demo data) ----------
+  // ---------- Public render helpers ----------
   const renderDashboardCharts = () => {
-    makeChart('keywordsChart', barCfg(
-      ['river','night','home','north','wind','stone','road'],
-      [22,18,15,12,11,9,7]
-    ), 320);
+    // Example/demo data; replace with your computed values if you have them in LS or fetched.
+    makeChart('keywordsChart', barCfg(['river','night','home','north','wind'], [22,18,15,12,11]));
 
-    const pts = Array.from({ length: 25 }, () => ({ x: +(Math.random()*10).toFixed(2), y: +(Math.random()*10).toFixed(2) }));
-    makeChart('themesChart', scatterCfg(pts), 320);
+    const pts = Array.from({ length: 20 }, () => ({ x: +(Math.random()*10).toFixed(2), y: +(Math.random()*10).toFixed(2) }));
+    makeChart('themesChart', scatterCfg(pts));
 
-    makeChart('sentimentChart', donutCfg(['Positive','Neutral','Negative'], [48,37,15]), 300);
+    makeChart('sentimentChart', donutCfg(['Positive','Neutral','Negative'], [48,37,15]));
 
-    makeChart('emotionsChart', radarCfg(['joy','sadness','anger','fear','surprise','disgust'], [0.62,0.22,0.06,0.11,0.18,0.03]), 340);
+    makeChart('emotionsChart', radarCfg(
+      ['joy','sadness','anger','fear','surprise','disgust'],
+      [0.62,0.22,0.06,0.11,0.18,0.03]
+    ));
   };
 
-  return {
-    makeChart,
-    barCfg,
-    scatterCfg,
-    donutCfg,
-    radarCfg,
-    renderDashboardCharts
+  const clearCharts = () => {
+    // Destroy chart instances
+    Object.keys(_instances).forEach((id) => {
+      try { _instances[id].destroy(); } catch {}
+      delete _instances[id];
+    });
+    // Show the "No chart available" for every panel that has a canvas
+    document.querySelectorAll('.chartbox canvas').forEach((c) => _showNoteFor(c));
   };
+
+  return { makeChart, barCfg, scatterCfg, donutCfg, radarCfg, renderDashboardCharts, clearCharts };
 })();

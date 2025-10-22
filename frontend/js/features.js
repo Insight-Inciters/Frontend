@@ -1,4 +1,3 @@
-// js/features.js
 import { Analysis } from './analysis.js';
 import { Charts } from './charts.js';
 

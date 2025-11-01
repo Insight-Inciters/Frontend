@@ -7,183 +7,123 @@
 <link rel="icon" href="assests/Ink-logo.png" type="image/png" />
 
 <style>
-:root{
-  --dark-teal:#005A63; --warm-green:#517A06; --blue:#00A6FF;
-  --pink:#FF2092; --white:#fff; --ink:#122022;
-}
+  :root{
+    --dark-teal:#005A63; --teal:#257881;
+    --warm-green:#517A06; --pink:#FF2092;
+    --blue:#00A6FF; --blue-10:rgba(0,166,255,.10); --blue-20:rgba(0,166,255,.20);
+    --mid:#737373; --ink:#122022; --bg:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Droid Serif",Georgia,serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  a{color:inherit;text-decoration:none}
 
-/* ========== GLOBAL RESET ========== */
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"Droid Serif",Georgia,serif;color:var(--ink);background:var(--white);line-height:1.6}
-a{text-decoration:none;color:inherit}
+  /* ================= HEADER ================= */
+  .navbar{background:var(--dark-teal);color:#fff;position:sticky;top:0;z-index:40}
+  .nav-inner{width:100%;padding:12px 24px 8px;display:flex;align-items:center;gap:24px;justify-content:space-between}
+  .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
+  .brand a:hover{transform:translateY(-1px) scale(1.02)}
+  .brand img{width:54px;height:auto;transition:transform .4s ease, filter .4s ease;}
+  .brand .txt{display:flex;flex-direction:column;line-height:1;transition:color .4s ease, filter .4s ease;}
+  .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif;}
+  .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif;}
 
-/* ===========================================================
-   HEADER SECTION (copy this part to reuse on all pages)
-=========================================================== */
-.navbar{
-  background:var(--dark-teal); color:var(--white);
-  position:sticky; top:0; z-index:40;
-  box-shadow:0 2px 8px rgba(0,0,0,.25);
-}
-.nav-inner{
-  width:100%; padding:12px 24px 10px;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:24px;
-}
+  /* ✨ Animated Color Effect for Logo + Title */
+  .brand a:hover img{
+    transform:rotate(-3deg) scale(1.06);
+    filter:drop-shadow(0 0 6px rgba(255,255,255,0.8))
+           drop-shadow(0 0 14px rgba(0,166,255,0.6));
+  }
+  .brand a:hover .line2{
+    background:linear-gradient(90deg,var(--white),var(--blue),var(--pink),var(--white));
+    background-size:300%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:shine 2.4s linear infinite;
+  }
+  @keyframes shine{
+    from{background-position:0%;}
+    to{background-position:100%;}
+  }
 
-/* BRAND */
-.brand a{display:flex;align-items:center;gap:10px;color:var(--white);transition:transform .2s ease;}
-.brand img{width:54px;height:auto;transition:transform .4s ease,filter .4s ease;}
-.brand .txt{display:flex;flex-direction:column;line-height:1;}
-.brand .line1{font:400 1.1rem/1 "Droid Serif",serif;}
-.brand .line2{font:700 1.4rem/1 "Droid Serif",serif;letter-spacing:.5px;}
+  .navlinks{flex:1;display:flex;justify-content:center;gap:34px}
+  .navlinks a{
+    font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;
+    transition:color .2s ease,text-shadow .2s ease;
+  }
+  .navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+  .navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
+  .navlinks a:hover::after{transform:scaleX(1)}
 
-/* INTERACTIVE LOGO + TITLE */
-.brand a:hover img{
-  transform:rotate(-3deg) scale(1.05);
-  filter:drop-shadow(0 0 6px rgba(255,255,255,0.8))
-         drop-shadow(0 0 14px rgba(0,166,255,0.6));
-}
-.brand a:hover .line2{
-  background:linear-gradient(90deg,var(--white),var(--blue),var(--pink),var(--white));
-  background-size:300%;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:shine 2.2s linear infinite;
-}
-@keyframes shine{from{background-position:0%}to{background-position:100%}}
+  .actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .nav-cta{font-family:"Rockwell","Courier New";background:#fff;color:var(--dark-teal);padding:10px 18px;border-radius:28px;transition:.2s}
+  .nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
 
-/* NAV LINKS */
-.navlinks{flex:1;display:flex;justify-content:center;gap:34px;}
-.navlinks a{
-  font-family:"Rockwell","Courier New",Courier,Georgia,serif;
-  font-weight:700; color:#fff; position:relative; padding:6px 2px;
-  transition:color .2s ease,text-shadow .2s ease;
-}
-.navlinks a::after{
-  content:''; position:absolute; left:0; right:0; bottom:-6px; height:2px;
-  background:#fff; transform:scaleX(0); transform-origin:left;
-  transition:transform .25s ease;
-}
-.navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35);}
-.navlinks a:hover::after{transform:scaleX(1);}
+  .drawer{position:fixed;top:0;right:-300px;width:280px;height:100dvh;background:#fff;color:var(--dark-teal);box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .25s ease;padding:18px;z-index:50}
+  .drawer.open{right:0}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:45}
+  .scrim.show{opacity:1;pointer-events:auto}
 
-/* ANIMATED "START ANALYSIS" BUTTON */
-.nav-cta{
-  font-family:"Rockwell","Courier New";
-  font-weight:600;
-  padding:12px 24px; border-radius:30px;
-  background:linear-gradient(135deg,var(--blue),var(--pink));
-  color:var(--white);
-  text-shadow:0 1px 3px rgba(0,0,0,.25);
-  box-shadow:0 6px 14px rgba(0,0,0,.25);
-  position:relative; overflow:hidden;
-  transition:.3s transform,.3s box-shadow;
-}
-.nav-cta::before{
-  content:''; position:absolute; top:0; left:-75%; width:50%; height:100%;
-  background:linear-gradient(120deg,rgba(255,255,255,0.4),rgba(255,255,255,0));
-  transform:skewX(-25deg); transition:left .75s ease;
-}
-.nav-cta:hover::before{left:130%;}
-.nav-cta:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 12px 24px rgba(0,0,0,.35);}
+  /* ================= PAGE ================= */
+  .wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
+  .title{
+    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
+    font-weight:400;font-size:64px;line-height:1;margin:14px 0 6px;color:#000;
+    text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)
+  }
+  .divider{height:0;border-top:4px dashed var(--warm-green);margin:10px 0 18px}
+  .lede{font-family:"Rockwell","Courier New";color:var(--mid);margin:0 0 18px}
+  h2{
+    font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
+    font-size:28px;text-decoration:underline;text-underline-offset:6px;margin:26px 0 8px;
+  }
+  ul{margin:0 0 10px 20px} li{margin:6px 0}
 
-/* HAMBURGER */
-.hamb{width:30px;height:22px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;}
-.hamb span{height:3px;background:#fff;border-radius:2px;transition:.25s;}
-.hamb.open span:nth-child(1){transform:translateY(9px) rotate(45deg);}
-.hamb.open span:nth-child(2){opacity:0;}
-.hamb.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
-@media(max-width:900px){.navlinks{display:none;}}
+  /* ================= FORM ================= */
+  .form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form .full{grid-column:1 / -1}
+  .input,.textarea{
+    width:100%;padding:12px;border-radius:12px;border:2px dashed var(--blue);
+    background:#fff;font-family:"Rockwell","Courier New";font-size:16px;color:var(--ink);
+    transition:border-color .18s ease,box-shadow .18s ease;
+  }
+  .textarea{min-height:140px;resize:vertical}
+  .input:focus,.textarea:focus{outline:none;border-color:var(--dark-teal);box-shadow:0 0 0 3px var(--blue-10)}
+  .check{display:flex;align-items:flex-start;gap:10px;font-family:"Rockwell","Courier New";font-size:15px;color:var(--ink);padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.02);border:1px dashed rgba(0,0,0,.08)}
+  .btn{font-family:"Rockwell","Courier New";border-radius:26px;padding:12px 18px;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;gap:8px;transition:.3s}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--blue-20),var(--pink));
+    color:#00496a;border-color:var(--blue);
+    box-shadow:0 4px 12px rgba(0,166,255,.25);
+    position:relative;overflow:hidden;
+  }
+  .btn-primary::before{
+    content:"";position:absolute;top:0;left:-75%;width:50%;height:100%;
+    background:linear-gradient(120deg,rgba(255,255,255,0.4),rgba(255,255,255,0));
+    transform:skewX(-25deg);transition:left .75s ease;
+  }
+  .btn-primary:hover::before{left:130%;}
+  .btn-primary:hover{background:var(--blue);color:#fff;transform:translateY(-2px) scale(1.04);box-shadow:0 10px 18px rgba(0,166,255,.35);}
 
-/* DRAWER MENU */
-.drawer{
-  position:fixed; top:0; right:-300px; width:280px; height:100dvh;
-  background:#fff; color:var(--dark-teal);
-  box-shadow:-10px 0 24px rgba(0,0,0,.28);
-  transition:right .25s ease; padding:18px; z-index:50;
-}
-.drawer.open{right:0;}
-.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:45;}
-.scrim.show{opacity:1;pointer-events:auto;}
-.drawer .menu{display:flex;flex-direction:column;gap:10px;}
-.drawer .menu a{
-  font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
-  display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;
-  border:2px dashed rgba(0,90,99,.25);background:rgba(0,90,99,.06);color:var(--dark-teal);
-  transition:.2s transform,.2s background;
-}
-.drawer .menu a:hover{background:rgba(0,90,99,.10);transform:translateX(4px);}
-.drawer-cta-wrap{display:flex;justify-content:center;margin-top:12px;}
-.drawer-cta{
-  display:inline-block;text-align:center;
-  font-family:"Rockwell","Courier New";font-weight:400;
-  padding:10px 18px;border-radius:24px;background:var(--dark-teal);color:#fff;
-  transition:.2s background,.2s transform,.2s box-shadow;
-}
-.drawer-cta:hover{background:#000;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18);}
-
-/* ===========================================================
-   CONTACT PAGE STYLES
-=========================================================== */
-.wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
-.title{
-  font-family:"Rockwell","Courier New";
-  font-weight:400;font-size:64px;line-height:1;margin:14px 0 6px;color:#000;
-  text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)
-}
-.divider{border-top:4px dashed var(--warm-green);margin:10px 0 18px}
-h2{
-  font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
-  font-size:28px;text-decoration:underline;text-underline-offset:6px;margin:26px 0 8px;
-}
-p,li{font-family:"Rockwell","Courier New";font-size:17px;color:var(--ink);}
-ul{margin:0 0 10px 20px}li{margin:6px 0}
-
-/* FORM */
-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
-form .full{grid-column:1 / -1;}
-input,textarea{
-  width:100%;padding:12px;border-radius:12px;border:2px dashed var(--blue);
-  background:#fff;font-family:"Rockwell","Courier New";font-size:16px;color:var(--ink);
-  transition:border-color .18s ease,box-shadow .18s ease;
-}
-textarea{min-height:140px;resize:vertical;}
-input:focus,textarea:focus{outline:none;border-color:var(--dark-teal);box-shadow:0 0 0 3px rgba(0,166,255,.15);}
-button{
-  font-family:"Rockwell","Courier New";font-weight:600;
-  border:none;border-radius:26px;padding:12px 18px;
-  background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;
-  cursor:pointer;transition:.3s transform,.3s box-shadow;
-}
-button:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 18px rgba(0,0,0,.25);}
-
-/* FOOTER */
-footer{background:var(--dark-teal);color:#fff;text-align:center;padding:20px;font-family:"Rockwell","Courier New";font-size:15px;}
+  footer{background:var(--dark-teal);color:#fff;text-align:center;padding:20px;font-family:"Rockwell","Courier New";font-size:15px;margin-top:50px}
 </style>
 </head>
-
 <body>
-<!-- ===========================================================
-   HEADER SECTION (Animated & Reusable)
-=========================================================== -->
+
 <header class="navbar">
   <div class="nav-inner">
     <div class="brand">
-      <a href="index.html" aria-label="Go to Home">
+      <a href="index.html">
         <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
         <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
       </a>
     </div>
-
-    <nav class="navlinks" aria-label="Main">
+    <nav class="navlinks">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
       <a href="about.html">About Us</a>
       <a href="faq.html">FAQ/Help</a>
       <a href="contact.html" aria-current="page">Contact</a>
     </nav>
-
     <div class="actions">
       <a class="nav-cta" href="upload.html">START ANALYSIS</a>
       <div id="hamb" class="hamb"><span></span><span></span><span></span></div>
@@ -191,7 +131,8 @@ footer{background:var(--dark-teal);color:#fff;text-align:center;padding:20px;fon
   </div>
 </header>
 
-<aside id="drawer" class="drawer" aria-hidden="true">
+<aside id="drawer" class="drawer">
+  <div class="menu-title">Menu</div>
   <nav class="menu">
     <a href="index.html">Home</a>
     <a href="dashboard.html">Dashboard</a>
@@ -199,36 +140,53 @@ footer{background:var(--dark-teal);color:#fff;text-align:center;padding:20px;fon
     <a href="faq.html">FAQ/Help</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <div class="drawer-cta-wrap">
-    <a class="drawer-cta" href="upload.html">START ANALYSIS</a>
-  </div>
+  <div class="drawer-cta-wrap"><a class="drawer-cta" href="upload.html">START ANALYSIS</a></div>
 </aside>
-<div id="scrim" class="scrim" aria-hidden="true"></div>
+<div id="scrim" class="scrim"></div>
 
-<!-- ===========================================================
-   MAIN CONTENT
-=========================================================== -->
 <main class="wrap">
   <h1 class="title">Contact</h1>
   <div class="divider"></div>
 
-  <p>We’d love to hear from you — whether it’s questions, feedback, or collaboration ideas.</p>
+  <p class="lede">We’re here to help with questions, feedback, collaboration ideas, and responsible disclosure.</p>
 
-  <h2>Contact Form</h2>
-  <!-- FORM that opens the user's email client directly -->
-  <form action="mailto:your-email@example.com" method="POST" enctype="text/plain">
-    <input type="text" name="name" placeholder="Your Name" required />
-    <input type="email" name="email" placeholder="Your Email" required />
-    <input class="full" type="text" name="subject" placeholder="Subject (optional)" />
-    <textarea class="full" name="message" placeholder="Message" required></textarea>
-    <div class="full"><button type="submit">Send Message ✉️</button></div>
+  <h2>Email</h2>
+  <ul>
+    <li>General support: <a href="mailto:support@inkinsights.example">support@inkinsights.example</a></li>
+    <li>Partnerships &amp; press: <a href="mailto:partnerships@inkinsights.example">partnerships@inkinsights.example</a></li>
+    <li>Security disclosures: <a href="mailto:security@inkinsights.example">security@inkinsights.example</a></li>
+  </ul>
+
+  <h2>Response times</h2>
+  <ul>
+    <li>General &amp; partnership inquiries: within 2 business days</li>
+    <li>Security disclosures: acknowledgment within 72 hours</li>
+  </ul>
+
+  <h2>Office hours</h2>
+  <p>Mon–Fri, 9:00–17:00 (Australia/Melbourne)</p>
+
+  <h2>Contact form</h2>
+  <form class="form" action="mailto:your-email@example.com" method="POST" enctype="text/plain">
+    <input class="input" type="text" name="name" placeholder="Full name" required>
+    <input class="input" type="email" name="email" placeholder="Email address" required>
+    <input class="input full" type="text" name="subject" placeholder="Subject (optional)">
+    <textarea class="textarea full" rows="6" name="message" placeholder="Message" required></textarea>
+    <label class="check full">
+      <input type="checkbox" required>
+      I agree not to submit personal, confidential, or unlawful content.
+    </label>
+    <div class="full"><button type="submit" class="btn btn-primary">Send ✉️</button></div>
   </form>
 
-  <h2>Other ways to reach us</h2>
+  <h2>Responsible disclosure</h2>
+  <p>If you believe you’ve found a security issue, email with the subject <em>Security Disclosure</em> and include a concise description, impact, and reproduction steps. Please avoid public disclosure until addressed; we’ll keep you updated and credit you (with consent).</p>
+
+  <h2>Other channels</h2>
   <ul>
-    <li>Email directly: <a href="mailto:your-email@example.com">your-email@example.com</a></li>
     <li>GitHub: Ink-Insights</li>
     <li>Social: @inkinsights</li>
+    <li>Docs: launching with public release</li>
   </ul>
 </main>
 
@@ -236,13 +194,9 @@ footer{background:var(--dark-teal);color:#fff;text-align:center;padding:20px;fon
   <p>© 2025 Ink Insights — Privacy-first, data deleted after analysis.</p>
 </footer>
 
-<!-- ===========================================================
-   HEADER SCRIPT (Drawer Function)
-=========================================================== -->
 <script>
 (function(){
-  const d=document,drawer=d.getElementById('drawer'),
-        scrim=d.getElementById('scrim'),hamb=d.getElementById('hamb');
+  const d=document,drawer=d.getElementById('drawer'),scrim=d.getElementById('scrim'),hamb=d.getElementById('hamb');
   const open=()=>{drawer.classList.add('open');scrim.classList.add('show');hamb.classList.add('open');};
   const close=()=>{drawer.classList.remove('open');scrim.classList.remove('show');hamb.classList.remove('open');};
   hamb.addEventListener('click',()=>drawer.classList.contains('open')?close():open());

@@ -348,7 +348,7 @@ footer{
     <!-- ====== KEYWORDS ====== -->
     <section id="keywords" class="feature-section" aria-labelledby="kw-title" role="tabpanel" tabindex="0">
       <div class="row">
-        <button href="dashboard.html" class="btn back" id="backKw" type="button">GO BACK</button>
+        <button class="btn back" id="backKw" type="button">GO BACK</button>
         <span class="spacer"></span>
         <button class="btn export" id="exportKw" type="button">EXPORT</button>
       </div>
@@ -652,11 +652,15 @@ function deleteData(){
   activate(initial);
 
   // Back buttons
-  document.querySelectorAll('.btn.back').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      if (history.length > 1) history.back(); else window.location.href='dashboard.html';
-    });
-  });
+btn.addEventListener('click', ()=>{
+  // Always go to dashboard if not returning from it directly
+  if (document.referrer && document.referrer.includes('dashboard.html')) {
+    history.back();
+  } else {
+    window.location.href = 'dashboard.html';
+  }
+});
+
 
   // ===== API render stubs (same as before) =====
   window.renderKeywords = function(data){

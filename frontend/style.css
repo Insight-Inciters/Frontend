@@ -153,18 +153,24 @@ box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .35s cubic-bezier(.22,1
   transition: left 0.7s ease;
 }
 
+
+
 /* --- Primary button --- */
 .btn.primary {
   background: var(--dark-teal);
   color: #fff;
-  box-shadow: 0 0 0 rgba(0,0,0,0);
+  border: 2px solid var(--dark-teal);
+  transition: all 0.3s ease;
 }
 
-/* Hover state for primary */
+/* Invert colors on hover */
 .btn.primary:hover {
-  background: linear-gradient(90deg, var(--dark-teal), var(--teal));
+  background: #fff;
+  color: var(--dark-teal);
   transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 90, 99, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 90, 99, 0.25);
+}
+
 }
 
 .btn.primary:hover::before {

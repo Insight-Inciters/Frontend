@@ -173,24 +173,50 @@ box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .35s cubic-bezier(.22,1
 
 }
 
+.btn.primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
+}
+
 .btn.primary:hover::before {
   left: 150%;
 }
 
-/* --- Ghost button --- */
+
+
+.btn.primary:hover::before {
+  left: 150%;
+}
+
+/* --- Ghost button (LEARN MORE) --- */
 .btn.ghost {
   border: 2px solid var(--dark-teal);
   color: var(--dark-teal);
   background: transparent;
+  transition: all 0.3s ease;
 }
 
-/* Hover state for ghost */
+/* Hover: black background + black border + white text */
 .btn.ghost:hover {
-  background: var(--dark-teal);
+  background: #000;
+  border-color: #000;
   color: #fff;
   transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 90, 99, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
+
 
 .btn.ghost:hover::before {
   left: 150%;

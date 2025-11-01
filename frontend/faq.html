@@ -7,313 +7,326 @@
 <link rel="icon" href="assests/Ink-logo.png" type="image/png" />
 
 <style>
-  :root{
-    --dark-teal:#005A63; --warm-green:#517A06;
-    --blue:#00A6FF; --blue-20:rgba(0,166,255,.20);
-    --mid:#737373; --ink:#000; --bg:#fff;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:"Droid Serif",Georgia,serif;color:#122022;background:var(--bg);line-height:1.6}
-  a{color:inherit;text-decoration:none}
+:root{
+  --dark-teal:#005A63;--warm-green:#517A06;
+  --pink:#FF2092;--blue:#00A6FF;
+  --mid:#737373;--ink:#122022;--bg:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Droid Serif",Georgia,serif;color:var(--ink);background:var(--bg);line-height:1.6}
+a{text-decoration:none;color:inherit}
 
-  /* ======================= HEADER (shared) ======================= */
-  .navbar{background:var(--dark-teal);color:#fff;position:sticky;top:0;z-index:40}
-  .nav-inner{width:100%;padding:12px 24px 8px;display:flex;align-items:center;gap:24px;justify-content:space-between}
-  .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
-  .brand a:hover{transform:translateY(-1px) scale(1.02)}
-  .brand img{width:54px;height:auto}
-  .brand .txt{display:flex;flex-direction:column;line-height:1}
-  .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
-  .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif}
+/* ================= HEADER ================= */
+.navbar{
+  background:var(--dark-teal);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:40;
+}
+.nav-inner{width:100%;padding:20px 28px 16px;display:flex;align-items:center;gap:24px;justify-content:space-between}
+.brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
+.brand a:hover{transform:translateY(-1px) scale(1.02)}
+.brand img{width:54px;height:auto;transition:transform .4s ease,filter .4s ease}
+.brand a:hover img{transform:rotate(-3deg) scale(1.06);filter:drop-shadow(0 0 6px rgba(255,255,255,.85))}
+.brand .txt{display:flex;flex-direction:column;line-height:1.15}
+.brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
+.brand .txt .line2{
+  font:700 1.4rem/1.1 "Droid Serif",serif;
+  background:linear-gradient(90deg,#fff,var(--blue),var(--pink),#fff);
+  background-size:300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:colorFlow 6s linear infinite;
+}
+@keyframes colorFlow{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 
-  .navlinks{flex:1;display:flex;justify-content:center;gap:34px}
-  .navlinks a{
-    font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;
-    transition:color .2s ease,text-shadow .2s ease;
-  }
-  .navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
-  .navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
-  .navlinks a:hover::after{transform:scaleX(1)}
+.navlinks{flex:1;display:flex;justify-content:center;gap:34px}
+.navlinks a{
+  font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;
+  transition:color .2s ease,text-shadow .2s ease;
+}
+.navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
+.navlinks a:hover::after{transform:scaleX(1)}
 
-  .actions{margin-left:auto;display:flex;align-items:center;gap:12px}
-  .nav-cta{
-    font-family:"Rockwell","Courier New";font-weight:400;background:#fff;color:var(--dark-teal);
-    padding:10px 18px;border-radius:28px;transition:.2s background,.2s color,.2s transform,.2s box-shadow
-  }
-  .nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+.actions{margin-left:auto;display:flex;align-items:center;gap:16px}
+.nav-cta{
+  font-family:"Rockwell","Courier New";background:#fff;color:var(--dark-teal);
+  padding:10px 18px;border-radius:28px;position:relative;overflow:hidden;
+  transition:all .3s ease;
+}
+.nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 0 20px rgba(255,255,255,.6)}
+.nav-cta::before{
+  content:"";position:absolute;top:0;left:-50%;width:50%;height:100%;
+  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 100%);
+  transform:skewX(-25deg);animation:shine 2s linear infinite;
+}
+@keyframes shine{0%{left:-50%}100%{left:150%}}
 
-  /* Hamburger */
-  .hamb{width:30px;height:22px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s ease}
-  .hamb:hover{transform:scale(1.06)}
-  .hamb span{height:3px;background:#fff;border-radius:2px;display:block;transition:transform .25s ease,opacity .25s ease}
-  .hamb.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}
-  .hamb.open span:nth-child(2){opacity:0}
-  .hamb.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
-  @media(max-width:900px){.navlinks{display:none}}
+.hamb{width:30px;height:22px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s ease}
+.hamb:hover{transform:scale(1.06)}
+.hamb span{height:3px;background:#fff;border-radius:2px;display:block;transition:transform .25s ease,opacity .25s ease}
+.hamb.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+.hamb.open span:nth-child(2){opacity:0}
+.hamb.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+@media(max-width:900px){.navlinks{display:none}}
 
-  /* Drawer */
-  .drawer{position:fixed;top:0;right:-300px;width:280px;height:100dvh;background:#fff;color:var(--dark-teal);
-    box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .25s ease;padding:18px;z-index:50;border-left:4px solid rgba(0,0,0,.06)}
-  .drawer.open{right:0}
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:45}
-  .scrim.show{opacity:1;pointer-events:auto}
-  .drawer .menu-title{font:400 22px/1.2 "Rockwell","Courier New",Courier,Georgia,serif;margin:6px 0 12px}
-  .drawer .menu{display:flex;flex-direction:column;gap:10px}
-  .drawer .menu a{font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;border:2px dashed rgba(0,90,99,.25);background:rgba(0,90,99,.06);color:var(--dark-teal);transition:.2s transform,.2s background}
-  .drawer .menu a::before{content:'✦';opacity:.9}
-  .drawer .menu a:hover{background:rgba(0,90,99,.10);transform:translateX(4px)}
-  .drawer-cta-wrap{display:flex;justify-content:center;margin-top:12px}
-  .drawer-cta{display:inline-block;text-align:center;font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:400;padding:10px 18px;border-radius:24px;background:var(--dark-teal);color:#fff;transition:.2s background,.2s transform,.2s box-shadow}
-  .drawer-cta:hover{background:#000;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
+/* Drawer */
+.drawer{position:fixed;top:0;right:-320px;width:300px;height:100dvh;background:#fff;color:var(--dark-teal);
+box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .35s cubic-bezier(.22,1,.36,1);padding:22px;z-index:50}
+.drawer.open{right:0}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:45}
+.scrim.show{opacity:1;pointer-events:auto}
+.drawer .menu-title{text-align:center;font:700 20px/1 "Rockwell","Courier New";text-decoration:underline;text-underline-offset:6px;margin-bottom:16px}
+.drawer .menu{display:flex;flex-direction:column;gap:12px}
+.drawer .menu a{
+  display:flex;align-items:center;gap:10px;font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
+  color:var(--dark-teal);border:2px dashed rgba(0,90,99,.25);background:rgba(0,90,99,.06);
+  padding:12px 10px;border-radius:12px;transition:.25s transform,.25s background;
+}
+.drawer .menu a::before{content:"✦";opacity:.9}
+.drawer .menu a:hover{background:rgba(0,90,99,.12);transform:translateX(4px)}
+.drawer-cta-wrap{text-align:center;margin-top:20px}
+.drawer-cta{display:inline-block;text-align:center;font-family:"Rockwell","Courier New";background:var(--dark-teal);color:#fff;border-radius:24px;padding:10px 18px;transition:background .2s,transform .2s}
+.drawer-cta:hover{background:#000;transform:translateY(-2px)}
 
-  /* ======================= PAGE ======================= */
-  .wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
-  .title{
-    font-family:"Rockwell","Courier New";font-weight:400;font-size:64px;line-height:1;color:#000;margin:14px 0 6px;
-    text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)
-  }
-  .top-dash{border-top:4px dashed var(--warm-green);margin:10px 0 18px}
+/* ================= PAGE ================= */
+.wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
+.title{font-family:"Rockwell","Courier New";font-weight:400;font-size:64px;line-height:1;margin:14px 0 6px;color:#000;text-shadow:0 2px 0 #cfcfcf,0 6px 16px rgba(0,0,0,.12)}
+.top-dash{border-top:4px dashed var(--warm-green);margin:10px 0 18px}
 
-  /* Category headers */
-  .cat{margin:18px 0 10px;font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;font-size:28px;text-decoration:underline;text-underline-offset:6px}
+.cat{margin:18px 0 10px;font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;font-size:28px;text-decoration:underline;text-underline-offset:6px}
+details{border:2px dashed var(--blue);border-radius:12px;background:rgba(0,166,255,.06);padding:.6rem .9rem;margin:.6rem 0;transition:.2s box-shadow}
+details[open]{box-shadow:0 8px 20px rgba(0,166,255,.10)}
+summary{cursor:pointer;list-style:none;font-family:"Rockwell","Courier New";font-weight:700}
+summary::marker{display:none}
+.q{display:flex;align-items:center;gap:10px}
+.q .chev{transition:transform .2s ease}
+details[open] .q .chev{transform:rotate(90deg)}
+.a{margin:.6rem 0 0;font-family:"Rockwell","Courier New";color:#122022}
+.muted{color:var(--mid);font-style:italic;margin:.2rem 0 0}
 
-  /* FAQ accordion (native details/summary) */
-  details{border:2px dashed var(--blue);border-radius:12px;background:rgba(0,166,255,.06);padding:.6rem .9rem;margin:.6rem 0;transition:.2s box-shadow}
-  details[open]{box-shadow:0 8px 20px rgba(0,166,255,.10)}
-  summary{cursor:pointer;list-style:none;font-family:"Rockwell","Courier New";font-weight:700}
-  summary::marker{display:none}
-  summary:focus-visible{outline:3px solid var(--blue);border-radius:8px}
-  .q{display:flex;align-items:center;gap:10px}
-  .q .chev{transition:transform .2s ease}
-  details[open] .q .chev{transform:rotate(90deg)}
-  .a{margin:.6rem 0 0;font-family:"Rockwell","Courier New";color:#122022}
-  .muted{color:var(--mid);font-style:italic;margin:.2rem 0 0}
-
-  /* Footer */
-  footer{background:var(--dark-teal);color:#fff;text-align:center;padding:20px;font-family:"Rockwell","Courier New";font-size:15px}
+/* Footer */
+footer{background:var(--dark-teal);color:#fff;font-family:"Rockwell","Courier New";padding:50px 40px 30px}
+.footer-container{display:flex;justify-content:space-between;flex-wrap:wrap;align-items:flex-start;gap:40px;border-bottom:4px solid rgba(255,255,255,.15);padding-bottom:20px;margin-bottom:16px}
+.footer-brand{display:flex;flex-direction:column;gap:6px}
+.footer-brand h1{font-size:64px;font-weight:700;margin:0}
+.footer-brand p{opacity:.85;font-size:15px;margin-top:4px}
+.footer-links{display:flex;flex-direction:column;gap:8px;font-size:15px}
+.footer-links a{color:#fff;opacity:.85;transition:opacity .2s,transform .2s}
+.footer-links a:hover{opacity:1;transform:translateX(3px)}
+.footer-bottom{text-align:center;font-size:14px;opacity:.8}
+@media(max-width:768px){
+  .title{font-size:48px;text-align:center}
+  .footer-brand h1{font-size:44px;text-align:center}
+  .footer-container{flex-direction:column;align-items:center;text-align:center}
+}
 </style>
 </head>
+
 <body>
-
-  <!-- ======================= HEADER ======================= -->
-  <header class="navbar">
-    <div class="nav-inner">
-      <div class="brand">
-        <a href="index.html" aria-label="Go to Home">
-          <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
-          <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
-        </a>
-      </div>
-
-      <nav class="navlinks" aria-label="Main">
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="about.html">About Us</a>
-        <a href="faq.html" aria-current="page">FAQ/Help</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="actions">
-        <a class="nav-cta" href="upload.html">START ANALYSIS</a>
-        <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
+<header class="navbar">
+  <div class="nav-inner">
+    <div class="brand">
+      <a href="index.html">
+        <img src="assests/Ink-logo.png" alt="Ink Insights Logo">
+        <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
+      </a>
     </div>
-  </header>
-
-  <!-- Drawer + scrim -->
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <div class="menu-title">Menu</div>
-    <nav class="menu">
+    <nav class="navlinks">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
       <a href="about.html">About Us</a>
       <a href="faq.html" aria-current="page">FAQ/Help</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <div class="drawer-cta-wrap"><a class="drawer-cta" href="upload.html">START ANALYSIS</a></div>
-  </aside>
-  <div id="scrim" class="scrim" aria-hidden="true"></div>
+    <div class="actions">
+      <a class="nav-cta" href="upload.html">START ANALYSIS</a>
+      <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="menu-title">Menu</div>
+  <nav class="menu">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="about.html">About Us</a>
+    <a href="faq.html" aria-current="page">FAQ/Help</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="drawer-cta-wrap"><a class="drawer-cta" href="upload.html">START ANALYSIS</a></div>
+</aside>
+<div id="scrim" class="scrim" aria-hidden="true"></div>
 
   <!-- ======================= MAIN ======================= -->
-  <main class="wrap" id="main">
-    <h1 class="title">FAQ / Help</h1>
-    <div class="top-dash"></div>
+<main class="wrap" id="main">
+  <h1 class="title">FAQ / Help</h1>
+  <div class="top-dash"></div>
 
-    <!-- Storage & Privacy -->
-    <h2 class="cat">Storage & Privacy</h2>
+  <h2 class="cat">Storage & Privacy</h2>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Do you store my writing?</span></summary>
-      <div class="a">No. Input is processed for the session and then deleted. You can trigger <em>Delete Now</em> any time.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Do you store my writing?</span></summary>
+    <div class="a">No. Input is processed for the session and then deleted. You can trigger <em>Delete Now</em> any time.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Do you train on my content?</span></summary>
-      <div class="a">Never. We do not use user content to train models.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Do you train on my content?</span></summary>
+    <div class="a">Never. We do not use user content to train models.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Do I need an account?</span></summary>
-      <div class="a">No. v1 does not require login.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Do I need an account?</span></summary>
+    <div class="a">No. v1 does not require login.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Can I run this offline?</span></summary>
-      <div class="a">Yes, when the backend is hosted locally.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Can I run this offline?</span></summary>
+    <div class="a">Yes, when the backend is hosted locally.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Do you track users?</span></summary>
-      <div class="a">No tracking pixels. Minimal, anonymous operational logs only when required; opt-out available.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Do you track users?</span></summary>
+    <div class="a">No tracking pixels. Minimal, anonymous operational logs only when required; opt-out available.</div>
+  </details>
 
-    <!-- Using the Product -->
-    <h2 class="cat">Using the Product</h2>
+  <h2 class="cat">Using the Product</h2>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>What file types can I upload?</span></summary>
-      <div class="a">For now we only accept TXT files.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>What file types can I upload?</span></summary>
+    <div class="a">For now we only accept TXT files.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>How long does analysis take?</span></summary>
-      <div class="a">Usually seconds for texts under ~5,000 words on typical hardware.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>How long does analysis take?</span></summary>
+    <div class="a">Usually seconds for texts under ~5,000 words on typical hardware.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>What insights do I get in v1?</span></summary>
-      <div class="a">Keywords & themes, a sentiment overview with a short explanation, word count, and a preview snippet.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>What insights do I get in v1?</span></summary>
+    <div class="a">Keywords & themes, a sentiment overview with a short explanation, word count, and a preview snippet.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Is there a comparison view?</span></summary>
-      <div class="a">Yes. Compare two texts side-by-side and see a combined chart.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Is there a comparison view?</span></summary>
+    <div class="a">Yes. Compare two texts side-by-side and see a combined chart.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>How accurate are the insights?</span></summary>
-      <div class="a">They are guides, not verdicts—use them to prompt reflection.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>How accurate are the insights?</span></summary>
+    <div class="a">They are guides, not verdicts—use them to prompt reflection.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Any size limits?</span></summary>
-      <div class="a">Very large files may be truncated or rejected for stability.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Any size limits?</span></summary>
+    <div class="a">Very large files may be truncated or rejected for stability.</div>
+  </details>
 
-    <!-- Export & Deletion -->
-    <h2 class="cat">Export & Deletion</h2>
+  <h2 class="cat">Export & Deletion</h2>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>What can I export?</span></summary>
-      <div class="a">PDF (one-page summary) or JSON (structured data).</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>What can I export?</span></summary>
+    <div class="a">PDF (one-page summary) or JSON (structured data).</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Can I control deletion?</span></summary>
-      <div class="a">Yes—choose <em>Delete Now</em> or let auto-delete run after analysis/export.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Can I control deletion?</span></summary>
+    <div class="a">Yes—choose <em>Delete Now</em> or let auto-delete run after analysis/export.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>What does the JSON include?</span></summary>
-      <div class="a">File name, word count, preview HTML, keywords, sentiment, optional emotions, and a deletion timestamp.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>What does the JSON include?</span></summary>
+    <div class="a">File name, word count, preview HTML, keywords, sentiment, optional emotions, and a deletion timestamp.</div>
+  </details>
 
-    <!-- Accessibility & Support -->
-    <h2 class="cat">Accessibility & Support</h2>
+  <h2 class="cat">Accessibility & Support</h2>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Is the interface accessible?</span></summary>
-      <div class="a">Keyboard navigation, alt text for charts, and a high-contrast option are included.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Is the interface accessible?</span></summary>
+    <div class="a">Keyboard navigation, alt text for charts, and a high-contrast option are included.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>How do I report a bug or request a feature?</span></summary>
-      <div class="a">Email support with steps to reproduce and a small non-sensitive sample.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>How do I report a bug or request a feature?</span></summary>
+    <div class="a">Email support with steps to reproduce and a small non-sensitive sample.</div>
+  </details>
 
-    <!-- Technical & Reliability -->
-    <h2 class="cat">Technical & Reliability</h2>
+  <h2 class="cat">Technical & Reliability</h2>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>What if I close the tab?</span></summary>
-      <div class="a">A backend cleanup task purges temporary data shortly after interruption.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>What if I close the tab?</span></summary>
+    <div class="a">A backend cleanup task purges temporary data shortly after interruption.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Cloud storage?</span></summary>
-      <div class="a">Not in v1. Download exports locally.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Cloud storage?</span></summary>
+    <div class="a">Not in v1. Download exports locally.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Which models do you use?</span></summary>
-      <div class="a">A controlled NLP pipeline focused on speed and privacy.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Which models do you use?</span></summary>
+    <div class="a">A controlled NLP pipeline focused on speed and privacy.</div>
+  </details>
 
-    <!-- Pricing & Terms -->
-    <h2 class="cat">Pricing & Terms</h2>
+  <h2 class="cat">Pricing & Terms</h2>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Is it free?</span></summary>
-      <div class="a">Yes, it's absolutely free.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Is it free?</span></summary>
+    <div class="a">Yes, it's absolutely free.</div>
+  </details>
 
-    <details>
-      <summary><span class="q"><span class="chev">›</span>Terms of use?</span></summary>
-      <div class="a">Use responsibly. Do not upload unlawful content or sensitive personal data.</div>
-    </details>
+  <details>
+    <summary><span class="q"><span class="chev">›</span>Terms of use?</span></summary>
+    <div class="a">Use responsibly. Do not upload unlawful content or sensitive personal data.</div>
+  </details>
 
-    <p class="muted">Tip: Press <strong>Tab</strong> to move between questions and <strong>Enter</strong> to open/close.</p>
-  </main>
+  <p class="muted">Tip: Press <strong>Enter</strong> to open or close questions.</p>
 
-  <footer>
-    <p>© 2025 Ink Insights — Privacy-first, data deleted after analysis.</p>
-  </footer>
+  <script>
+  // Auto-close other FAQ tabs when one opens
+  document.querySelectorAll("details").forEach(d => {
+    d.addEventListener("toggle", () => {
+      if (d.open) {
+        document.querySelectorAll("details").forEach(o => {
+          if (o !== d && o.open) o.removeAttribute("open");
+        });
+      }
+    });
+  });
+  </script>
+</main>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h1>Enjoy Writing!</h1>
+      <p>Privacy-first data analysis, designed for writers.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://github.com" target="_blank">GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 Ink Insights — All rights reserved.</div>
+</footer>
 
 <script>
-/* Drawer controls (with hamburger morph and aria) */
 (function(){
-  const drawer=document.getElementById('drawer');
-  const scrim=document.getElementById('scrim');
-  const hamb=document.getElementById('hamb');
-
-  function openDrawer(){
-    drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden','false');
-    scrim.classList.add('show');
-    scrim.setAttribute('aria-hidden','false');
-    hamb.classList.add('open');
-    hamb.setAttribute('aria-expanded','true');
-  }
-  function closeDrawer(){
-    drawer.classList.remove('open');
-    drawer.setAttribute('aria-hidden','true');
-    scrim.classList.remove('show');
-    scrim.setAttribute('aria-hidden','true');
-    hamb.classList.remove('open');
-    hamb.setAttribute('aria-expanded','false');
-  }
-  function toggle(){ (drawer.classList.contains('open') ? closeDrawer : openDrawer)(); }
-
-  hamb.addEventListener('click', toggle);
-  hamb.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
-  scrim.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
-  document.querySelectorAll('#drawer a').forEach(a=>a.addEventListener('click', closeDrawer));
+  const d=document,scr=d.getElementById('scrim'),h=d.getElementById('hamb'),dr=d.getElementById('drawer');
+  function open(){dr.classList.add('open');scr.classList.add('show');h.classList.add('open')}
+  function close(){dr.classList.remove('open');scr.classList.remove('show');h.classList.remove('open')}
+  h.addEventListener('click',()=>dr.classList.contains('open')?close():open());
+  scr.addEventListener('click',close);
+  d.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  d.querySelectorAll('#drawer a').forEach(a=>a.addEventListener('click',close));
 })();
-
-/* Close other FAQ tabs when a new one opens */
-document.querySelectorAll("details").forEach(d => {
-  d.addEventListener("toggle", () => {
-    if (d.open) {
-      document.querySelectorAll("details").forEach(other => {
-        if (other !== d && other.open) other.removeAttribute("open");
-      });
-    }
-  });
-});
-
 </script>
 </body>
 </html>

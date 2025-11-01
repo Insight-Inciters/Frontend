@@ -195,11 +195,6 @@ box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .35s cubic-bezier(.22,1
 }
 
 
-
-.btn.primary:hover::before {
-  left: 150%;
-}
-
 /* --- Ghost button (LEARN MORE) --- */
 .btn.ghost {
   border: 2px solid var(--dark-teal);
@@ -218,9 +213,27 @@ box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .35s cubic-bezier(.22,1
 }
 
 
+.btn.ghost::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
+}
+
 .btn.ghost:hover::before {
   left: 150%;
 }
+
 
 /* Optional subtle focus outline for accessibility */
 .btn:focus-visible {

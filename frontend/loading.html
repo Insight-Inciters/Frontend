@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ink Insights — Loading</title>
-<link rel="icon" href="ink-logo.png" type="image/png" />
+<link rel="icon" href="assests/Ink-logo.png" type="image/png" /> 
 <style>
   :root{
     --teal:#005A63;
@@ -55,13 +55,13 @@
   .dot:nth-child(3){animation-delay:.3s}
   @keyframes bob{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(-6px);opacity:.95}}
 
-  /* ============ PROGRESS BAR ============ */
+  /* ============ PROGRESS BOX ============ */
   .progress{
     width:min(700px,90vw);
     background:rgba(255,255,255,.06);
     border:2px dashed rgba(255,255,255,.25);
     border-radius:18px;
-    padding:10px;
+    padding:16px;
     backdrop-filter:blur(2px);
     box-shadow:0 10px 24px rgba(0,0,0,.3) inset;
   }
@@ -86,8 +86,22 @@
     background:repeating-linear-gradient(45deg,rgba(255,255,255,.15) 0 10px,transparent 10px 22px);
     mix-blend-mode:overlay;
   }
+
+  .load-msg {
+    margin-top: 10px;
+    font-style: italic;
+    color: #BBD3C4;
+    font-size: 1.1rem;
+    text-shadow: 0 4px 12px rgba(0,0,0,.3);
+    min-height: 1.4em;
+    transition: opacity .4s ease;
+  }
+
   .meta{
-    display:flex;justify-content:space-between;align-items:center;margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
     color:rgba(255,255,255,.85);
     font-family:"Rockwell","Courier New",Courier,Georgia,serif;
   }
@@ -99,20 +113,6 @@
     font-size:clamp(16px,2.6vw,24px);
     text-shadow:0 4px 12px rgba(0,0,0,.3);
   }
-
-  .load-msg {
-  margin-top: 10px;
-  font-style: italic;
-  color: #BBD3C4;
-  font-size: 1.1rem;
-  text-shadow: 0 4px 12px rgba(0,0,0,.3);
-  min-height: 1.4em;
-  transition: opacity .4s ease;
-}
-
-
-  .skip{margin-top:6px;color:#9bd1ff;text-decoration:none;font-size:14px}
-  .skip:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -132,10 +132,10 @@
       <div>Preparing your dashboard…</div>
       <div class="pct" id="pct">0%</div>
     </div>
+        <p class="load-msg" id="loadMsg">Initializing magic...</p>
   </section>
 
   <p class="tagline">Brew some tea while we unravel your story…</p>
-  <a href="dashboard.html" class="skip">Skip</a>
 </main>
 
 <script>
@@ -169,12 +169,12 @@
   resize();makeStars();requestAnimationFrame(draw);
 })();
 
-/* ========= PROGRESS (≈12 s) & REDIRECT ========= */
+/* ========= PROGRESS (≈8 s) & REDIRECT ========= */
 (function(){
   const fill=document.getElementById('fill');
   const pct=document.getElementById('pct');
   const bar=document.querySelector('.bar');
-  const duration=8000; // total time (ms) → adjust between 10000–15000 for 10–15s
+  const duration=10000;
   const start=performance.now();
   function easeInOutCubic(x){return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}
   function step(ts){
@@ -188,6 +188,28 @@
     else{setTimeout(()=>location.href="dashboard.html",600);}
   }
   requestAnimationFrame(step);
+})();
+
+/* ========= ROTATING MESSAGES ========= */
+(function(){
+  const messages = [
+    "Analyzing your literary patterns...",
+    "Mapping emotions and tone shifts...",
+    "Extracting key themes and motifs...",
+    "Almost ready — polishing insights..."
+  ];
+  const msgEl = document.getElementById('loadMsg');
+  let i = 0;
+  function cycle(){
+    msgEl.style.opacity = 0;
+    setTimeout(()=>{
+      msgEl.textContent = messages[i];
+      msgEl.style.opacity = 1;
+      i = (i + 1) % messages.length;
+    }, 400);
+  }
+  cycle();
+  setInterval(cycle, 2000);
 })();
 </script>
 </body>

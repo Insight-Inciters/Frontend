@@ -17,15 +17,28 @@
   body{font-family:"Droid Serif",Georgia,serif;color:var(--ink);background:var(--bg);line-height:1.6}
   a{color:inherit;text-decoration:none}
 
-  /* HEADER */
+  /* ================= HEADER ================= */
   .navbar{background:var(--dark-teal);color:#fff;position:sticky;top:0;z-index:40}
   .nav-inner{width:100%;padding:12px 24px 8px;display:flex;align-items:center;gap:24px;justify-content:space-between}
   .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
   .brand a:hover{transform:translateY(-1px) scale(1.02)}
-  .brand img{width:54px;height:auto}
-  .brand .txt{display:flex;flex-direction:column;line-height:1}
+  .brand img{width:54px;height:auto;transition:filter .3s ease}
+  .brand .txt{display:flex;flex-direction:column;line-height:1;transition:filter .3s ease}
   .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
   .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif}
+
+  /* ✨ Glow Effect */
+  .brand img,
+  .brand .txt {
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.35));
+    transition: filter 0.3s ease;
+  }
+  .brand a:hover img,
+  .brand a:hover .txt {
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.8))
+            drop-shadow(0 0 16px rgba(0,166,255,0.6));
+  }
+
   .navlinks{flex:1;display:flex;justify-content:center;gap:34px}
   .navlinks a{
     font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;
@@ -34,17 +47,17 @@
   .navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
   .navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
   .navlinks a:hover::after{transform:scaleX(1)}
+
   .actions{margin-left:auto;display:flex;align-items:center;gap:12px}
   .nav-cta{font-family:"Rockwell","Courier New";background:#fff;color:var(--dark-teal);padding:10px 18px;border-radius:28px;transition:.2s}
   .nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.18)}
 
-  /* Drawer */
   .drawer{position:fixed;top:0;right:-300px;width:280px;height:100dvh;background:#fff;color:var(--dark-teal);box-shadow:-10px 0 24px rgba(0,0,0,.28);transition:right .25s ease;padding:18px;z-index:50}
   .drawer.open{right:0}
   .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:45}
   .scrim.show{opacity:1;pointer-events:auto}
 
-  /* PAGE CONTENT */
+  /* ================= PAGE ================= */
   .wrap{max-width:1000px;margin:24px auto 64px;padding:0 18px}
   .title{
     font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
@@ -59,7 +72,7 @@
   }
   ul{margin:0 0 10px 20px} li{margin:6px 0}
 
-  /* FORM */
+  /* ================= FORM ================= */
   .form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form .full{grid-column:1 / -1}
   .input,.textarea{
@@ -82,7 +95,10 @@
 <header class="navbar">
   <div class="nav-inner">
     <div class="brand">
-      <a href="index.html"><img src="assests/Ink-logo.png" alt="Ink Insights Logo" /><span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span></a>
+      <a href="index.html">
+        <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
+        <span class="txt"><span class="line1">Ink</span><span class="line2">Insights</span></span>
+      </a>
     </div>
     <nav class="navlinks">
       <a href="index.html">Home</a>
@@ -162,7 +178,6 @@
 </footer>
 
 <script>
-/* Drawer toggle */
 (function(){
   const d=document,drawer=d.getElementById('drawer'),scrim=d.getElementById('scrim'),hamb=d.getElementById('hamb');
   const open=()=>{drawer.classList.add('open');scrim.classList.add('show');hamb.classList.add('open');};

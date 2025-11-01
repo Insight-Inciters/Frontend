@@ -1,10 +1,14 @@
 /* ====== Tokens / Base ====== */
-:root{
-  --dark-teal:#005A63; --teal:#257881;
-  --warm-green:#517A06;
-  --blue:#00A6FF;
-  --ink:#0b2f33; --off:#fff;
+:root {
+  --dark-teal: #005A63;
+  --teal: #257881;
+  --warm-green: #517A06;
+  --blue: #00A6FF;
+  --pink: #ff7ac7;
+  --ink: #0b2f33;
+  --off: #fff;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
 html{scroll-behavior:smooth}

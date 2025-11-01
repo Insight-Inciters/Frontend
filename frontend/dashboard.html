@@ -33,55 +33,64 @@
     color:#fff;
     position:sticky; top:0; z-index:40;
   }
-  .nav-inner{
-    width:100%;
-    padding:12px 24px 8px;
-    display:flex; align-items:center; gap:24px;
-    justify-content:space-between; /* brand far-left, actions far-right */
-  }
+.nav-inner{width:100%;padding:20px 28px 16px;display:flex;align-items:center;gap:24px;justify-content:space-between}
+.brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
+.brand a:hover{transform:translateY(-1px) scale(1.02)}
+.brand img{width:54px;height:auto;transition:transform .4s ease,filter .4s ease}
+.brand a:hover img{transform:rotate(-3deg) scale(1.06);filter:drop-shadow(0 0 6px rgba(255,255,255,.85))}
+.brand .txt{display:flex;flex-direction:column;line-height:1.15}
+.brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
+.brand .txt .line2{
+  font:700 1.4rem/1.1 "Droid Serif",serif;
+  background:linear-gradient(90deg,#fff,var(--blue),var(--pink),#fff);
+  background-size:300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:colorFlow 6s linear infinite;
+}
+@keyframes colorFlow{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 
-  /* Brand (left) with Ink / Insights stacked */
-  .brand a{display:flex;align-items:center;gap:10px;color:#fff;transition:transform .2s ease}
-  .brand a:hover{transform:translateY(-1px) scale(1.02)}
-  .brand img{width:54px;height:auto}
-  .brand .txt{display:flex;flex-direction:column;line-height:1}
-  .brand .txt .line1{font:400 1.1rem/1 "Droid Serif",serif}
-  .brand .txt .line2{font:700 1.4rem/1 "Droid Serif",serif}
+.navlinks{flex:1;display:flex;justify-content:center;gap:34px}
+.navlinks a{
+  font-family:"Rockwell","Courier New",Courier,Georgia,serif;font-weight:700;color:#fff;position:relative;padding:6px 2px;
+  transition:color .2s ease,text-shadow .2s ease;
+}
+.navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.navlinks a:hover{text-shadow:0 0 10px rgba(255,255,255,.35)}
+.navlinks a:hover::after{transform:scaleX(1)}
 
-  /* Centered menu (Rockwell, BOLD) */
-  .navlinks{
-    flex:1;
-    display:flex; justify-content:center; gap:34px;
-  }
-  .navlinks a{
-    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
-    font-weight:700;   /* bold menu */
-    color:#fff;
-    position:relative; padding:6px 2px;
-    transition:color .2s ease, text-shadow .2s ease;
-  }
-  .navlinks a::after{
-    content:''; position:absolute; left:0; right:0; bottom:-6px; height:2px;
-    background:#fff; transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
-  }
-  .navlinks a:hover{ text-shadow:0 0 10px rgba(255,255,255,.35) }
-  .navlinks a:hover::after{ transform:scaleX(1) }
+.actions{margin-left:auto;display:flex;align-items:center;gap:16px}
 
-  /* Actions (rightmost) */
-  .actions{margin-left:auto; display:flex; align-items:center; gap:12px}
+.nav-cta{
+  font-family:"Rockwell","Courier New";
+  font-weight:400;
+  background:#fff;
+  color:var(--dark-teal);
+  padding:8px 14px; 
+  border-radius:24px;
+  position:relative;
+  overflow:hidden;
+  transition:all .3s ease;
+  white-space:nowrap;
+  font-size:clamp(0.75rem, 1.6vw, 1rem);
+}
+.nav-cta:hover{background:#000;color:#fff;transform:translateY(-2px);box-shadow:0 0 20px rgba(255,255,255,.6)}
+.nav-cta::before{
+  content:"";position:absolute;top:0;left:-50%;width:50%;height:100%;
+  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 100%);
+  transform:skewX(-25deg);animation:shine 2s linear infinite;
+}
+@keyframes shine{0%{left:-50%}100%{left:150%}}
+
+@media(max-width:900px){
   .nav-cta{
-    font-family:"Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
-    font-weight:400; /* not bold */
-    background:#fff; color:var(--dark-teal);
-    padding:10px 18px; border-radius:28px;
-    transition:.2s background,.2s color,.2s transform,.2s box-shadow;
+    padding:6px 10px;
+    font-size:0.8rem;
   }
-  .nav-cta:hover{
-    background:#000; color:#fff;
-    transform:translateY(-2px);
-    box-shadow:0 10px 18px rgba(0,0,0,.18);
+  .actions{
+    gap:8px;
   }
-
+}
   /* Interactive hamburger (morphs to X when open) */
   .hamb{
     width:30px;height:22px;cursor:pointer;
@@ -112,10 +121,10 @@
   .scrim.show{ opacity:1; pointer-events:auto }
 
   .drawer .menu-title{
-    text-align:left;
-    font:400 22px/1.2 "Rockwell","AmericanTypewriter","Courier New",Courier,Georgia,serif;
-    margin:6px 0 12px;
+    text-align:center;font:700 20px/1 "Rockwell","Courier New";
+    text-decoration:underline;text-underline-offset:6px;margin-bottom:16px
   }
+
   .drawer .menu{display:flex; flex-direction:column; gap:10px}
   .drawer .menu a{
     font-family:"Agency FB","Agency",Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;
@@ -191,18 +200,33 @@
   }
 
   /* Inner chart boxes with diagonal pattern */
-  .chartbox{
-    --stripe: rgba(0,0,0,.06);
-    border-radius:18px; margin:10px 12px 6px; min-height:280px; /* taller for charts */
-    display:flex; align-items:center; justify-content:center; padding:14px; position:relative; overflow:hidden;
-    border:3px dashed var(--dark-teal);
-    background:#fff; /* charts on white, decorative colors removed for readability */
-  }
-  .chartbox canvas{width:100%!important; height:100%!important;}
-  .chartbox.pink{ border-color:var(--pink); }
-  .chartbox.sage{ border-color:var(--warm-green); }
+.chartbox{
+  --stripe: rgba(0,0,0,.06);
+  border-radius:18px;
+  margin:10px 12px 6px;
+  min-height:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+  position:relative;
+  overflow:hidden;
+  border:3px dashed var(--dark-teal);
+  background:repeating-linear-gradient(45deg, var(--stripe) 0 12px, transparent 12px 24px);
+}
+.chartbox.pink{
+  border-color:var(--pink);
+  background:repeating-linear-gradient(45deg, var(--pink-10, rgba(255,32,146,.10)) 0 12px, transparent 12px 24px);
+}
+.chartbox.sage{
+  border-color:var(--warm-green);
+  background:repeating-linear-gradient(45deg, var(--warm-green-10, rgba(81,122,6,.10)) 0 12px, transparent 12px 24px);
+}
+.chartbox.blue{
+  border-color:var(--blue);
+  background:repeating-linear-gradient(45deg, var(--blue-10, rgba(0,166,255,.10)) 0 12px, transparent 12px 24px);
+}
 
-  .chartbox::before{ display:none; } /* no pattern when charts present */
 
   .empty-note{color:var(--dark-grey);font-style:italic;text-align:center;margin:6px 0 2px}
 
@@ -215,48 +239,125 @@
   /* Grid */
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+
+/* ================= FOOTER ================= */
+footer{
+  background:var(--dark-teal);
+  color:#fff;
+  font-family:"Rockwell","Courier New";
+  padding:50px 40px 30px;
+}
+.footer-container{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  gap:40px;
+  border-bottom:4px solid rgba(255,255,255,0.15);
+  padding-bottom:20px;
+  margin-bottom:16px;
+}
+.footer-brand{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.footer-brand h1{
+  font-size:64px;
+  font-weight:700;
+  margin:0;
+}
+.footer-brand p{opacity:.85;font-size:15px;margin-top:4px;}
+.footer-links{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:15px;
+}
+.footer-links a{
+  color:#fff;
+  opacity:.85;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.footer-links a:hover{opacity:1;transform:translateX(3px);}
+.footer-bottom{
+  text-align:center;
+  font-size:14px;
+  opacity:.8;
+}
+
+@media(max-width:768px){
+  .footer-brand h1{font-size:44px;text-align:center;}
+  .footer-container{flex-direction:column;align-items:center;text-align:center;}
+}
+
+
+/* ============ EXPORT DROPDOWN ============ */
+.export-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: #fff;
+  border: 2px solid var(--dark-teal);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  min-width: 180px;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.dropdown-menu button {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 14px;
+  text-align: left;
+  font-family: "Rockwell","Courier New",Courier,serif;
+  color: var(--dark-teal);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.dropdown-menu button:hover {
+  background: rgba(0,90,99,0.08);
+}
+
+.export-dropdown.show .dropdown-menu {
+  display: block;
+  animation: fadeIn .15s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-4px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+
 </style>
 </head>
 <body>
 
   <!-- ======================= HEADER ======================= -->
-  <header class="navbar">
-    <div class="nav-inner">
-      <!-- leftmost brand -->
-      <div class="brand">
-        <a href="index.html" aria-label="Go to Home">
-          <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
-          <span class="txt">
-            <span class="line1">Ink</span>
-            <span class="line2">Insights</span>
-          </span>
-        </a>
-      </div>
-
-      <!-- centered menu -->
-      <nav class="navlinks" aria-label="Main">
-        <a href="index.html">Home</a>
-        <a href="dashboard.html" aria-current="page">Dashboard</a>
-        <a href="about.html">About Us</a>
-        <a href="faq.html">FAQ/Help</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <!-- rightmost actions -->
-      <div class="actions">
-        <a id="navCta" class="nav-cta" href="upload.html">START ANALYSIS</a>
-        <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
+<header class="navbar">
+  <div class="nav-inner">
+    <div class="brand">
+      <a href="index.html">
+        <img src="assests/Ink-logo.png" alt="Ink Insights Logo" />
+        <span class="txt">
+          <span class="line1">Ink</span>
+          <span class="line2">Insights</span>
+        </span>
+      </a>
     </div>
-    <!-- removed the white line under the header -->
-  </header>
 
-  <!-- Drawer + scrim -->
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <div class="menu-title">Menu</div>
-    <nav class="menu">
+    <nav class="navlinks">
       <a href="index.html">Home</a>
       <a href="dashboard.html" aria-current="page">Dashboard</a>
       <a href="about.html">About Us</a>
@@ -264,12 +365,30 @@
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- centered inverted CTA -->
-    <div class="drawer-cta-wrap">
-      <a class="drawer-cta" href="upload.html">START ANALYSIS</a>
+    <div class="actions">
+      <a class="nav-cta" href="upload.html">START ANALYSIS</a>
+      <div id="hamb" class="hamb" role="button" aria-label="Open menu" aria-expanded="false" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
     </div>
-  </aside>
-  <div id="scrim" class="scrim" aria-hidden="true"></div>
+  </div>
+</header>
+
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="menu-title">Menu</div>
+  <nav class="menu">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html" aria-current="page">Dashboard</a>
+    <a href="about.html">About Us</a>
+    <a href="faq.html">FAQ/Help</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="drawer-cta-wrap">
+    <a class="drawer-cta" href="upload.html">START ANALYSIS</a>
+  </div>
+</aside>
+<div id="scrim" class="scrim" aria-hidden="true"></div>
+
 
   <!-- ======================= MAIN ======================= -->
   <main class="wrap">
@@ -285,7 +404,14 @@
       <span class="badge read"><span class="label">Read Time:</span> <span class="value" id="rt">00 min</span></span>
       <span class="spacer"></span>
       <button id="deleteBtn" class="btn delete" type="button">DELETE</button>
-      <button id="exportBtn" class="btn export" type="button">EXPORT</button>
+<div class="export-dropdown">
+  <button id="exportBtn" class="btn export" type="button">EXPORT ▾</button>
+  <div id="exportMenu" class="dropdown-menu">
+    <button id="exportPDF" type="button">Export as PDF (Preview)</button>
+    <button id="exportCSV" type="button">Export as CSV</button>
+  </div>
+</div>
+
     </div>
 
     <!-- Summary (no inner box; blue border on panel) -->
@@ -344,6 +470,136 @@
       We automatically remove your report after you export or delete it. Keeping things private and tidy.
     </p>
   </main>
+
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h1>Enjoy Writing!</h1>
+      <p>Privacy-first data analysis, designed for writers.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Ink Insights — All rights reserved.
+  </div>
+</footer>
+
+
+<script>
+(function(){
+  // Dropdown open/close
+  const exportBtn = document.getElementById('exportBtn');
+  const exportDropdown = document.querySelector('.export-dropdown');
+  const exportMenu = document.getElementById('exportMenu');
+
+  exportBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    exportDropdown.classList.toggle('show');
+  });
+
+  document.addEventListener('click', ()=>exportDropdown.classList.remove('show'));
+
+  // Export handlers
+  const exportPDF = document.getElementById('exportPDF');
+  const exportCSV = document.getElementById('exportCSV');
+
+  exportPDF.addEventListener('click', ()=>{
+    exportDropdown.classList.remove('show');
+    openPDFPreview();
+  });
+
+  exportCSV.addEventListener('click', ()=>{
+    exportDropdown.classList.remove('show');
+    exportAsCSV();
+  });
+
+  // PDF preview function
+  function openPDFPreview(){
+    // This uses html2canvas + jsPDF (already loaded)
+    const main = document.querySelector('main');
+    html2canvas(main).then(canvas=>{
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jspdf.jsPDF({orientation: 'p', unit: 'pt', format: 'a4'});
+      const width = pdf.internal.pageSize.getWidth();
+      const height = pdf.internal.pageSize.getHeight();
+      const ratio = Math.min(width / canvas.width, height / canvas.height);
+      pdf.addImage(imgData, 'PNG', 20, 20, canvas.width * ratio - 40, canvas.height * ratio - 40);
+      pdf.output('dataurlnewwindow'); // open preview tab
+      askDeletePermission();
+    });
+  }
+
+  // CSV export function
+  function exportAsCSV(){
+    const content = document.querySelector('#summaryText')?.innerText || "No data";
+    const blob = new Blob([content], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'ink-insights-export.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+    askDeletePermission();
+  }
+
+  // Ask permission to delete data
+  function askDeletePermission(){
+    setTimeout(()=>{
+      if(confirm("Export completed.\nWould you like to delete your data now?")){
+        deleteData();
+      }
+    }, 400);
+  }
+
+function deleteData(){
+  // clear summary & show empty note
+  document.getElementById('summaryText').innerText = "";
+  document.getElementById('summaryEmpty').style.display = "block";
+
+  // optional: clear badges too
+  document.getElementById('fn').innerText = "none";
+  document.getElementById('wc').innerText = "0000";
+  document.getElementById('rt').innerText = "00 min";
+
+  // success confirmation
+  setTimeout(()=>{
+    alert("✅ Your data has been deleted successfully.");
+  }, 300);
+}
+
+
+})();
+</script>
+
+
+
+<script>
+(function(){
+  const drawer=document.getElementById('drawer');
+  const scrim=document.getElementById('scrim');
+  const hamb=document.getElementById('hamb');
+  function openDrawer(){
+    drawer.classList.add('open');
+    scrim.classList.add('show');
+    hamb.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    scrim.classList.remove('show');
+    hamb.classList.remove('open');
+  }
+  hamb.addEventListener('click',()=>drawer.classList.contains('open')?closeDrawer():openDrawer());
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+  document.querySelectorAll('#drawer a').forEach(a=>a.addEventListener('click',closeDrawer));
+})();
+</script>
+
 
   <!-- External scripts: Chart.js + your modular dashboard logic -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
